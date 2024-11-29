@@ -15,7 +15,7 @@
 
     <!-- フォーム部分 -->
     <div class="flex items-center md:p-8 p-6 bg-[#0C172C] h-full lg:w-11/12 lg:ml-auto">
-      <form class="max-w-lg w-full mx-auto">
+      <form class="max-w-lg w-full mx-auto" action="/GameHive/register" method="post" autocomplete="off">
         <div class="mb-12">
           <h3 class="text-3xl font-bold text-yellow-300 ml-6">アカウントを作りましょう！</h3>
         </div>
@@ -23,7 +23,7 @@
         <div>
           <label class="text-yellow-200 text-xs block mb-2">ユーザー名</label>
           <div class="relative flex items-center">
-            <input name="name" type="text" required class="w-full bg-transparent text-sm text-white border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none" placeholder="ユーザー名を入力してください" />
+            <input name="username" type="text" required class="w-full bg-transparent text-sm text-white border-b border-gray-300 focus:border-yellow-400 px-2 py-3 outline-none" placeholder="ユーザー名を入力してください" />
             <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-2" viewBox="0 0 24 24">
               <circle cx="10" cy="7" r="6"></circle>
               <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"></path>
@@ -65,7 +65,7 @@
         </div>
 
         <div class="mt-12">
-         <button type="button" class="flex items-center justify-center w-max shadow-xl py-3 px-6 text-sm text-gray-800 font-semibold rounded-md bg-transparent bg-yellow-400 hover:bg-yellow-500 focus:outline-none">
+         <button type="submit" class="flex items-center justify-center w-max shadow-xl py-3 px-6 text-sm text-gray-800 font-semibold rounded-md bg-transparent bg-yellow-400 hover:bg-yellow-500 focus:outline-none">
             アカウントを登録する
          </button>
           <p class="text-sm text-white mt-8">すでにアカウントをお持ちの方は <a href="javascript:void(0);" class="text-yellow-400 font-semibold hover:underline ml-1">こちら</a></p>
