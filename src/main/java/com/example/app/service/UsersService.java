@@ -16,6 +16,10 @@ public class UsersService {
     public Users findUserByUsername(String username) {
         return usersMapper.findByUsername(username);
     }
+    
+    public Users findById(Integer id) {
+    	return usersMapper.findById(id);
+    }
 
     public void registerUser(Users user) {
         // パスワードのハッシュ化処理（BCryptを使用）
@@ -28,5 +32,17 @@ public class UsersService {
     private String hashPassword(String password) {
         // パスワードをBCryptでハッシュ化
         return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+    
+    public boolean checkPassword(String username,String password) {
+    	
+    	Users user = usersMapper.findByUsername(username);
+    	
+    	if(user == null) {
+    		return false;
+    	}
+    	
+    	 // 入力されたパスワードと保存されたハッシュ化パスワードを照合
+      return BCrypt.checkpw(password, user.getPassword());
     }
 }

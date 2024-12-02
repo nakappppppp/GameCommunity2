@@ -8,6 +8,13 @@
         FROM users 
         WHERE username = #{username}
     </select>
+    
+    <!-- findById -->
+    <select id="findById" resultType="com.example.app.domain.Users">
+        select *
+        from users
+        where id = #{id}
+    </select>
 
     <!-- registerUser -->
     <insert id="registerUser" parameterType="com.example.app.domain.Users">
