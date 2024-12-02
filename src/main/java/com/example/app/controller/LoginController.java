@@ -36,7 +36,7 @@ public class LoginController {
 		 }else {
 			 System.out.println("error");
 			 model.addAttribute("error","無効なユーザー名またはパスワード");
-			 return "login";
+			 return "FailedLogin";
 		 }
 	 	//TODO: process POST request
 	 	
