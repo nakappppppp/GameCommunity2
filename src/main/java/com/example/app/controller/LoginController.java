@@ -10,70 +10,47 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.app.domain.Users;
 import com.example.app.service.UsersService;
 
-
-
 @Controller
 @RequestMapping("/GameHive")
 public class LoginController {
-	
-	
-	@Autowired
-  private UsersService usersService;
+    
+    @Autowired
+    private UsersService usersService;
 
-
-	@GetMapping("/login")
-	public String  showLoginForm() {
-		return "login";
-	}
-	
-	@GetMapping("/test")
-	public String test() {
-		return "test";
-	}
-	
-//	@PostMapping("/login")
-//	public String processLogin(
-//			@RequestParam ("userName") String userName,
-//			@RequestParam ("password") String password,
-//			Model model) {
-//		//TODO: process POST request
-//		
-//		return entity;
-//	}
-	
-	@GetMapping("/register")
-	public String registerUser(){
-		return "register";
-	}
-	
-	
-	@GetMapping("/successRegister")
-	public String successRegister() {
-		return "successRegister";
-	}
-	
-	
-	@PostMapping("/register")
-	public String registerUser(@RequestParam String username, @RequestParam String email, @RequestParam String password) {
-    // 既存のユーザー名チェック
-		System.out.println(username +  "," + email + "," + password);
-    Users existingUser = usersService.findUserByUsername(username);
-    if (existingUser != null) {
-        return "redirect:/register?error=username_taken";  // ユーザー名が既に存在する場合
+    // 登録ページを表示
+    @GetMapping("/register")
+    public String registerUserForm() {
+        return "register";
     }
-        // 新規ユーザーを登録
+
+    // 登録完了ページを表示
+    @GetMapping("/successRegister")
+    public String successRegister() {
+        return "successRegister";
+    }
+
+    // ユーザー登録処理
+    @PostMapping("/register")
+    public String registerUser(@RequestParam String username, @RequestParam String email, @RequestParam String password) {
+        // 既に同じユーザー名が存在するかチェック
+        Users existingUser = usersService.findUserByUsername(username);
+        if (existingUser != null) {
+            // ユーザー名がすでに存在している場合、エラーメッセージとともに登録フォームに戻す
+            return "redirect:/GameHive/register?error=username_taken";
+        }
+
+        // 新規ユーザーを作成
         Users user = new Users();
         user.setUsername(username);
         user.setEmail(email);
-        user.setPassword(password);  // パスワードのハッシュ化はUsersService内で行う
+        user.setPassword(password);  // パスワードのハッシュ化はUsersServiceで行う
+
+
         
+        // ユーザーをデータベースに登録
         usersService.registerUser(user);
-        
-        return "redirect:/successRegister"; // 登録後、ログイン画面へリダイレクト
-    
+
+        // 登録が成功した場合、登録完了ページにリダイレクト
+        return "redirect:/GameHive/successRegister";
     }
-	
-	
-
 }
-

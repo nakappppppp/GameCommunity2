@@ -1,9 +1,6 @@
 package com.example.app.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SecurityConfig {
@@ -32,8 +29,8 @@ public class SecurityConfig {
 //	    return http.build();  // 設定をビルドして返す
 //	}
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();  // パスワードのエンコーディングにBCryptを使用
-    }
+//    @Bean
+//    PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();  // パスワードのエンコーディングにBCryptを使用
+//    }
 }
