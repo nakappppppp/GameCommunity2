@@ -11,8 +11,8 @@
 
     <!-- registerUser -->
     <insert id="registerUser" parameterType="com.example.app.domain.Users">
-        INSERT INTO users (username, email, password)
-        VALUES (#{username}, #{email}, #{password})
+        INSERT INTO users (username, email, password,created_at)
+        VALUES (#{username}, #{email}, #{password},NOW())
     </insert>
 
 </mapper>
