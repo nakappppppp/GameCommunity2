@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean<AuthFilter> authFilter() {
+    FilterRegistrationBean<AuthFilter> authFilter() {
         FilterRegistrationBean<AuthFilter> bean = new FilterRegistrationBean<>(new AuthFilter());
         bean.addUrlPatterns("/admin"); // 対応するURL
         bean.setOrder(1); // フィルターの適用順
