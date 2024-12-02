@@ -1,0 +1,15 @@
+# Maven build output
+target/
+
+# IntelliJ IDEA specific
+.idea/
+
+# Eclipse specific
+.project
+.classpath
+
+# Maven local repository (optional, usually not needed to ignore)
+.m2/
+
+# Log files
+*.log
