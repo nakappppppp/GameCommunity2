@@ -80,6 +80,10 @@
         <artifactId>jbcrypt</artifactId>
         <version>0.4</version> <!-- 最新バージョンに変更 -->
     </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
 	</dependencies>
 
 	<build>

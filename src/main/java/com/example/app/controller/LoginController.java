@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.app.service.UsersService;
 
+import jakarta.servlet.http.HttpSession;
+
+
 
 
 @Controller
@@ -26,22 +29,30 @@ public class LoginController {
 	 @PostMapping("/login")
 	 public String checkUser(
 			 String username, String password, 
-			 Model model
+			 Model model, HttpSession session
 			 ) {
 		  System.out.println("Received userId: " + username + ", password: " + password);
 		 if(usersService.checkPassword(username,password)) {
 			 System.out.println("success");
 			 model.addAttribute("message","ログイン成功！");
-			 return "gameHiveHome";
+			 session.setAttribute("username",username);
+			 return "redirect:/GameHive/gameHiveHome";
 		 }else {
 			 System.out.println("error");
 			 model.addAttribute("error","無効なユーザー名またはパスワード");
 			 return "FailedLogin";
 		 }
-	 	//TODO: process POST request
 	 	
-	 	
+			 }
+	 @GetMapping("/gameHiveHome")
+	 public String home() {
+	 	return "gameHiveHome";
 	 }
 	 
+	 
+	 @GetMapping("/forms")
+	 public String forms() {
+	 	return "forms";
+	 }
 	 
 }

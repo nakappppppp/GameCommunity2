@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.app.mapper.ChatMapper">
+
+ <!-- チャットメッセージの全てを取得する -->
+    <select id="selectAllChats" resultType="com.example.app.domain.Chats">
+        SELECT id, user_id, content, image_url, created_at, updated_at
+        FROM chats
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- チャットメッセージを追加する -->
+    <insert id="insertChat" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO chats (user_id, content, image_url, created_at, updated_at)
+        VALUES (#{user.id}, #{content}, #{imageUrl}, #{createdAt}, #{updatedAt})
+    </insert>
+
+    <!-- チャットメッセージを更新する -->
+    <update id="updateChat">
+        UPDATE chats
+        SET content = #{content}, image_url = #{imageUrl}, updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <!-- チャットメッセージを削除する -->
+    <delete id="deleteChat">
+        DELETE FROM chats WHERE id = #{id}
+    </delete>
+    
+</mapper>
