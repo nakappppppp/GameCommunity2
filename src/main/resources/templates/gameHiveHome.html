@@ -1,10 +1,135 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>ホーム</title>
+    <meta charset="UTF-8">
+    <title>ホーム</title>
+    <link rel="stylesheet" href="/css/output.css" />
 </head>
-<body>
-<h1 th:text="${message}"></h1>
+
+<body class="bg-gray-50">
+  
+  <!-- ヘッダー -->
+  <header class="bg-indigo-900 text-white py-6">
+    <div class="container mx-auto flex justify-between items-center px-6">
+      <h1 class="text-3xl font-bold">Community Hub</h1>
+      <nav>
+        <ul class="flex space-x-6">
+          <li><a href="#" class="hover:text-indigo-300">Home</a></li>
+          <li><a href="#about" class="hover:text-indigo-300">About</a></li>
+          <li><a href="#trending" class="hover:text-indigo-300">Trending</a></li>
+          <li><a href="#community" class="hover:text-indigo-300">Community</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ヒーローセクション -->
+  <section class="bg-cover bg-center h-96 relative" style="background-image: url('https://via.placeholder.com/1600x900');">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="container mx-auto text-center text-white relative z-10 py-32">
+      <h2 class="text-5xl font-bold mb-4">Welcome to the Community Hub</h2>
+      <p class="text-xl mb-6">Connect, share ideas, and grow together in our vibrant community.</p>
+      <a href="#trending" class="bg-yellow-500 text-gray-900 py-2 px-6 rounded-full text-xl hover:bg-yellow-400 transition duration-300">Explore the Discussions</a>
+    </div>
+  </section>
+
+  <!-- 最新の投稿 -->
+  <section id="latest" class="py-20 bg-white text-center">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold mb-6">Latest Posts</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+          <h3 class="text-2xl font-semibold mb-3">How to get started with Tailwind CSS</h3>
+          <p class="text-gray-600">A step-by-step guide to kickstart your Tailwind CSS journey. Perfect for beginners!</p>
+          <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-4 inline-block">Read More →</a>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+          <h3 class="text-2xl font-semibold mb-3">The Future of Web Development</h3>
+          <p class="text-gray-600">What’s next in the world of web development? Let's discuss the trends shaping the future.</p>
+          <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-4 inline-block">Read More →</a>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+          <h3 class="text-2xl font-semibold mb-3">JavaScript Tips and Tricks</h3>
+          <p class="text-gray-600">Boost your JavaScript skills with these handy tips and tricks that you might not know!</p>
+          <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-4 inline-block">Read More →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 人気のトピック -->
+  <section id="trending" class="bg-gray-100 py-20">
+    <div class="container mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-12">Trending Topics</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+          <h3 class="text-2xl font-semibold mb-4">React vs Vue: Which One to Choose?</h3>
+          <p class="text-gray-700">A deep dive into the pros and cons of React and Vue.js. Let’s settle the debate.</p>
+        </div>
+        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+          <h3 class="text-2xl font-semibold mb-4">Web Accessibility Best Practices</h3>
+          <p class="text-gray-700">Make your website more inclusive with these accessibility tips and best practices.</p>
+        </div>
+        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
+          <h3 class="text-2xl font-semibold mb-4">Building Your First API with Node.js</h3>
+          <p class="text-gray-700">Step-by-step guide to building a RESTful API with Node.js and Express.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- コミュニティ紹介 -->
+  <section id="community" class="py-20 bg-indigo-900 text-white text-center">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold mb-6">Join Our Community</h2>
+      <p class="text-lg mb-6">Be a part of our growing community of developers, designers, and creators. Share your knowledge, ask questions, and collaborate with others.</p>
+      <a href="#signup" class="bg-yellow-500 text-gray-900 py-2 px-6 rounded-full text-xl hover:bg-yellow-400 transition duration-300">Sign Up Now</a>
+    </div>
+  </section>
+
+  <!-- チャットウィンドウ -->
+  <div id="chat" class="fixed right-4 bottom-4 w-80 h-96 bg-white rounded-lg shadow-lg flex flex-col z-50">
+    <div id="chat-header" class="bg-indigo-600 text-white p-4 flex justify-between items-center rounded-t-lg">
+      <span>Community Chat</span>
+      <button id="close-chat" class="text-white text-xl">&times;</button>
+    </div>
+    <div id="chat-messages" class="flex-1 overflow-y-auto p-4">
+      <div class="chat-message">Welcome to the community chat!</div>
+    </div>
+    <div id="chat-input" class="p-4 flex">
+      <input type="text" placeholder="Type a message..." id="chat-text" class="flex-1 border p-2 rounded-lg mr-2" />
+      <button onclick="sendMessage()" class="bg-indigo-600 text-white p-2 rounded-lg">Send</button>
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <footer class="bg-gray-900 text-white py-6 text-center">
+    <p>&copy; 2024 Community Hub. All Rights Reserved.</p>
+    <div class="flex justify-center space-x-4 mt-4">
+      <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
+      <a href="#" class="text-gray-400 hover:text-white">Terms of Service</a>
+    </div>
+  </footer>
+
+  <script>
+    // チャット機能の簡単なトグル
+    document.getElementById('close-chat').onclick = function() {
+      document.getElementById('chat').style.display = 'none';
+    };
+
+    // メッセージ送信処理
+    function sendMessage() {
+      const message = document.getElementById('chat-text').value;
+      if (message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('chat-message');
+        messageDiv.textContent = message;
+        document.getElementById('chat-messages').appendChild(messageDiv);
+        document.getElementById('chat-text').value = '';
+      }
+    }
+  </script>
+
 </body>
 </html>
