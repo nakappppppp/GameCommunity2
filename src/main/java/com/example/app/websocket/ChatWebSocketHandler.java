@@ -34,7 +34,7 @@ public class ChatWebSocketHandler {
 
         // メッセージをデータベースに保存
         Chats chat = new Chats();
-        chat.setUser(user);  // ユーザーオブジェクトをセット
+        chat.setUser(user);  // ユーザーオブジェクトをセットaaa
         chat.setContent(message);
         chat.setCreatedAt(LocalDateTime.now());
         chat.setUpdatedAt(LocalDateTime.now());
