@@ -2,134 +2,211 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title>ホーム</title>
-    <link rel="stylesheet" href="/css/output.css" />
+	<meta charset="UTF-8">
+	<title>ホーム</title>
+	<link rel="stylesheet" href="/css/output.css" />
+
 </head>
 
-<body class="bg-gray-50">
-  
-  <!-- ヘッダー -->
-  <header class="bg-indigo-900 text-white py-6">
-    <div class="container mx-auto flex justify-between items-center px-6">
-      <h1 class="text-3xl font-bold">Community Hub</h1>
-      <nav>
-        <ul class="flex space-x-6">
-          <li><a href="#" class="hover:text-indigo-300">Home</a></li>
-          <li><a href="#about" class="hover:text-indigo-300">About</a></li>
-          <li><a href="#trending" class="hover:text-indigo-300">Trending</a></li>
-          <li><a href="#community" class="hover:text-indigo-300">Community</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+<body>
+	<header class='flex bg-yellow-300 border-b py-3 sm:px-6 px-4 font-[sans-serif] min-h-[75px] tracking-wide relative z-50'>
+		<div class='flex max-w-screen-xl mx-auto w-full'>
+			<div class='flex flex-wrap items-center lg:gap-y-2 gap-4 w-full'>
+				<a href="javascript:void(0)">
+					<!-- ロゴ部分 -->
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="_x32_" viewBox="0 0 512 512" class="w-16 h-16 mb-2 mx-auto text-gray-600">
+						<g>
+							<path class="fill-current" d="M344.397,295.123l-34.995,20.206c-2.585,1.493-4.186,4.252-4.186,7.245v40.404c0,3.786,2.548,7.106,6.203,8.082c3.663,0.983,7.522-0.612,9.422-3.896l34.98-60.61c1.901-3.284,1.354-7.42-1.325-10.106C351.824,293.776,347.673,293.23,344.397,295.123z" />
+							<path class="fill-current" d="M228.957,95.175l-35.002,20.199c-2.585,1.493-4.172,4.26-4.172,7.245v40.412c0,3.786,2.542,7.106,6.197,8.082c3.655,0.976,7.522-0.619,9.415-3.902l34.994-60.604c1.886-3.284,1.34-7.427-1.332-10.099C236.377,93.821,232.233,93.274,228.957,95.175z" />
+							<path class="fill-current" d="M113.509,295.123l-34.994,20.206c-2.585,1.493-4.18,4.252-4.18,7.245v40.404c0,3.786,2.542,7.106,6.197,8.082c3.662,0.983,7.522-0.612,9.422-3.896l34.987-60.61c1.894-3.284,1.347-7.42-1.332-10.106C120.937,293.776,116.787,293.23,113.509,295.123z" />
+							<path class="fill-current" d="M391.121,211.314V78.013L256,0L120.878,78.013v11.359v121.942L5.439,277.961v11.358v144.668L140.561,512l115.447-66.646L371.439,512l135.122-78.012V277.961L391.121,211.314z M236.318,411.262l-95.757,55.287l-95.766-55.287V300.686l95.766-55.288l95.757,55.288V411.262z M256,266.602l-47.883-27.64l-47.875-27.648V100.738L256,45.451l95.758,55.287v110.576l-47.876,27.648L256,266.602z M467.198,411.262l-95.758,55.287l-95.758-55.287V300.686l95.758-55.288l95.758,55.288V411.262z" />
+						</g>
+					</svg>
+				</a>
 
-  <!-- ヒーローセクション -->
-  <section class="bg-cover bg-center h-96 relative" style="background-image: url('https://via.placeholder.com/1600x900');">
-    <div class="absolute inset-0 bg-black opacity-50"></div>
-    <div class="container mx-auto text-center text-white relative z-10 py-32">
-      <h2 class="text-5xl font-bold mb-4">Welcome to the Community Hub</h2>
-      <p class="text-xl mb-6">Connect, share ideas, and grow together in our vibrant community.</p>
-      <a href="#trending" class="bg-yellow-500 text-gray-900 py-2 px-6 rounded-full text-xl hover:bg-yellow-400 transition duration-300">Explore the Discussions</a>
-    </div>
-  </section>
+				<div id="collapseMenu" class='lg:ml-6 max-lg:hidden lg:!block max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50'>
+					<button id="toggleClose" class='lg:hidden fixed top-2 right-4 z-[100] rounded-full bg-white w-9 h-9 flex items-center justify-center border'>
+						<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 fill-black" viewBox="0 0 320.591 320.591">
+							<path d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z" data-original="#000000"></path>
+							<path d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z" data-original="#000000"></path>
+						</svg>
+					</button>
 
-  <!-- 最新の投稿 -->
-  <section id="latest" class="py-20 bg-white text-center">
-    <div class="container mx-auto">
-      <h2 class="text-4xl font-bold mb-6">Latest Posts</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
-          <h3 class="text-2xl font-semibold mb-3">How to get started with Tailwind CSS</h3>
-          <p class="text-gray-600">A step-by-step guide to kickstart your Tailwind CSS journey. Perfect for beginners!</p>
-          <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-4 inline-block">Read More →</a>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
-          <h3 class="text-2xl font-semibold mb-3">The Future of Web Development</h3>
-          <p class="text-gray-600">What’s next in the world of web development? Let's discuss the trends shaping the future.</p>
-          <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-4 inline-block">Read More →</a>
-        </div>
-        <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
-          <h3 class="text-2xl font-semibold mb-3">JavaScript Tips and Tricks</h3>
-          <p class="text-gray-600">Boost your JavaScript skills with these handy tips and tricks that you might not know!</p>
-          <a href="#" class="text-indigo-600 hover:text-indigo-800 mt-4 inline-block">Read More →</a>
+					<ul class='lg:flex lg:gap-x-3 max-lg:space-y-3 max-lg:fixed max-lg:bg-yellow-300 max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50'>
+						<li class='max-lg:border-b border-black max-lg:py-3 px-3'><a href='javascript:void(0)' class='text-[#007bff] hover:text-[#007bff] text-[15px] block font-semibold'>Home</a></li>
+						<li class='max-lg:border-b border-black max-lg:py-3 px-3'><a href='javascript:void(0)' class='text-[#333] hover:text-[#007bff] text-[15px] block font-semibold'>Chat</a></li>
+						<li class='max-lg:border-b border-black max-lg:py-3 px-3'><a href='javascript:void(0)' class='text-[#333] hover:text-[#007bff] text-[15px] block font-semibold'>Battle&amp;Cooperation</a></li>
+						<li class='max-lg:border-b border-black max-lg:py-3 px-3'><a href='/GameHive/Profile' class='text-[#333] hover:text-[#007bff] text-[15px] block font-semibold'>Profile</a></li>
+					</ul>
+				</div>
+
+				<div class="flex items-center gap-x-6 gap-y-4 ml-auto">
+					<div class='flex bg-gray-50 border focus-within:bg-transparent focus-within:border-gray-400 rounded-full px-4 py-2.5 overflow-hidden max-w-52 max-lg:hidden'>
+						<input type='text' placeholder='検索' class='w-full text-sm bg-transparent outline-none pr-2' />
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px" class="cursor-pointer fill-gray-600">
+							<path d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.007 18.752-50.786 0-44.15-35.898-80.047-80.047-80.047s-80.047 35.898-80.047 80.047 35.898 80.047 80.047 80.047c19.05 0 36.55-6.954 50.193-18.628l47.195 47.363c2.23 2.229 5.823 2.229 8.053 0 2.231-2.229 2.231-5.823 0-8.053zm-114.66-39.104c-34.122 0-61.7-27.578-61.7-61.7s27.578-61.7 61.7-61.7 61.7 27.578 61.7 61.7-27.578 61.7-61.7 61.7z" />
+						</svg>
+					</div>
+
+					<!-- いいねと通知アイコン -->
+					<div class="flex items-center gap-6">
+						<div class="flex flex-col items-center gap-0.5 cursor-pointer">
+							<div class="relative">
+								<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-[#333]" viewBox="0 0 64 64">
+									<path d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z" />
+								</svg>
+								<span class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
+							</div>
+							<span class="text-[13px] font-semibold text-[#333]">いいね</span>
+						</div>
+
+						<div class="flex flex-col items-center gap-0.5 cursor-pointer">
+							<div class="relative">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+								</svg>
+								<span class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
+							</div>
+							<span class="text-[13px] font-semibold text-[#333]">通知</span>
+						</div>
+					</div>
+
+					<!-- ログアウトボタン -->
+					<button
+						class='max-lg:hidden px-4 py-2 text-sm rounded-full text-white border-2 border-slate-400 bg-slate-600 hover:bg-slate-800'>ログアウト</button>
+					
+					<!-- アバター -->
+					<img
+						src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar"
+						class="relative inline-block h-12 w-12 !rounded-full object-cover object-center"
+					/>
+
+					<button id="toggleOpen" class='lg:hidden'>
+						<svg class="w-7 h-7" fill="#333" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd"
+								d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+								clip-rule="evenodd"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</div>
+	</header>
+	
+	
+<main>
+  <!-- Container -->
+  <div class="mx-auto w-full max-w-7xl px-5 py-12 md:px-10 md:py-16 lg:py-20">
+    <!-- Component -->
+    <div class="flex flex-col gap-8 lg:flex-row lg:gap-10">
+      <!-- Content -->
+      <div class="flex flex-col gap-8 lg:w-3/5">
+        <h2 class="mb-8 text-3xl font-bold md:text-5xl">GameHiveについて</h2>
+        <p class="text-sm sm:text-base"> GameHiveは、ゲームでみんなとつながれたらいいなという思いで誕生したゲームの対戦・協力プレイの募集や、レーティングシステム、
+					チャット機能等を詰め込んだゲーム専門のコミュニティサイトです。<br>
+					ゲーム好きの人口は、年々上昇傾向にあります。<br>
+					そういう人たちが集まり、より深くつながっていくハチの巣のようなプラットフォームを目指しています。
+        </p>
+        <a href="#" class="w-36 rounded-md bg-black px-6 py-3 text-center font-semibold text-white"> Learn More </a>
+        <!-- Divider -->
+        <div class="my-8 h-px w-full bg-black"></div>
+        <!-- Testimonials -->
+        <div class="grid gap-8 md:grid-cols-2 md:gap-4">
+          <div class="flex flex-col gap-4 rounded-md border border-solid bg-gray-100 p-6 md:p-4">
+            <p class="text-sm"> I have been using the Business Solution services for the past year, and I am extremely satisfied with the results. Their innovative solutions and expertise have transformed my business operations. </p>
+            <div class="flex items-center gap-2 sm:gap-x-4">
+              <div class="flex items-center gap-x-2">
+                <img src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPLaceholder%20Image%20Secondary.svg?alt=media&token=b8276192-19ff-4dd9-8750-80bc5f7d6844" alt="" class="h-12 w-12 rounded-full object-cover" />
+                <p class="text-sm font-semibold sm:text-base"> Alleyah </p>
+              </div>
+              <!-- Divider -->
+              <div class="h-5 w-px bg-gray-300"></div>
+              <div class="flex items-center gap-x-2">
+                <p class="text-sm font-semibold sm:text-base">5.0</p>
+                <div class="flex text-orange-500">
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                  </svg>
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                  </svg>
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                  </svg>
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                  </svg>
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col gap-4 rounded-md border border-solid bg-gray-100 p-6 md:p-4">
+            <p class="text-sm"> I have been using the Business Solution services for the past year, and I am extremely satisfied with the results. Their innovative solutions and expertise have transformed my business operations. </p>
+            <div class="flex items-center gap-2 sm:gap-x-4">
+              <div class="flex items-center gap-x-2">
+                <img src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPLaceholder%20Image%20Secondary.svg?alt=media&token=b8276192-19ff-4dd9-8750-80bc5f7d6844" alt="" class="h-12 w-12 rounded-full object-cover" />
+                <p class="text-sm font-semibold sm:text-base"> Alleyah </p>
+              </div>
+              <!-- Divider -->
+              <div class="h-5 w-px bg-gray-300"></div>
+              <div class="flex items-center gap-x-2">
+                <p class="text-sm font-semibold sm:text-base">5.0</p>
+                <div class="flex text-orange-500">
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                  </svg>
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                  </svg>
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                  </svg>
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                  </svg>
+                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- 人気のトピック -->
-  <section id="trending" class="bg-gray-100 py-20">
-    <div class="container mx-auto text-center">
-      <h2 class="text-4xl font-bold mb-12">Trending Topics</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
-          <h3 class="text-2xl font-semibold mb-4">React vs Vue: Which One to Choose?</h3>
-          <p class="text-gray-700">A deep dive into the pros and cons of React and Vue.js. Let’s settle the debate.</p>
-        </div>
-        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
-          <h3 class="text-2xl font-semibold mb-4">Web Accessibility Best Practices</h3>
-          <p class="text-gray-700">Make your website more inclusive with these accessibility tips and best practices.</p>
-        </div>
-        <div class="bg-white p-8 rounded-lg shadow-lg hover:shadow-2xl transition duration-300">
-          <h3 class="text-2xl font-semibold mb-4">Building Your First API with Node.js</h3>
-          <p class="text-gray-700">Step-by-step guide to building a RESTful API with Node.js and Express.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- コミュニティ紹介 -->
-  <section id="community" class="py-20 bg-indigo-900 text-white text-center">
-    <div class="container mx-auto">
-      <h2 class="text-4xl font-bold mb-6">Join Our Community</h2>
-      <p class="text-lg mb-6">Be a part of our growing community of developers, designers, and creators. Share your knowledge, ask questions, and collaborate with others.</p>
-      <a href="#signup" class="bg-yellow-500 text-gray-900 py-2 px-6 rounded-full text-xl hover:bg-yellow-400 transition duration-300">Sign Up Now</a>
-    </div>
-  </section>
-
-  <!-- チャットウィンドウ -->
-  <div id="chat" class="fixed right-4 bottom-4 w-80 h-96 bg-white rounded-lg shadow-lg flex flex-col z-50">
-    <div id="chat-header" class="bg-indigo-600 text-white p-4 flex justify-between items-center rounded-t-lg">
-      <span>Community Chat</span>
-      <button id="close-chat" class="text-white text-xl">&times;</button>
-    </div>
-    <div id="chat-messages" class="flex-1 overflow-y-auto p-4">
-      <div class="chat-message">Welcome to the community chat!</div>
-    </div>
-    <div id="chat-input" class="p-4 flex">
-      <input type="text" placeholder="Type a message..." id="chat-text" class="flex-1 border p-2 rounded-lg mr-2" />
-      <button onclick="sendMessage()" class="bg-indigo-600 text-white p-2 rounded-lg">Send</button>
+      <!-- Image -->
+      <div class="w-full rounded-md bg-gray-100 max-[991px]:h-[475px] lg:w-2/5"></div>
     </div>
   </div>
+</main>
 
-  <!-- フッター -->
-  <footer class="bg-gray-900 text-white py-6 text-center">
-    <p>&copy; 2024 Community Hub. All Rights Reserved.</p>
-    <div class="flex justify-center space-x-4 mt-4">
-      <a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a>
-      <a href="#" class="text-gray-400 hover:text-white">Terms of Service</a>
-    </div>
-  </footer>
+	<script>
+		// メニュー開閉ボタンを取得
+		const toggleOpenButton = document.getElementById('toggleOpen');
+		const toggleCloseButton = document.getElementById('toggleClose');
+		const collapseMenu = document.getElementById('collapseMenu');
 
-  <script>
-    // チャット機能の簡単なトグル
-    document.getElementById('close-chat').onclick = function() {
-      document.getElementById('chat').style.display = 'none';
-    };
+		// メニューを開く関数
+		function openMenu() {
+			collapseMenu.classList.remove('max-lg:hidden'); // メニューを表示
+			collapseMenu.classList.add('max-lg:block');
+		}
 
-    // メッセージ送信処理
-    function sendMessage() {
-      const message = document.getElementById('chat-text').value;
-      if (message) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('chat-message');
-        messageDiv.textContent = message;
-        document.getElementById('chat-messages').appendChild(messageDiv);
-        document.getElementById('chat-text').value = '';
-      }
-    }
-  </script>
+		// メニューを閉じる関数
+		function closeMenu() {
+			collapseMenu.classList.remove('max-lg:block');
+			collapseMenu.classList.add('max-lg:hidden'); // メニューを非表示
+		}
 
+		// 開くボタンのクリックイベント
+		toggleOpenButton.addEventListener('click', openMenu);
+
+		// 閉じるボタンのクリックイベント
+		toggleCloseButton.addEventListener('click', closeMenu);
+	</script>
 </body>
+
 </html>
