@@ -13,7 +13,7 @@ public class Users {
 	private String password;
 	private String firstName;
 	private String lastName;
-	private String profile_image;
+	private String profileImage;
 	private String bio;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;

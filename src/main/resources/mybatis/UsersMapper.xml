@@ -21,5 +21,19 @@
         INSERT INTO users (username, email, password,created_at)
         VALUES (#{username}, #{email}, #{password},NOW())
     </insert>
+    
+      <!-- プロフィール画像を更新 -->
+    <update id="updateProfileImage" parameterType="com.example.app.domain.Users">
+        UPDATE users
+        SET profile_image = #{profile_image}, updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{id}
+    </update>
+
+    <!-- プロフィール画像を削除 -->
+    <update id="deleteProfileImage" parameterType="Integer">
+        UPDATE users
+        SET profile_image = NULL, updated_at = CURRENT_TIMESTAMP
+        WHERE id = #{userId}
+    </update>
 
 </mapper>

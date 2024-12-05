@@ -15,4 +15,9 @@ public interface UsersMapper {
 
  // 会員登録用メソッド
  void registerUser(Users user);
+ 
+//プロフィール画像を更新するメソッド
+ void updateProfileImage(Users user);
+
+void deleteProfileImage(Integer userId);
 }

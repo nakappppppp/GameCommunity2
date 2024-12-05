@@ -28,6 +28,16 @@ public class UsersService {
 
         usersMapper.registerUser(user);
     }
+    
+ // プロフィール画像を更新
+    public void updateProfileImage(Users user) {
+        usersMapper.updateProfileImage(user);
+    }
+
+    // プロフィール画像を削除
+    public void deleteProfileImage(Integer userId) {
+        usersMapper.deleteProfileImage(userId);
+    }
 
     private String hashPassword(String password) {
         // パスワードをBCryptでハッシュ化
