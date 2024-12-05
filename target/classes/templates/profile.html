@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>プロフィール</title>
+	<link rel="stylesheet" href="/css/output.css" />
+</head>
+
+<body>
+	<header
+		class='flex bg-yellow-300 border-b py-3 sm:px-6 px-4 font-[sans-serif] min-h-[75px] tracking-wide relative z-50'>
+		<div class='flex max-w-screen-xl mx-auto w-full'>
+			<div class='flex flex-wrap items-center lg:gap-y-2 gap-4 w-full'>
+				<a href="javascript:void(0)">
+					<!-- ロゴ部分 -->
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="_x32_"
+						viewBox="0 0 512 512" class="w-16 h-16 mb-2 mx-auto text-gray-600">
+						<g>
+							<path class="fill-current"
+								d="M344.397,295.123l-34.995,20.206c-2.585,1.493-4.186,4.252-4.186,7.245v40.404c0,3.786,2.548,7.106,6.203,8.082c3.663,0.983,7.522-0.612,9.422-3.896l34.98-60.61c1.901-3.284,1.354-7.42-1.325-10.106C351.824,293.776,347.673,293.23,344.397,295.123z" />
+							<path class="fill-current"
+								d="M228.957,95.175l-35.002,20.199c-2.585,1.493-4.172,4.26-4.172,7.245v40.412c0,3.786,2.542,7.106,6.197,8.082c3.655,0.976,7.522-0.619,9.415-3.902l34.994-60.604c1.886-3.284,1.34-7.427-1.332-10.099C236.377,93.821,232.233,93.274,228.957,95.175z" />
+							<path class="fill-current"
+								d="M113.509,295.123l-34.994,20.206c-2.585,1.493-4.18,4.252-4.18,7.245v40.404c0,3.786,2.542,7.106,6.197,8.082c3.662,0.983,7.522-0.612,9.422-3.896l34.987-60.61c1.894-3.284,1.347-7.42-1.332-10.106C120.937,293.776,116.787,293.23,113.509,295.123z" />
+							<path class="fill-current"
+								d="M391.121,211.314V78.013L256,0L120.878,78.013v11.359v121.942L5.439,277.961v11.358v144.668L140.561,512l115.447-66.646L371.439,512l135.122-78.012V277.961L391.121,211.314z M236.318,411.262l-95.757,55.287l-95.766-55.287V300.686l95.766-55.288l95.757,55.288V411.262z M256,266.602l-47.883-27.64l-47.875-27.648V100.738L256,45.451l95.758,55.287v110.576l-47.876,27.648L256,266.602z M467.198,411.262l-95.758,55.287l-95.758-55.287V300.686l95.758-55.288l95.758,55.288V411.262z" />
+						</g>
+					</svg>
+				</a>
+
+				<div id="collapseMenu"
+					class='lg:ml-6 max-lg:hidden lg:!block max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50'>
+					<button id="toggleClose"
+						class='lg:hidden fixed top-2 right-4 z-[100] rounded-full bg-white w-9 h-9 flex items-center justify-center border'>
+						<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 fill-black" viewBox="0 0 320.591 320.591">
+							<path
+								d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
+								data-original="#000000"></path>
+							<path
+								d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
+								data-original="#000000"></path>
+						</svg>
+					</button>
+
+					<ul
+						class='lg:flex lg:gap-x-3 max-lg:space-y-3 max-lg:fixed max-lg:bg-yellow-300 max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50'>
+						<li class='max-lg:border-b border-black max-lg:py-3 px-3'><a href='/GameHive/home'
+								class='text-[#333] hover:text-[#007bff] text-[15px] block font-semibold'>Home</a></li>
+						<li class='max-lg:border-b border-black max-lg:py-3 px-3'><a href='javascript:void(0)'
+								class='text-[#333] hover:text-[#007bff] text-[15px] block font-semibold'>Chat</a></li>
+						<li class='max-lg:border-b border-black max-lg:py-3 px-3'><a href='javascript:void(0)'
+								class='text-[#333] hover:text-[#007bff] text-[15px] block font-semibold'>Battle&amp;Cooperation</a></li>
+						<li class='max-lg:border-b border-black max-lg:py-3 px-3'><a href='/GameHive/Profile'
+								class='text-[#007bff] hover:text-[#007bff] text-[15px] block font-semibold'>Profile</a></li>
+					</ul>
+				</div>
+
+				<div class="flex items-center gap-x-6 gap-y-4 ml-auto">
+					<div
+						class='flex bg-gray-50 border focus-within:bg-transparent focus-within:border-gray-400 rounded-full px-4 py-2.5 overflow-hidden max-w-52 max-lg:hidden'>
+						<input type='text' placeholder='検索' class='w-full text-sm bg-transparent outline-none pr-2' />
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px"
+							class="cursor-pointer fill-gray-600">
+							<path
+								d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.007 18.752-50.786 0-44.15-35.898-80.047-80.047-80.047s-80.047 35.898-80.047 80.047 35.898 80.047 80.047 80.047c19.05 0 36.55-6.954 50.193-18.628l47.195 47.363c2.23 2.229 5.823 2.229 8.053 0 2.231-2.229 2.231-5.823 0-8.053zm-114.66-39.104c-34.122 0-61.7-27.578-61.7-61.7s27.578-61.7 61.7-61.7 61.7 27.578 61.7 61.7-27.578 61.7-61.7 61.7z" />
+						</svg>
+					</div>
+
+					<!-- いいねと通知アイコン -->
+					<div class="flex items-center gap-6">
+						<div class="flex flex-col items-center gap-0.5 cursor-pointer">
+							<div class="relative">
+								<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-[#333]" viewBox="0 0 64 64">
+									<path
+										d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z" />
+								</svg>
+								<span
+									class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
+							</div>
+							<span class="text-[13px] font-semibold text-[#333]">いいね</span>
+						</div>
+
+						<div class="flex flex-col items-center gap-0.5 cursor-pointer">
+							<div class="relative">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" class="w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round"
+										d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+								</svg>
+								<span
+									class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
+							</div>
+							<span class="text-[13px] font-semibold text-[#333]">通知</span>
+						</div>
+					</div>
+
+					<!-- ログアウトボタン -->
+					<button
+						class='max-lg:hidden px-4 py-2 text-sm rounded-full text-white border-2 border-slate-400 bg-slate-600 hover:bg-slate-800'>ログアウト</button>
+
+					<!-- アバター -->
+					<img src="https://docs.material-tailwind.com/img/face-2.jpg" alt="avatar"
+						class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
+
+					<button id="toggleOpen" class='lg:hidden'>
+						<svg class="w-7 h-7" fill="#333" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd"
+								d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+								clip-rule="evenodd"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<main>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
+			rel="stylesheet">
+
+		<style>
+			body {
+				font-family: 'Plus Jakarta Sans', sans-serif;
+			}
+		</style>
+
+		<div class="bg-white w-full flex flex-col gap-5 px-3 md:px-16 lg:px-28 xl:ml-32  md:flex-row  text-[#161931]">
+			<aside class=" py-4 md:w-1/3 lg:w-1/4 md:block">
+				<div class="sticky flex flex-col gap-2 p-4 text-sm border-r border-indigo-100 top-12">
+
+					<h2 class="pl-3 mb-4 text-2xl font-semibold">Profile</h2>
+
+					<a href="#" class="flex items-center px-3 py-2.5 font-bold bg-white  text-indigo-900 border rounded-full">
+						プロフィールを編集
+					</a>
+					<a href="#"
+						class="flex items-center px-3 py-2.5 font-semibold  hover:text-indigo-900 hover:border hover:rounded-full">
+						遊んでいるゲーム
+					</a>
+					<a href="#"
+						class="flex items-center px-3 py-2.5 font-semibold hover:text-indigo-900 hover:border hover:rounded-full  ">
+						外部アプリケーション
+					</a>
+					<a href="#"
+						class="flex items-center px-3 py-2.5 font-semibold hover:text-indigo-900 hover:border hover:rounded-full  ">
+						その他
+					</a>
+				</div>
+			</aside>
+			<div class="w-full min-h-screen py-1 md:w-2/3 lg:w-3/4">
+				<div class="p-2 md:p-4">
+					<div class="w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg">
+						<h2 class="pl-6 text-2xl font-bold sm:text-xl">Public Profile</h2>
+
+						<div class="grid max-w-2xl mx-auto mt-8">
+							<div class="flex flex-col items-center space-y-5 sm:flex-row sm:space-y-0">
+
+								<img class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-500"
+									th:src="@{${user.profileImage}}"
+									alt="Bordered avatar">
+
+								<!--								<div class="flex flex-col space-y-5 sm:ml-8">-->
+								<!--									<button type="button"-->
+								<!--										class="py-3.5 px-7 text-base font-medium text-indigo-100 focus:outline-none bg-[#202142] rounded-lg border border-indigo-200 hover:bg-indigo-900 focus:z-10 focus:ring-4 focus:ring-indigo-200 ">-->
+								<!--										Change picture-->
+								<!--									</button>-->
+								<!--									<button type="button"-->
+								<!--										class="py-3.5 px-7 text-base font-medium text-indigo-900 focus:outline-none bg-white rounded-lg border border-indigo-200 hover:bg-indigo-100 hover:text-[#202142] focus:z-10 focus:ring-4 focus:ring-indigo-200 ">-->
+								<!--										Delete picture-->
+								<!--									</button>-->
+
+							 <!-- 画像変更フォーム -->
+        <form id="image-upload-form" action="/GameHive/Profile/updatePicture" method="POST" enctype="multipart/form-data">
+            <!-- hidden フィールドで userId を渡す -->
+            <input type="hidden" name="userId" th:value="${user.id}">
+            <label for="file-upload"
+                   class="py-3.5 px-7 text-base font-medium text-indigo-100 focus:outline-none bg-[#202142] rounded-lg border border-indigo-200 hover:bg-indigo-900 focus:z-10 focus:ring-4 focus:ring-indigo-200">
+                画像を変更
+            </label>
+            <input id="file-upload" type="file" name="profileImage" accept="image/*" class="hidden">
+        </form>
+
+        <!-- 画像削除フォーム -->
+        <form id="delete-image-form" action="/GameHive/Profile/deletePicture" method="POST">
+            <input type="hidden" id="userId" th:value="${user.id}">
+            <button type="submit"
+                    class="py-3.5 px-7 text-base font-medium text-indigo-900 focus:outline-none bg-white rounded-lg border border-indigo-200 hover:bg-indigo-100 hover:text-[#202142] focus:z-10 focus:ring-4 focus:ring-indigo-200">
+                画像を削除
+            </button>
+        </form>
+							</div>
+						</div>
+						<script>
+							// ファイルが選択されたときにフォームを自動送信
+							document.getElementById('file-upload').addEventListener('change', function (event) {
+								const form = document.getElementById('image-upload-form');
+								form.submit();  // ファイル選択後、フォームを送信
+							});
+						</script>
+
+						<div class="items-center mt-8 sm:mt-14 text-[#202142]">
+
+							<div
+								class="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
+								<div class="w-full">
+									<label for="first_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Your
+										first name</label>
+									<input type="text" id="first_name"
+										class="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 "
+										placeholder="Your first name" value="Jane" required>
+								</div>
+
+								<div class="w-full">
+									<label for="last_name" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Your
+										last name</label>
+									<input type="text" id="last_name"
+										class="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 "
+										placeholder="Your last name" value="Ferguson" required>
+								</div>
+
+							</div>
+
+							<div class="mb-2 sm:mb-6">
+								<label for="email" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Your
+									email</label>
+								<input type="email" id="email"
+									class="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 "
+									placeholder="your.email@mail.com" required>
+							</div>
+
+							<div class="mb-2 sm:mb-6">
+								<label for="profession"
+									class="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Profession</label>
+								<input type="text" id="profession"
+									class="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 "
+									placeholder="your profession" required>
+							</div>
+
+							<div class="mb-6">
+								<label for="message" class="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Bio</label>
+								<textarea id="message" rows="4"
+									class="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 "
+									placeholder="Write your bio here..."></textarea>
+							</div>
+
+							<div class="flex justify-end">
+								<button type="submit"
+									class="text-white bg-indigo-700  hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Save</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</main>
+	<script>
+		// メニュー開閉ボタンを取得
+		const toggleOpenButton = document.getElementById('toggleOpen');
+		const toggleCloseButton = document.getElementById('toggleClose');
+		const collapseMenu = document.getElementById('collapseMenu');
+
+		// メニューを開く関数
+		function openMenu() {
+			collapseMenu.classList.remove('max-lg:hidden'); // メニューを表示
+			collapseMenu.classList.add('max-lg:block');
+		}
+
+		// メニューを閉じる関数
+		function closeMenu() {
+			collapseMenu.classList.remove('max-lg:block');
+			collapseMenu.classList.add('max-lg:hidden'); // メニューを非表示
+		}
+
+		// 開くボタンのクリックイベント
+		toggleOpenButton.addEventListener('click', openMenu);
+
+		// 閉じるボタンのクリックイベント
+		toggleCloseButton.addEventListener('click', closeMenu);
+
+		// Change pictureのボタンがクリックされたときに画像アップロードフォームを表示する
+		document.querySelector('label[for="profileImage"]').addEventListener('click', function () {
+			document.getElementById('profileImage').click();
+		});
+
+	</script>
+</body>
+
+</html>
