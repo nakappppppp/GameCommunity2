@@ -13,14 +13,17 @@ public class UsersService {
     @Autowired
     private UsersMapper usersMapper;
 
+    // ユーザー名でユーザーを検索
     public Users findUserByUsername(String username) {
         return usersMapper.findByUsername(username);
     }
     
+    // ユーザーIDでユーザーを検索
     public Users findById(Integer id) {
-    	return usersMapper.findById(id);
+        return usersMapper.findById(id);
     }
 
+    // ユーザーの登録処理
     public void registerUser(Users user) {
         // パスワードのハッシュ化処理（BCryptを使用）
         String hashedPassword = hashPassword(user.getPassword());
@@ -29,30 +32,27 @@ public class UsersService {
         usersMapper.registerUser(user);
     }
     
- // プロフィール画像を更新
-    public void updateProfileImage(Users user) {
-        usersMapper.updateProfileImage(user);
+    // ユーザー情報の更新（名前、メール、自己紹介、プロフィール画像を一括更新）
+    public void updateUserProfile(Users user) {
+        usersMapper.updateUserProfile(user);
     }
 
-    // プロフィール画像を削除
-    public void deleteProfileImage(Integer userId) {
-        usersMapper.deleteProfileImage(userId);
-    }
-
+    // パスワードをBCryptでハッシュ化
     private String hashPassword(String password) {
-        // パスワードをBCryptでハッシュ化
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
     
-    public boolean checkPassword(String username,String password) {
-    	
-    	Users user = usersMapper.findByUsername(username);
-    	
-    	if(user == null) {
-    		return false;
-    	}
-    	
-    	 // 入力されたパスワードと保存されたハッシュ化パスワードを照合
-      return BCrypt.checkpw(password, user.getPassword());
+    // パスワードの照合
+    public boolean checkPassword(String username, String password) {
+        Users user = usersMapper.findByUsername(username);
+        
+        if (user == null) {
+            return false;
+        }
+        
+        // 入力されたパスワードと保存されたハッシュ化パスワードを照合
+        return BCrypt.checkpw(password, user.getPassword());
     }
+
+		
 }

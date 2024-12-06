@@ -17,7 +17,9 @@ public interface UsersMapper {
  void registerUser(Users user);
  
 //プロフィール画像を更新するメソッド
- void updateProfileImage(Users user);
+// void updateProfileImage(Users user);
 
 void deleteProfileImage(Integer userId);
+
+void updateUserProfile(Users user);
 }

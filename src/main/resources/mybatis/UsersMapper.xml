@@ -4,11 +4,11 @@
 
     <!-- findByUsername -->
     <select id="findByUsername" resultType="com.example.app.domain.Users">
-        SELECT * 
-        FROM users 
+        SELECT *
+        FROM users
         WHERE username = #{username}
     </select>
-    
+
     <!-- findById -->
     <select id="findById" resultType="com.example.app.domain.Users">
         select *
@@ -18,14 +18,19 @@
 
     <!-- registerUser -->
     <insert id="registerUser" parameterType="com.example.app.domain.Users">
-        INSERT INTO users (username, email, password,created_at)
-        VALUES (#{username}, #{email}, #{password},NOW())
+        INSERT INTO users (username, email, password, created_at)
+        VALUES (#{username}, #{email}, #{password}, NOW())
     </insert>
-    
-      <!-- プロフィール画像を更新 -->
-    <update id="updateProfileImage" parameterType="com.example.app.domain.Users">
+
+    <!-- ユーザー情報を更新（名前、メール、自己紹介、プロフィール画像を一括更新） -->
+    <update id="updateUserProfile" parameterType="com.example.app.domain.Users">
         UPDATE users
-        SET profile_image = #{profile_image}, updated_at = CURRENT_TIMESTAMP
+        SET first_name = #{firstName},
+            last_name = #{lastName},
+            email = #{email},
+            bio = #{bio},
+            profile_image = #{profileImage},  <!-- 画像も含めて更新 -->
+            updated_at = CURRENT_TIMESTAMP
         WHERE id = #{id}
     </update>
 
