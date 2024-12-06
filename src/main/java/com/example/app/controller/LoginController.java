@@ -40,8 +40,10 @@ public class LoginController {
                 // セッションにユーザー名とIDを保存
                 session.setAttribute("username", username);
                 session.setAttribute("userId", user.getId());
-
+                 
+                
                 model.addAttribute("message", "ログイン成功！");
+            
                 return "redirect:/GameHive/home";  // ホーム画面にリダイレクト
             }
         }
@@ -53,7 +55,16 @@ public class LoginController {
     }
 
     @GetMapping("/home")
-    public String home() {
+    public String home(HttpSession session,Model model) {
+    	
+    	String username = (String) session.getAttribute("username");
+      
+      if (username != null) {
+          Users user = usersService.findUserByUsername(username);
+          if (user != null) {
+              model.addAttribute("user", user);  // userオブジェクトをモデルに追加
+          }
+      }
         return "home";
     }
 

@@ -36,63 +36,29 @@ public class ProfileController {
 
         // ユーザーIDを元にユーザー情報を取得
         Users user = usersService.findById(userId);
-        System.out.println("user->"+user);//ok
         model.addAttribute("user", user);  // ユーザー情報をビューに渡す
 
         return "profile";  // プロフィールページを表示
     }
 
+    // プロフィール情報と画像の更新処理
+    @PostMapping("/Profile/update")
+    public String updateProfile(@RequestParam("profileImage") MultipartFile file, 
+                                @RequestParam("userId") Integer userId,
+                                @RequestParam("firstName") String firstName,
+                                @RequestParam("lastName") String lastName,
+                                @RequestParam("email") String email,
+                                @RequestParam("bio") String bio) {
+        try {
+            // ユーザー情報を更新
+            Users user = usersService.findById(userId);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setEmail(email);
+            user.setBio(bio);
 
-    // プロフィール画像の変更処理
-//		@PostMapping("/Profile/updatePicture")
-//		 public String updateProfilePicture(@RequestParam("profileImage") MultipartFile file, @RequestParam("userId") Integer userId ,
-//				 Model model) {
-//		     if (!file.isEmpty()) {
-//		         try {
-//		             // 保存先ディレクトリのパス
-////		             String uploadDir = "./uploads/images/";
-//           String uploadDir = "C:/Users/zd2Q15/pleiades/workspace/GameCommunity/uploads/images/";
-////		        	 String uploadDir = "C:/Users/zd2Q15/pleiades/workspace/GameCommunity/src/main/resources/static/images/";
-//		             File dir = new File(uploadDir);
-//		             if (!dir.exists()) {
-//		                 dir.mkdirs();  // ディレクトリが存在しない場合は作成
-//		             }
-//		
-//		             // 新しいファイル名
-//		             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-//	             String imgPath = uploadDir + fileName;
-////		             String imgPath = "/images/" + fileName;
-//		             //File targetFile = new File(uploadDir + fileName);
-//		             File targetFile = new File(imgPath);
-//		             System.out.println("targetFile->"+targetFile);
-//		             file.transferTo(targetFile);
-//		
-//		             // ユーザー情報を取得してプロフィール画像を更新
-//		             Users user = usersService.findById(userId);
-//		             //user.setProfile_image(uploadDir + fileName);  // 保存先パスをセット
-//		             user.setProfile_image(imgPath);  // 保存先パスをセット
-//		             usersService.updateProfileImage(user);  // ユーザー情報を更新
-//		             
-//		             System.out.println("imgPath: " + imgPath);
-//		             model.addAttribute("picture",imgPath);
-//		             
-//		
-//		         } catch (IOException e) {
-//		             e.printStackTrace();
-//		             return "error"; // エラーが発生した場合、エラーページを表示
-//		         }
-//		     }
-//		
-////		       return"profile";
-//		     return "redirect:/GameHive/Profile";  //プロフィールページにリダイレクト
-//		 }
-    
-    @PostMapping("/Profile/updatePicture")
-    public String updateProfilePicture(@RequestParam("profileImage") MultipartFile file, 
-                                       @RequestParam("userId") Integer userId
-                                       ) {
-        if (!file.isEmpty()) {
-            try {
+            // プロフィール画像の更新があれば処理
+            if (!file.isEmpty()) {
                 // 保存先ディレクトリの絶対パス
                 String uploadDir = "C:/Users/zd2Q15/pleiades/workspace/GameCommunity/src/main/resources/static/images/";
                 File dir = new File(uploadDir);
@@ -104,29 +70,32 @@ public class ProfileController {
                 String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
                 
                 // ファイル保存先の絶対パス
-                File targetFile = new File(uploadDir + fileName);  // 画像を保存する場所
+                File targetFile = new File(uploadDir + fileName);
 
                 // 画像ファイルを保存
                 file.transferTo(targetFile);
 
-                // Webアクセス用の相対パスを設定（例: /images/filename）
+                // Webアクセス用の相対パスを設定
                 String imgPath = "/images/" + fileName;
 
-                // ユーザー情報を取得してプロフィール画像を更新
-                Users user = usersService.findById(userId);
-                user.setProfileImage(imgPath);  // Webアクセス用のパスを設定
-                usersService.updateProfileImage(user);  // ユーザー情報を更新
-
-                // モデルに画像パスを設定
-             
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "error";  // エラーが発生した場合、エラーページを表示
+                // プロフィール画像を更新
+                user.setProfileImage(imgPath);
             }
+
+            // ユーザー情報を更新
+            usersService.updateUserProfile(user);  // ユーザー情報をデータベースに保存
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error";  // エラーが発生した場合、エラーページを表示
         }
 
-        return "redirect:/GameHive/Profile";  // プロフィールページにリダイレクト
+        return "redirect:/GameHive/profileEditingCompleted";  // プロフィールページにリダイレクト
+    }
+    
+    @GetMapping("/profileEditingCompleted")
+    public String profileEditingCompleted() {
+    	return "profileEditingCompleted";
     }
 
     // プロフィール画像削除処理
@@ -134,7 +103,10 @@ public class ProfileController {
     public String deleteProfilePicture(@RequestParam("userId") Integer userId) {
         try {
             // ユーザーのプロフィール画像を削除
-            usersService.deleteProfileImage(userId);
+            Users user = usersService.findById(userId);
+            user.setProfileImage(null);  // 画像パスを削除
+            usersService.updateUserProfile(user);  // ユーザー情報を更新
+
         } catch (Exception e) {
             e.printStackTrace();
             return "error"; // エラーが発生した場合、エラーページを表示
