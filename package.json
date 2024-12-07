@@ -1,17 +1,19 @@
 {
-  "name":"gamecommunity",
+  "name": "gamecommunity",
   "version": "1.0.0",
-  "description":"",
-  "main":"index.js",
-  "scripts":{
-  "watch:css":"tailwindcss -i ./src/main/resources/static/css/styles.css -o ./src/main/resources/static/css/output.css --watch"
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch:css": "tailwindcss -i ./src/main/resources/static/css/styles.css -o ./src/main/resources/static/css/output.css --watch"
   },
-  "keywords":[],
-  "author":"",
-  "license":"ISC",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "autoprefixer": "10.4.20",
-    "postcss": "8.4.49",
-    "tailwindcss": "3.4.13"
+    "postcss": "8.4.49"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.16"
   }
 }
