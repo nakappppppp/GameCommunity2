@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-	<meta charset="UTF-8">
-	<title>ホーム</title>
-	<link rel="stylesheet" href="/css/output.css" />
-
+    <meta charset="UTF-8">
+    <title>検索結果</title>
+    <link rel="stylesheet" href="/css/output.css" />
 </head>
-
 <body>
-	<header class='flex bg-yellow-300 border-b py-3 sm:px-6 px-4 font-[sans-serif] min-h-[75px] tracking-wide relative z-50'>
+		<header class='flex bg-yellow-300 border-b py-3 sm:px-6 px-4 font-[sans-serif] min-h-[75px] tracking-wide relative z-50'>
 		<div class='flex max-w-screen-xl mx-auto w-full'>
 			<div class='flex flex-wrap items-center lg:gap-y-2 gap-4 w-full'>
 				<a href="javascript:void(0)">
@@ -48,7 +45,7 @@
       <a href='javascript:void(0)' class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Battle&amp;Cooperation</a>
     </li>
     <li class="max-lg:border-b border-black max-lg:py-3 px-3">
-      <a href='/GameHive/Profile' class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Profile</a>
+      <a href='/GameHive/EditProfile' class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Profile</a>
     </li>
 
     <!-- ログアウトボタン (モバイルのみ表示) -->
@@ -60,14 +57,14 @@
 
     <!-- アバター (モバイルのみ表示) -->
     <li class="max-lg:py-3 px-3 lg:hidden">
-      <img th:src="@{${user.profileImage != null ? user.profileImage : '/images/pdefault.jpeg'}}" alt="Bordered avatar"
+      <img th:src="@{${user2.profileImage != null ? user2.profileImage : '/images/pdefault.jpeg'}}" alt="Bordered avatar"
            class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
     </li>
   </ul>
 </div>
 
 
-					<div class="flex items-center gap-x-6 gap-y-4 ml-auto">
+				<div class="flex items-center gap-x-6 gap-y-4 ml-auto">
 					<div class='flex bg-gray-50 border focus-within:bg-transparent focus-within:border-gray-400 rounded-full px-4 py-2.5 overflow-hidden max-w-52 max-lg:hidden'>
     <input type='text' id="searchInput" placeholder='検索' class='w-full text-sm bg-transparent outline-none pr-2' />
     <button onclick="redirectToSearchPage()" class="cursor-pointer bg-transparent border-0 focus:outline-none transform transition-all duration-200">
@@ -135,7 +132,7 @@
 					
 					<!-- アバター -->
 					<img
-						th:src="@{${user.profileImage != null ? user.profileImage : '/images/pdefault.jpeg'}}" alt="Bordered avatar"
+						th:src="@{${user2.profileImage != null ? user2.profileImage : '/images/pdefault.jpeg'}}" alt="Bordered avatar"
 						class="relative inline-block h-12 w-12 !rounded-full object-cover object-center"
 					/>
 
@@ -151,96 +148,16 @@
 		</div>
 	</header>
 	
-	
-<main>
-  <!-- Container -->
-  <div class="mx-auto w-full max-w-7xl px-5 py-12 md:px-10 md:py-16 lg:py-20">
-    <!-- Component -->
-    <div class="flex flex-col gap-8 lg:flex-row lg:gap-10">
-      <!-- Content -->
-      <div class="flex flex-col gap-8 lg:w-3/5">
-        <h2 class="mb-8 text-3xl font-bold md:text-5xl">GameHiveについて</h2>
-        <p class="text-sm sm:text-base"> GameHiveは、ゲームでみんなとつながれたらいいなという思いで誕生したゲームの対戦・協力プレイの募集や、レーティングシステム、
-					チャット機能等を詰め込んだゲーム専門のコミュニティサイトです。<br>
-					ゲーム好きの人口は、年々上昇傾向にあります。<br>
-					そういう人たちが集まり、より深くつながっていくハチの巣のようなプラットフォームを目指しています。
-        </p>
-        <a href="#" class="w-36 rounded-md bg-black px-6 py-3 text-center font-semibold text-white"> Learn More </a>
-        <!-- Divider -->
-        <div class="my-8 h-px w-full bg-black"></div>
-        <!-- Testimonials -->
-        <div class="grid gap-8 md:grid-cols-2 md:gap-4">
-          <div class="flex flex-col gap-4 rounded-md border border-solid bg-gray-100 p-6 md:p-4">
-            <p class="text-sm"> I have been using the Business Solution services for the past year, and I am extremely satisfied with the results. Their innovative solutions and expertise have transformed my business operations. </p>
-            <div class="flex items-center gap-2 sm:gap-x-4">
-              <div class="flex items-center gap-x-2">
-                <img src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPLaceholder%20Image%20Secondary.svg?alt=media&token=b8276192-19ff-4dd9-8750-80bc5f7d6844" alt="" class="h-12 w-12 rounded-full object-cover" />
-                <p class="text-sm font-semibold sm:text-base"> Alleyah </p>
-              </div>
-              <!-- Divider -->
-              <div class="h-5 w-px bg-gray-300"></div>
-              <div class="flex items-center gap-x-2">
-                <p class="text-sm font-semibold sm:text-base">5.0</p>
-                <div class="flex text-orange-500">
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
-                  </svg>
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
-                  </svg>
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
-                  </svg>
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
-                  </svg>
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="flex flex-col gap-4 rounded-md border border-solid bg-gray-100 p-6 md:p-4">
-            <p class="text-sm"> I have been using the Business Solution services for the past year, and I am extremely satisfied with the results. Their innovative solutions and expertise have transformed my business operations. </p>
-            <div class="flex items-center gap-2 sm:gap-x-4">
-              <div class="flex items-center gap-x-2">
-                <img src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPLaceholder%20Image%20Secondary.svg?alt=media&token=b8276192-19ff-4dd9-8750-80bc5f7d6844" alt="" class="h-12 w-12 rounded-full object-cover" />
-                <p class="text-sm font-semibold sm:text-base"> Alleyah </p>
-              </div>
-              <!-- Divider -->
-              <div class="h-5 w-px bg-gray-300"></div>
-              <div class="flex items-center gap-x-2">
-                <p class="text-sm font-semibold sm:text-base">5.0</p>
-                <div class="flex text-orange-500">
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
-                  </svg>
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
-                  </svg>
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
-                  </svg>
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
-                  </svg>
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="m12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72l3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41l-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18l-1.1 4.72c-.2.86.73 1.54 1.49 1.08l4.15-2.5z"></path>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Image -->
-      <div class="w-full rounded-md bg-gray-100 max-[991px]:h-[475px] lg:w-2/5"></div>
-    </div>
-  </div>
-</main>
-
-<footer class="bg-gray-900 pt-12 pb-6 px-10 font-[sans-serif] tracking-wide">
+    <h1>検索結果</h1>
+    <ul id="userList">
+        <!-- 検索結果がここに表示されます -->
+        <th:block th:each="user : ${users}">
+            <li><img th:src="@{${user.profileImage != null ? user.profileImage : '/images/pdefault.jpeg'}}" alt="Bordered avatar">
+             <span th:text="${user.username}"></li>
+        </th:block>
+    </ul>
+    
+    <footer class="bg-gray-900 pt-12 pb-6 px-10 font-[sans-serif] tracking-wide">
       <div class="max-w-screen-xl mx-auto">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div class="lg:flex lg:items-center">
@@ -348,5 +265,4 @@
 		toggleCloseButton.addEventListener('click', closeMenu);
 	</script>
 </body>
-
 </html>

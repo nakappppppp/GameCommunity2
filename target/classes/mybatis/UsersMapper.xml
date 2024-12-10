@@ -8,6 +8,12 @@
         FROM users
         WHERE username = #{username}
     </select>
+    
+    <!-- ユーザー名で検索-->
+    <select id="searchUsersByUsername" resultType="com.example.app.domain.Users">
+      SELECT * FROM users WHERE username LIKE CONCAT('%', #{username}, '%');
+    </select>
+    
 
     <!-- findById -->
     <select id="findById" resultType="com.example.app.domain.Users">
