@@ -24,9 +24,29 @@ public class ProfileController {
     @Autowired
     private UsersService usersService;
 
-    // プロフィールページ表示
+    //プロフィールページ表示
     @GetMapping("/Profile")
     public String profile(HttpSession session, Model model) {
+    	Integer userId = (Integer) session.getAttribute("userId");
+    	
+    	 if (userId == null) {
+         // ユーザーがログインしていない場合の処理
+         return "redirect:/GameHive/login";  // ログインページにリダイレクト
+     }
+    	 
+    	 // ユーザーIDを元にユーザー情報を取得
+       Users user = usersService.findById(userId);
+       System.out.println("User Bio: " + user.getBio());  // bioがnullかどうかを確認
+
+       model.addAttribute("user", user);  // ユーザー情報をビューに渡す
+       
+       return "profile";  // プロフィールページを表示
+    	 
+    }
+    
+    // プロフィール編集ページ表示
+    @GetMapping("/EditProfile")
+    public String editProfile(HttpSession session, Model model) {
         Integer userId = (Integer) session.getAttribute("userId");
 
         if (userId == null) {
@@ -38,7 +58,7 @@ public class ProfileController {
         Users user = usersService.findById(userId);
         model.addAttribute("user", user);  // ユーザー情報をビューに渡す
 
-        return "profile";  // プロフィールページを表示
+        return "editProfile";  // プロフィール編集ページを表示
     }
 
     // プロフィール情報と画像の更新処理

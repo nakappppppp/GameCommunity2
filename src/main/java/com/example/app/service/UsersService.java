@@ -1,5 +1,7 @@
 package com.example.app.service;
 
+import java.util.List;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,11 @@ public class UsersService {
     // ユーザーIDでユーザーを検索
     public Users findById(Integer id) {
         return usersMapper.findById(id);
+    }
+    
+    //検索機能　検索バーからユーザー名を検索
+    public List<Users> searchUsersByUsername(String username){
+    	return usersMapper.searchUsersByUsername(username);
     }
 
     // ユーザーの登録処理
