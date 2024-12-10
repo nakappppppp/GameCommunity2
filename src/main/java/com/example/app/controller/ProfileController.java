@@ -60,8 +60,8 @@ public class ProfileController {
             // プロフィール画像の更新があれば処理
             if (!file.isEmpty()) {
                 // 保存先ディレクトリの絶対パス
-//                String uploadDir = "C:/Users/zd2Q15/pleiades/workspace/GameCommunity/src/main/resources/static/images/";
-                String uploadDir = "/Applications/Eclipse_2023-12.app/Contents/workspace/GameCommunity2/src/main/resources/static/images/";
+              String uploadDir = "C:/Users/zd2Q15/pleiades/workspace/GameCommunity/src/main/resources/static/images/";
+                //String uploadDir = "/Applications/Eclipse_2023-12.app/Contents/workspace/GameCommunity2/src/main/resources/static/images/";
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
                     dir.mkdirs();  // ディレクトリが存在しない場合は作成
