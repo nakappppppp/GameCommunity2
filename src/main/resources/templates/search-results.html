@@ -66,7 +66,7 @@
 
 				<div class="flex items-center gap-x-6 gap-y-4 ml-auto">
 					<div class='flex bg-gray-50 border focus-within:bg-transparent focus-within:border-gray-400 rounded-full px-4 py-2.5 overflow-hidden max-w-52 max-lg:hidden'>
-    <input type='text' id="searchInput" placeholder='検索' class='w-full text-sm bg-transparent outline-none pr-2' />
+    <input type='text' id="searchInput" placeholder='検索' class='w-full text-sm bg-transparent outline-none pr-2'  onkeydown="handleKeydown(event)"/>
     <button onclick="redirectToSearchPage()" class="cursor-pointer bg-transparent border-0 focus:outline-none transform transition-all duration-200">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px" class="fill-gray-600 transform transition-all duration-200 hover:scale-110 active:scale-90">
         <path d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.007 18.752-50.786 0-44.15-35.898-80.047-80.047-80.047s-80.047 35.898-80.047 80.047 35.898 80.047 80.047 80.047c19.05 0 36.55-6.954 50.193-18.628l47.195 47.363c2.23 2.229 5.823 2.229 8.053 0 2.231-2.229 2.231-5.823 0-8.053zm-114.66-39.104c-34.122 0-61.7-27.578-61.7-61.7s27.578-61.7 61.7-61.7 61.7 27.578 61.7 61.7-27.578 61.7-61.7 61.7z" />
@@ -148,13 +148,29 @@
 		</div>
 	</header>
 	
-    <h1>検索結果</h1>
-    <ul id="userList">
-        <!-- 検索結果がここに表示されます -->
+	<main class="max-w-7xl mx-auto p-6">
+    <h1 class="text-4xl font-semibold text-center text-gray-900 mb-8">検索結果</h1>
+    <ul id="userList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <th:block th:each="user : ${users}">
-            <li><img th:src="@{${user.profileImage != null ? user.profileImage : '/images/pdefault.jpeg'}}" alt="Bordered avatar">
-             <span th:text="${user.username}"></li>
+            <li class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
+                <div class="relative">
+                    <img th:src="@{${user.profileImage != null ? user.profileImage : '/images/pdefault.jpeg'}}" 
+                         alt="Bordered avatar" class="w-full h-48 object-cover rounded-t-lg">
+                    <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm px-3 py-1 rounded-full">
+                       <!-- ユーザー名をクリックできるリンクにする -->
+                        <a th:href="@{/GameHive/Profile/{userId}(userId=${user.id})}" class="text-white hover:text-yellow-300 font-semibold">
+                            <span th:text="|${user.username}のプロフィール|"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <p class="text-gray-700 text-lg font-semibold truncate" th:text="${user.username}"></p>
+                    <p class="text-gray-500 text-sm truncate" th:text="${user.bio}"></p>
+                </div>
+            </li>
         </th:block>
+    </ul>
+</main>
     </ul>
     
     <footer class="bg-gray-900 pt-12 pb-6 px-10 font-[sans-serif] tracking-wide">
