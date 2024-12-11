@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,26 +25,35 @@ public class ProfileController {
     @Autowired
     private UsersService usersService;
 
-    //プロフィールページ表示
-    @GetMapping("/Profile")
-    public String profile(HttpSession session, Model model) {
-    	Integer userId = (Integer) session.getAttribute("userId");
-    	
-    	 if (userId == null) {
-         // ユーザーがログインしていない場合の処理
-         return "redirect:/GameHive/login";  // ログインページにリダイレクト
-     }
-    	 
-    	 // ユーザーIDを元にユーザー情報を取得
-       Users user = usersService.findById(userId);
-       System.out.println("User Bio: " + user.getBio());  // bioがnullかどうかを確認
+    // プロフィールページ表示
+    @GetMapping("/Profile/{userId}")
+    public String profile(@PathVariable Integer userId, HttpSession session, Model model) {
+        Integer loggedInUserId = (Integer) session.getAttribute("userId");
 
-       model.addAttribute("user", user);  // ユーザー情報をビューに渡す
-       
-       return "profile";  // プロフィールページを表示
-    	 
+        if (loggedInUserId == null) {
+            // ユーザーがログインしていない場合の処理
+            return "redirect:/GameHive/login";  // ログインページにリダイレクト
+        }
+
+        // ログインユーザーの情報を取得
+        Users loggedInUser = usersService.findById(loggedInUserId);
+        if (loggedInUser == null) {
+            return "error/404";  // ユーザーが存在しない場合
+        }
+
+        // プロフィールページ用に、検索したユーザーの情報も取得
+        Users user = usersService.findById(userId);
+        if (user == null) {
+            return "error/404";  // 指定されたユーザーが存在しない場合
+        }
+
+        // モデルにログイン中のユーザー情報と、表示するプロフィール情報を追加
+        model.addAttribute("loggedInUser", loggedInUser);  // ログインユーザー情報を追加
+        model.addAttribute("user", user);  // 検索したユーザー情報を追加
+
+        return "profile";  // プロフィールページを表示
     }
-    
+
     // プロフィール編集ページ表示
     @GetMapping("/EditProfile")
     public String editProfile(HttpSession session, Model model) {
@@ -54,8 +64,12 @@ public class ProfileController {
             return "redirect:/GameHive/login";  // ログインページにリダイレクト
         }
 
-        // ユーザーIDを元にユーザー情報を取得
+        // ログインユーザーの情報を取得
         Users user = usersService.findById(userId);
+        if (user == null) {
+            return "error/404";  // ユーザーが存在しない場合
+        }
+
         model.addAttribute("user", user);  // ユーザー情報をビューに渡す
 
         return "editProfile";  // プロフィール編集ページを表示
@@ -79,32 +93,23 @@ public class ProfileController {
 
             // プロフィール画像の更新があれば処理
             if (!file.isEmpty()) {
-                // 保存先ディレクトリの絶対パス
-              String uploadDir = "C:/Users/zd2Q15/pleiades/workspace/GameCommunity/src/main/resources/static/images/";
+                String uploadDir = "C:/Users/zd2Q15/pleiades/workspace/GameCommunity/src/main/resources/static/images/";
                 //String uploadDir = "/Applications/Eclipse_2023-12.app/Contents/workspace/GameCommunity2/src/main/resources/static/images/";
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
                     dir.mkdirs();  // ディレクトリが存在しない場合は作成
                 }
 
-                // 新しいファイル名
                 String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                
-                // ファイル保存先の絶対パス
                 File targetFile = new File(uploadDir + fileName);
 
-                // 画像ファイルを保存
                 file.transferTo(targetFile);
 
-                // Webアクセス用の相対パスを設定
                 String imgPath = "/images/" + fileName;
-
-                // プロフィール画像を更新
                 user.setProfileImage(imgPath);
             }
 
-            // ユーザー情報を更新
-            usersService.updateUserProfile(user);  // ユーザー情報をデータベースに保存
+            usersService.updateUserProfile(user);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,10 +118,10 @@ public class ProfileController {
 
         return "redirect:/GameHive/profileEditingCompleted";  // プロフィールページにリダイレクト
     }
-    
+
     @GetMapping("/profileEditingCompleted")
     public String profileEditingCompleted() {
-    	return "profileEditingCompleted";
+        return "profileEditingCompleted";
     }
 
     // プロフィール画像削除処理
@@ -126,7 +131,7 @@ public class ProfileController {
             // ユーザーのプロフィール画像を削除
             Users user = usersService.findById(userId);
             user.setProfileImage(null);  // 画像パスを削除
-            usersService.updateUserProfile(user);  // ユーザー情報を更新
+            usersService.updateUserProfile(user);
 
         } catch (Exception e) {
             e.printStackTrace();
