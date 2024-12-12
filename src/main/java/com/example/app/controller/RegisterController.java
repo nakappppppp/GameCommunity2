@@ -2,13 +2,17 @@ package com.example.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.app.domain.Users;
 import com.example.app.service.UsersService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/GameHive")
@@ -19,7 +23,8 @@ public class RegisterController {
 
     // 登録ページを表示
     @GetMapping("/register")
-    public String registerUserForm() {
+    public String registerUserForm(Model model) {
+    	model.addAttribute("users", new Users());
         return "register";
     }
 
@@ -31,26 +36,28 @@ public class RegisterController {
 
     // ユーザー登録処理
     @PostMapping("/register")
-    public String registerUser(@RequestParam String username, @RequestParam String email, @RequestParam String password) {
-        // 既に同じユーザー名が存在するかチェック
-        Users existingUser = usersService.findUserByUsername(username);
-        if (existingUser != null) {
-            // ユーザー名がすでに存在している場合、エラーメッセージとともに登録フォームに戻す
-            return "redirect:/GameHive/register?error=username_taken";
-        }
+    public String registerUser(@Valid @ModelAttribute("users") Users users, Errors errors) {
+    	 // 既に同じユーザー名が存在するかチェック
+      Users existingUser = usersService.findUserByUsername(users.getUsername());
+      if (existingUser != null) {
+          // ユーザー名がすでに存在している場合、エラーメッセージを追加
+          errors.rejectValue("username", "username.taken", "すでにその名前のユーザーは存在しています");
+      }
+      
+      // メールアドレスの重複エラーチェック
+      if (usersService.existsByEmail(users.getEmail()) != null) {
+          errors.rejectValue("email", "error.email", "このメールアドレスはすでに使用されています。");
+      }
 
-        // 新規ユーザーを作成
-        Users user = new Users();
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPassword(password);  // パスワードのハッシュ化はUsersServiceで行う
+      // バリデーションエラーがあれば、フォームに戻る
+      if (errors.hasErrors()) {
+          return "register";  // バリデーションエラーがある場合、フォームに戻す
+      }
 
-
-        
-        // ユーザーをデータベースに登録
-        usersService.registerUser(user);
-
-        // 登録が成功した場合、登録完了ページにリダイレクト
-        return "redirect:/GameHive/successRegister";
-    }
+      // ユーザー登録処理
+      usersService.registerUser(users);
+      
+      // 登録成功時、登録完了ページへリダイレクト
+      return "redirect:/GameHive/successRegister";
+  }
 }

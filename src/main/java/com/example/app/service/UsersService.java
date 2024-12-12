@@ -25,6 +25,11 @@ public class UsersService {
         return usersMapper.findById(id);
     }
     
+    //メールアドレスが重複しないように
+    public Users existsByEmail(String email) {
+    	return usersMapper.existsByEmail(email);
+    }
+    
     //検索機能　検索バーからユーザー名を検索
     public List<Users> searchUsersByUsername(String username){
     	return usersMapper.searchUsersByUsername(username);
