@@ -21,6 +21,13 @@
         from users
         where id = #{id}
     </select>
+    
+    <!-- メールアドレスが重複しないように -->
+    <select id="existsByEmail" resultType="com.example.app.domain.Users">
+        select *
+        from users
+        where email = #{email}
+    </select>
 
     <!-- registerUser -->
     <insert id="registerUser" parameterType="com.example.app.domain.Users">

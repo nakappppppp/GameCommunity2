@@ -15,6 +15,9 @@ public interface UsersMapper {
  //ユーザーIDでユーザー情報を取得するメソッド
  Users findById(Integer id);
  
+ //メールアドレスが重複しないように
+ Users existsByEmail(String email);
+ 
  // ユーザー名で検索
  List<Users> searchUsersByUsername(String username);
 

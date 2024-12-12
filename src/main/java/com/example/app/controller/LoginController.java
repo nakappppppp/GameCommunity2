@@ -3,7 +3,9 @@ package com.example.app.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,6 +13,7 @@ import com.example.app.domain.Users;
 import com.example.app.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/GameHive")
@@ -20,12 +23,16 @@ public class LoginController {
     private UsersService usersService;
 
     @GetMapping("/login")
-    public String loginForm() {
+    public String loginForm(Model model) {
+    	model.addAttribute("users", new Users());
         return "login";
     }
 
     @PostMapping("/login")
-    public String checkUser(String username, String password, Model model, HttpSession session) {
+    public String checkUser(String username, String password, 
+    		Model model, HttpSession session,
+    		@Valid @ModelAttribute("users") Users users,
+    		Errors errors) {
         System.out.println("Received username: " + username + ", password: " + password);
 
         // ユーザー名とパスワードのチェック
@@ -50,7 +57,7 @@ public class LoginController {
 
         // 認証失敗の場合
         System.out.println("Login error");
-        model.addAttribute("error", "無効なユーザー名またはパスワード");
+        model.addAttribute("error", "ユーザーが見つかりませんでした");
         return "FailedLogin";  // ログイン失敗ページに遷移
     }
 
