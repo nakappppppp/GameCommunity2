@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.app.domain.Users;
 import com.example.app.service.UsersService;
-
-import jakarta.validation.Valid;
+import com.example.app.validation.RegisterGroup;
 
 @Controller
 @RequestMapping("/GameHive")
@@ -36,7 +36,7 @@ public class RegisterController {
 
     // ユーザー登録処理
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("users") Users users, Errors errors) {
+    public String registerUser(@Validated(RegisterGroup.class) @ModelAttribute("users") Users users, Errors errors) {
     	 // 既に同じユーザー名が存在するかチェック
       Users existingUser = usersService.findUserByUsername(users.getUsername());
       if (existingUser != null) {

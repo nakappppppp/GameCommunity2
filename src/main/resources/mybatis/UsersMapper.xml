@@ -42,7 +42,7 @@
             last_name = #{lastName},
             email = #{email},
             bio = #{bio},
-            profile_image = #{profileImage},  <!-- 画像も含めて更新 -->
+            profile_image_name = #{profileImageName},  <!-- 画像も含めて更新 -->
             updated_at = CURRENT_TIMESTAMP
         WHERE id = #{id}
     </update>
@@ -50,7 +50,7 @@
     <!-- プロフィール画像を削除 -->
     <update id="deleteProfileImage" parameterType="Integer">
         UPDATE users
-        SET profile_image = NULL, updated_at = CURRENT_TIMESTAMP
+        SET profile_image_name = NULL, updated_at = CURRENT_TIMESTAMP
         WHERE id = #{userId}
     </update>
 
