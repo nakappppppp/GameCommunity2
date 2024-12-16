@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.app.domain.Users;
+import com.example.app.service.FollowService;
 import com.example.app.service.UsersService;
 import com.example.app.validation.ProfileGroup;
 
@@ -30,6 +30,9 @@ public class ProfileController {
 
 	@Autowired
 	private UsersService usersService;
+	
+	@Autowired
+	private FollowService followService;  // FollowServiceをインジェクト
 
 	// プロフィールページ表示
 	@GetMapping("/Profile/{userId}")
@@ -52,10 +55,20 @@ public class ProfileController {
 		if (user == null) {
 			return "error/404"; // 指定されたユーザーが存在しない場合
 		}
+		
+		 // フォロワー数とフォロー数を取得
+    int followerCount = followService.getFollowerCount(userId.longValue());
+    int followingCount = followService.getFollowingCount(userId.longValue());
 
 		// モデルにログイン中のユーザー情報と、表示するプロフィール情報を追加
 		model.addAttribute("loggedInUser", loggedInUser); // ログインユーザー情報を追加
 		model.addAttribute("user", user); // 検索したユーザー情報を追加
+		model.addAttribute("followerCount", followerCount); // フォロワー数を追加
+    model.addAttribute("followingCount", followingCount); // フォロー数を追加
+
+		// フォロー状態の確認（ログインユーザーがこのユーザーをフォローしているか）
+		boolean isFollowing = followService.isFollowing(loggedInUserId.longValue(), userId.longValue());
+		model.addAttribute("isFollowing", isFollowing); // フォロー状態を渡す
 
 		return "profile"; // プロフィールページを表示
 	}
@@ -76,13 +89,11 @@ public class ProfileController {
 			return "error/404"; // ユーザーが存在しない場合
 		}
 
-		System.out.println("userGet->" + user);
 		model.addAttribute("user", user); // ユーザー情報をビューに渡す
 
 		return "editProfile"; // プロフィール編集ページを表示
 	}
 
-	// プロフィール情報と画像の更新処理
 	// プロフィール情報と画像の更新処理
 	@PostMapping("EditProfile")
 	public String updateProfile(@Validated(ProfileGroup.class) @ModelAttribute("user") Users user,
@@ -91,15 +102,12 @@ public class ProfileController {
 			@RequestParam(value = "changedImageName", required = false) String changedImageName,
 			@RequestParam(value = "profileImage", required = false) MultipartFile file, Model model) {
 
-		
 		// 画像がアップロードされなかった場合、以前の画像パスを保持
 		if (file == null || file.isEmpty()) {
 			user.setProfileImageName(originalImageName); // 既存の画像パスを保持
 		}else {
 			user.setProfileImageName(changedImageName);
 		}
-		
-		
 
 		// プロフィール画像のバリデーション
 		if (file != null && !file.isEmpty()) {
@@ -113,16 +121,6 @@ public class ProfileController {
 		// 他のフォームフィールドのバリデーション
 		if (errors.hasErrors()) {
 			// エラーがあればフォームを再表示
-			List<ObjectError> objList = errors.getAllErrors();
-			for (ObjectError obj : objList) {
-				System.out.println(obj.toString());
-				
-				
-		
-				
-			}
-
-			System.out.println("error ->" + user);
 			model.addAttribute("user", user); // ユーザー情報をビューに渡す
 			return "editProfile"; // エラーがあればフォームを再表示
 		}
@@ -168,6 +166,56 @@ public class ProfileController {
 	public String profileEditingCompleted() {
 		return "profileEditingCompleted";
 	}
+
+//フォロー・アンフォローの処理
+  @PostMapping("/toggleFollow")
+  public String toggleFollow(@RequestParam("followedId") Long followedId, HttpSession session, Model model) {
+      Integer loggedInUserId = (Integer) session.getAttribute("userId");
+
+      if (loggedInUserId == null) {
+          return "redirect:/GameHive/login"; // ログインしていない場合、ログインページにリダイレクト
+      }
+
+      // フォロー・アンフォローの切り替え
+      if (followService.isFollowing(loggedInUserId.longValue(), followedId)) {
+          // すでにフォローしている場合はアンフォロー
+          followService.unfollow(loggedInUserId.longValue(), followedId);
+      } else {
+          // フォローしていない場合はフォロー
+          followService.follow(loggedInUserId.longValue(), followedId);
+      }
+
+      // フォロー状態を更新して再表示
+      model.addAttribute("isFollowing", followService.isFollowing(loggedInUserId.longValue(), followedId));
+
+      // プロフィールページを再表示
+      return "redirect:/GameHive/Profile/" + followedId;
+  }
+  
+  // フォローしているユーザーの一覧
+  @GetMapping("/following/{userId}")
+  public String following(@PathVariable Long userId, Model model) {
+      // フォローしているユーザーのリストを取得
+      List<Users> followingUsers = followService.getFollowingUsers(userId);
+
+      // モデルにユーザーリストを追加
+      model.addAttribute("followingUsers", followingUsers);
+
+      return "following"; // following.htmlに遷移
+  }
+
+  // フォロワーの一覧
+  @GetMapping("/followers/{userId}")
+  public String followers(@PathVariable Long userId, Model model) {
+      // フォロワーのリストを取得
+      List<Users> followerUsers = followService.getFollowerUsers(userId);
+
+      // モデルにユーザーリストを追加
+      model.addAttribute("followerUsers", followerUsers);
+
+      return "followers"; // followers.htmlに遷移
+  }
+	
 
 	// プロフィール画像削除処理
 	@PostMapping("/Profile/deletePicture")

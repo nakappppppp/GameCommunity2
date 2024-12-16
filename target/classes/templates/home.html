@@ -135,7 +135,7 @@
 					
 					<!-- アバター -->
 					<img
-						th:src="@{${user.profileImage != null ? user.profileImage : '/images/pdefault.jpeg'}}" alt="Bordered avatar"
+						th:src="@{${user.profileImageName != null ? user.profileImageName : '/images/pdefault.jpeg'}}" alt="Bordered avatar"
 						class="relative inline-block h-12 w-12 !rounded-full object-cover object-center"
 					/>
 
@@ -235,7 +235,127 @@
         </div>
       </div>
       <!-- Image -->
-      <div class="w-full rounded-md bg-gray-100 max-[991px]:h-[475px] lg:w-2/5"></div>
+<div class="w-full rounded-md bg-gray-100 max-[991px]:h-[475px] lg:w-2/5">
+    <div class="image-container">
+        <img id="image1" src="/images/home1.jpg" alt="image1" class="fade visible" />
+        <img id="image2" src="/images/home2.jpg" alt="image2" class="fade hidden" />
+        <img id="image3" src="/images/home3.jpg" alt="image3" class="fade hidden" />
+        <img id="image4" src="/images/home4.jpg" alt="image4" class="fade hidden" />
+        
+        <!-- 左矢印ボタン -->
+        <button id="prevBtn" class="arrow-btn left-0">
+            &#8592;
+        </button>
+
+        <!-- 右矢印ボタン -->
+        <button id="nextBtn" class="arrow-btn right-0">
+            &#8594;
+        </button>
+    </div>
+</div>
+
+<style>
+    .image-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .fade {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+
+    .visible {
+        opacity: 1;
+    }
+
+    .hidden {
+        opacity: 0;
+    }
+
+    /* 矢印ボタンのスタイル */
+    .arrow-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2rem;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    #prevBtn {
+        left: 10px;
+    }
+
+    #nextBtn {
+        right: 10px;
+    }
+
+    .arrow-btn:hover {
+        background: rgba(0, 0, 0, 0.7);
+    }
+</style>
+
+<script>
+    const images = ["/images/home1.jpg", "/images/home2.jpg", "/images/home3.jpg", "/images/home4.jpg"];
+    let currentImageIndex = 0; // 最初の画像インデックス
+
+    const image1 = document.getElementById("image1");
+    const image2 = document.getElementById("image2");
+    const image3 = document.getElementById("image3");
+    const image4 = document.getElementById("image4");
+
+    const imageArray = [image1, image2, image3, image4]; // 画像リストを配列として保持
+
+    // 画像を切り替える関数
+    function changeImage() {
+        // 現在の画像を非表示にする
+        imageArray[currentImageIndex].classList.remove("visible");
+        imageArray[currentImageIndex].classList.add("hidden");
+
+        // 次の画像インデックスを計算
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        const nextImage = imageArray[currentImageIndex];
+
+        // 次の画像をフェードイン
+        nextImage.classList.remove("hidden");
+        nextImage.classList.add("visible");
+    }
+
+    // 画像を戻す関数
+    function prevImage() {
+        // 現在の画像を非表示にする
+        imageArray[currentImageIndex].classList.remove("visible");
+        imageArray[currentImageIndex].classList.add("hidden");
+
+        // 前の画像インデックスを計算
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        const prevImage = imageArray[currentImageIndex];
+
+        // 前の画像をフェードイン
+        prevImage.classList.remove("hidden");
+        prevImage.classList.add("visible");
+    }
+
+    // 「次へ」ボタンのイベントリスナー
+    document.getElementById("nextBtn").addEventListener("click", changeImage);
+
+    // 「前へ」ボタンのイベントリスナー
+    document.getElementById("prevBtn").addEventListener("click", prevImage);
+</script>
+
+
+
     </div>
   </div>
 </main>

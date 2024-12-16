@@ -12,12 +12,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic", "/queue");  // メッセージブローカー設定
-        config.setApplicationDestinationPrefixes("/app"); // プレフィックス設定
+        config.enableSimpleBroker("/topic");  // クライアントが購読するトピック
+        config.setApplicationDestinationPrefixes("/app");  // クライアントから送信されるメッセージの前置詞
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").withSockJS();  // WebSocketのエンドポイント設定
+        registry.addEndpoint("/chat").withSockJS();  // WebSocketの接続エンドポイント
     }
 }

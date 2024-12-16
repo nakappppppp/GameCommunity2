@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.app.mapper.FollowMapper">
+<!-- フォローしているかどうかを確認する -->
+    <select id="isFollowing" resultType="int">
+        SELECT COUNT(*)
+        FROM follows
+        WHERE follower_id = #{followerId}
+          AND followed_id = #{followedId}
+    </select>
+
+    <!-- フォローする -->
+    <insert id="insertFollow">
+        INSERT INTO follows (follower_id, followed_id)
+        VALUES (#{followerId}, #{followedId})
+    </insert>
+
+    <!-- フォロー解除する -->
+    <delete id="deleteFollow">
+        DELETE FROM follows
+        WHERE follower_id = #{followerId}
+          AND followed_id = #{followedId}
+    </delete>
+
+    <!-- フォロワー数を取得する -->
+    <select id="getFollowerCount" resultType="int">
+        SELECT COUNT(*)
+        FROM follows
+        WHERE followed_id = #{followedId}
+    </select>
+
+    <!-- フォロー数を取得する -->
+    <select id="getFollowingCount" resultType="int">
+        SELECT COUNT(*)
+        FROM follows
+        WHERE follower_id = #{followerId}
+    </select>
+    
+    <!-- ユーザーがフォローしているユーザーのIDリストを取得 -->
+    <select id="getFollowingUserIds" resultType="java.lang.Long">
+        SELECT followed_id
+        FROM follows
+        WHERE follower_id = #{userId}
+    </select>
+
+    <!-- ユーザーをフォローしているユーザーのIDリストを取得 -->
+    <select id="getFollowerUserIds" resultType="java.lang.Long">
+        SELECT follower_id
+        FROM follows
+        WHERE followed_id = #{userId}
+    </select>
+    
+</mapper>
