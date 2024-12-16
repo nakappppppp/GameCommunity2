@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フォロワー</title>
+</head>
+<body>
+
+    <h1>フォロワー</h1>
+
+    <ul>
+        <li th:each="user : ${followerUsers}">
+            <a th:href="@{/GameHive/Profile/{userId}(userId=${user.id})}" th:text="${user.username}"></a>
+        </li>
+        
+        <!-- フォロワーがいない場合 -->
+    <li th:if="${#lists.isEmpty(followerUsers)}">フォロワーはまだいません。</li>
+    </ul>
+
+</body>
+</html>

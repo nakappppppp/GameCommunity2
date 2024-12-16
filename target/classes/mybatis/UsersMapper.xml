@@ -53,5 +53,15 @@
         SET profile_image_name = NULL, updated_at = CURRENT_TIMESTAMP
         WHERE id = #{userId}
     </update>
+    
+     <!-- 複数のIDに基づいてユーザー情報を取得 -->
+    <select id="findByIds" resultType="com.example.app.domain.Users">
+        SELECT *
+        FROM users
+        WHERE id IN
+        <foreach collection="userIds" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </select>
 
 </mapper>

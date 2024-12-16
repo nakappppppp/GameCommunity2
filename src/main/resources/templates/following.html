@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フォローしているユーザー</title>
+</head>
+<body>
+
+    <h1>フォローしているユーザー</h1>
+
+    <ul>
+        <li th:each="user : ${followingUsers}">
+            <a th:href="@{/GameHive/Profile/{userId}(userId=${user.id})}" th:text="${user.username}"></a>
+        </li>
+        
+        <!-- フォローしているユーザーがいない場合 -->
+    <li th:if="${#lists.isEmpty(followingUsers)}">フォローしているユーザーはまだいません。</li>
+    </ul>
+
+</body>
+</html>

@@ -65,6 +65,11 @@ public class UsersService {
         // 入力されたパスワードと保存されたハッシュ化パスワードを照合
         return BCrypt.checkpw(password, user.getPassword());
     }
+    
+    // ユーザーIDリストから一括でユーザー情報を取得
+    public List<Users> findByIds(List<Long> userIds) {
+        return usersMapper.findByIds(userIds); // MapperのfindByIdsメソッドを使用
+    }
 
 		
 }

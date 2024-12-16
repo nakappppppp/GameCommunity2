@@ -57,7 +57,7 @@
 
     <!-- アバター (モバイルのみ表示) -->
     <li class="max-lg:py-3 px-3 lg:hidden">
-      <img th:src="@{${user2.profileImage != null ? user2.profileImage : '/images/pdefault.jpeg'}}" alt="Bordered avatar"
+      <img th:src="@{${user2.profileImageName != null ? user2.profileImageName : '/images/pdefault.jpeg'}}" alt="Bordered avatar"
            class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
     </li>
   </ul>
@@ -132,7 +132,7 @@
 					
 					<!-- アバター -->
 					<img
-						th:src="@{${user2.profileImage != null ? user2.profileImage : '/images/pdefault.jpeg'}}" alt="Bordered avatar"
+						th:src="@{${user2.profileImageName != null ? user2.profileImageName : '/images/pdefault.jpeg'}}" alt="Bordered avatar"
 						class="relative inline-block h-12 w-12 !rounded-full object-cover object-center"
 					/>
 
@@ -154,7 +154,7 @@
         <th:block th:each="user : ${users}">
             <li class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
                 <div class="relative">
-                    <img th:src="@{${user.profileImage != null ? user.profileImage : '/images/pdefault.jpeg'}}" 
+                    <img th:src="@{${user.profileImageName != null ? user.profileImageName : '/images/pdefault.jpeg'}}" 
                          alt="Bordered avatar" class="w-full h-48 object-cover rounded-t-lg">
                     <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white text-sm px-3 py-1 rounded-full">
                        <!-- ユーザー名をクリックできるリンクにする -->

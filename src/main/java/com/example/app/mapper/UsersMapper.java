@@ -30,4 +30,9 @@ public interface UsersMapper {
 void deleteProfileImage(Integer userId);
 
 void updateUserProfile(Users user);
+
+// 複数のIDに基づいてユーザー情報を取得
+List<Users> findByIds(List<Long> userIds);
+
+
 }
