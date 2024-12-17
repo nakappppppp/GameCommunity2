@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.app.mapper.NotificationMapper">
+	<!-- 通知を挿入 -->
+	<insert id="insertNotification"
+		parameterType="com.example.app.domain.Notification">
+		INSERT INTO notifications (user_id, content, is_read, created_at)
+		VALUES (#{userId}, #{content}, #{isRead}, #{createdAt});
+	</insert>
+
+	<!-- ユーザーの未読通知を取得 -->
+	<select id="getUnreadNotifications"
+		resultType="com.example.app.domain.Notification">
+		SELECT id, user_id, content, is_read, created_at
+		FROM notifications
+		WHERE user_id = #{userId} AND is_read = false
+		ORDER BY created_at DESC;
+	</select>
+
+	<!-- ユーザーが通知を既読にした場合 -->
+	<update id="markAllNotificationsAsRead" parameterType="long">
+    UPDATE notifications
+    SET is_read = true
+    WHERE user_id = #{userId} AND is_read = false;
+  </update>
+  
+  <update id="markNotificationAsRead" parameterType="long">
+    UPDATE notifications
+    SET is_read = true  <!-- is_read フィールドだけを更新 -->
+    WHERE id = #{notificationId} AND is_read = false;
+</update>
+
+<delete id="deleteFollowNotification" parameterType="map">
+    DELETE FROM notifications
+    WHERE user_id = #{followedId}
+      AND content = CONCAT(#{followerUsername}, 'にフォローされました。');
+</delete>
+
+  
+
+</mapper>

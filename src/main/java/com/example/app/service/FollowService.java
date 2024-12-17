@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.app.domain.Follow;
+import com.example.app.domain.Notification;
 import com.example.app.domain.Users;
 import com.example.app.mapper.FollowMapper;
 
@@ -18,6 +19,9 @@ public class FollowService {
     
     @Autowired
     private UsersService usersService;
+    
+    @Autowired
+    private NotificationService notificationService;
 
     // ユーザーが他のユーザーをフォローしているか確認
     public boolean isFollowing(Long followerId, Long followedId) {
@@ -26,19 +30,36 @@ public class FollowService {
 
     // ユーザーが他のユーザーをフォローする
     public void follow(Long followerId, Long followedId) {
-        Follow follow = new Follow(followerId, followedId);
-        if (!isFollowing(followerId, followedId)) {
-            followMapper.insertFollow(follow);
-        }
-    }
+    	 Follow follow = new Follow(followerId, followedId);
+       if (!isFollowing(followerId, followedId)) {
+           followMapper.insertFollow(follow);
+
+           // フォローされたユーザーに通知を送る前に重複チェックをする
+           if (!notificationService.notificationAlreadyExists(followedId, followerId)) {
+               // フォロー通知を作成
+               Users followerUser = usersService.findById(followerId.intValue());
+               if (followerUser != null) {
+                   String notificationContent = followerUser.getUsername() + "にフォローされました。";
+
+                   Notification notification = new Notification(followedId, notificationContent);
+                   notificationService.createNotification(notification);
+               }
+           }
+       }
+   }
 
     // ユーザーが他のユーザーのフォローを解除する
     public void unfollow(Long followerId, Long followedId) {
-        Follow follow = new Follow(followerId, followedId);
-        if (isFollowing(followerId, followedId)) {
-            followMapper.deleteFollow(follow);
-        }
-    }
+    	 Follow follow = new Follow(followerId, followedId);
+       if (isFollowing(followerId, followedId)) {
+           followMapper.deleteFollow(follow);
+           
+           // ここでも呼び出し前にログを追加
+           System.out.println("Unfollow initiated for follower: " + followerId + " and followed: " + followedId);
+           
+           notificationService.deleteFollowNotification(followerId, followedId);
+       }
+   }
     
     // フォローしているユーザーのリストを取得
     public List<Users> getFollowingUsers(Long userId) {

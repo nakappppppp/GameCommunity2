@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>通知リスト</title>
+</head>
+<body>
+<div class="notification-list">
+    <h2>通知一覧</h2>
+    <ul>
+        <th:block th:each="notification : ${unreadNotifications}">
+            <li>
+                <p th:text="${notification.content}"></p>
+                <span th:text="${#temporals.format(notification.createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+
+            </li>
+        </th:block>
+    </ul>
+</div>
+
+
+</body>
+</html>
