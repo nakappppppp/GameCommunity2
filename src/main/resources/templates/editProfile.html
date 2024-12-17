@@ -52,8 +52,7 @@
 							<a href='/GameHive/home' class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Home</a>
 						</li>
 						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
-							<a href='/GameHive/Chat'
-								class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Chat</a>
+							<a href='/GameHive/Chat' class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Chat</a>
 						</li>
 						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
 							<a href='javascript:void(0)'
@@ -80,6 +79,25 @@
 								alt="Bordered avatar"
 								class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
 						</li>
+
+						<!-- 検索機能 (モバイルのみ表示) -->
+						<li class="max-lg:py-3 px-3 lg:hidden">
+							<div class="flex items-center gap-x-6 gap-y-4 ml-auto">
+								<div
+									class='flex bg-gray-50 border focus-within:bg-transparent focus-within:border-gray-400 rounded-full px-4 py-2.5 overflow-hidden max-w-52'>
+									<input type='text' id="searchInputMobile" placeholder='検索'
+										class='w-full text-sm bg-transparent outline-none pr-2' onkeydown="handleKeydown(event)" />
+									<button onclick="redirectToSearchPage()"
+										class="cursor-pointer bg-transparent border-0 focus:outline-none transform transition-all duration-200">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px"
+											class="fill-gray-600 transform transition-all duration-200 hover:scale-110 active:scale-90">
+											<path
+												d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.007 18.752-50.786 0-44.15-35.898-80.047-80.047-80.047s-80.047 35.898-80.047 80.047 35.898 80.047 80.047 80.047c19.05 0 36.55-6.954 50.193-18.628l47.195 47.363c2.23 2.229 5.823 2.229 8.053 0 2.231-2.229 2.231-5.823 0-8.053zm-114.66-39.104c-34.122 0-61.7-27.578-61.7-61.7s27.578-61.7 61.7-61.7 61.7 27.578 61.7 61.7-27.578 61.7-61.7 61.7z" />
+										</svg>
+									</button>
+								</div>
+							</div>
+						</li>
 					</ul>
 				</div>
 
@@ -87,8 +105,8 @@
 				<div class="flex items-center gap-x-6 gap-y-4 ml-auto">
 					<div
 						class='flex bg-gray-50 border focus-within:bg-transparent focus-within:border-gray-400 rounded-full px-4 py-2.5 overflow-hidden max-w-52 max-lg:hidden'>
-						<input type='text' id="searchInput" placeholder='検索' class='w-full text-sm bg-transparent outline-none pr-2'
-							onkeydown="handleKeydown(event)" />
+						<input type='text' id="searchInputDesktop" placeholder='検索'
+							class='w-full text-sm bg-transparent outline-none pr-2' onkeydown="handleKeydown(event)" />
 						<button onclick="redirectToSearchPage()"
 							class="cursor-pointer bg-transparent border-0 focus:outline-none transform transition-all duration-200">
 							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px"
@@ -98,62 +116,101 @@
 							</svg>
 						</button>
 					</div>
+				</div>
+				<script>
+					// エンターキーを押した時に呼び出される処理
+					function handleKeydown(event) {
+						if (event.key === "Enter") {
+							redirectToSearchPage(); // エンターキーで検索
+						}
+					}
+
+					// リダイレクト処理（クリック時およびエンターキー時）
+					function redirectToSearchPage() {
+						const searchInputMobile = document.getElementById('searchInputMobile').value;
+						const searchInputDesktop = document.getElementById('searchInputDesktop').value;
+
+						const searchInput = searchInputMobile.trim() !== '' ? searchInputMobile : searchInputDesktop.trim();
+
+						if (searchInput === '') {
+							alert('検索するユーザー名を入力してください');
+							return;
+						}
+
+						// 検索結果ページに遷移
+						window.location.href = `/users/search-results?username=${encodeURIComponent(searchInput)}`;
+					}
+				</script>
+
+				<!-- いいねと通知アイコン -->
+				<div class="flex items-center gap-6">
+					<div class="flex flex-col items-center gap-0.5 cursor-pointer">
+						<div class="relative">
+							<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-[#333]" viewBox="0 0 64 64">
+								<path
+									d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z" />
+							</svg>
+							<span class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
+						</div>
+						<span class="text-[13px] font-semibold text-[#333]">いいね</span>
+					</div>
+
+					<!-- 通知アイコン -->
+					<div class="flex flex-col items-center gap-0.5 cursor-pointer">
+						<a href="/GameHive/Notifications" class="relative">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+								stroke="currentColor" class="w-6 h-6 icon">
+								<path stroke-linecap="round" stroke-linejoin="round"
+									d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+							</svg>
+							<span class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white"
+								id="notification-count">0</span>
+						</a>
+						<span class="text-[13px] font-semibold text-[#333]">通知</span>
+					</div>
+
 					<script>
+						// ページロード時に通知数を取得して更新
+						window.onload = function () {
+							updateNotificationCount();  // 通知数を取得して更新
+						};
 
-						// エンターキーを押した時にredirectToSearchPageを呼び出す
-						function handleKeydown(event) {
-							if (event.key === "Enter") {
-								redirectToSearchPage();
-							}
-						}
+						// 通知数を取得して表示する関数
+						function updateNotificationCount() {
+							fetch("/GameHive/Notifications/count")  // 通知数を取得するAPI
+								.then(response => response.json())
+								.then(data => {
+									const count = data.count;  // 取得した未読通知数
+									const notificationCountElement = document.getElementById('notification-count');
 
-						// リダイレクト処理（クリック時およびエンターキー時）
-						function redirectToSearchPage() {
-							window.location.href = "/search-results"; // 必要なページにリダイレクト
-						}
-
-						// 検索結果ページに遷移する関数
-						function redirectToSearchPage() {
-							const searchInput = document.getElementById('searchInput').value;
-							if (searchInput.trim() === '') {
-								alert('検索するユーザー名を入力してください');
-								return;
-							}
-
-							// 検索結果ページへ遷移
-							window.location.href = `/users/search-results?username=${encodeURIComponent(searchInput)}`;
-
-
+									// 通知数が0なら非表示にし、それ以外なら表示
+									if (count === 0) {
+										notificationCountElement.style.display = 'none';
+									} else {
+										notificationCountElement.style.display = 'block';
+										notificationCountElement.innerText = count;
+									}
+								})
+								.catch(error => console.error('Error fetching notification count:', error));
 						}
 					</script>
 
-					<!-- いいねと通知アイコン -->
-					<div class="flex items-center gap-6">
-						<div class="flex flex-col items-center gap-0.5 cursor-pointer">
-							<div class="relative">
-								<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-[#333]" viewBox="0 0 64 64">
-									<path
-										d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z" />
-								</svg>
-								<span
-									class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
-							</div>
-							<span class="text-[13px] font-semibold text-[#333]">いいね</span>
-						</div>
+					<style>
+						/* 通知アイコンのエフェクト */
+						.icon {
+							transition: transform 0.3s ease;
+						}
 
-						<div class="flex flex-col items-center gap-0.5 cursor-pointer">
-							<div class="relative">
-								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-									stroke="currentColor" class="w-6 h-6">
-									<path stroke-linecap="round" stroke-linejoin="round"
-										d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-								</svg>
-								<span
-									class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
-							</div>
-							<span class="text-[13px] font-semibold text-[#333]">通知</span>
-						</div>
-					</div>
+						.icon:hover {
+							transform: scale(1.2);
+							/* ホバー時に少し大きく */
+						}
+
+						.icon:active {
+							transform: scale(0.9);
+							/* クリック時に少し小さく */
+						}
+					</style>
 
 					<!-- ログアウトボタン -->
 					<form action="/logout" method="get">
@@ -228,8 +285,8 @@
 							<!-- ユーザーIDを隠しフィールドとして渡す -->
 							<input type="hidden" name="id" th:value="*{id}">
 							<input type="hidden" name="username" th:value="*{username}">
-							<input type="hidden" name="originalImageName" th:value="*{profileImageName}"/>
-							<input type="hidden" id="changedImageName" name="changedImagedName" th:value="*{profileImageName}"/>
+							<input type="hidden" name="originalImageName" th:value="*{profileImageName}" />
+							<input type="hidden" id="changedImageName" name="changedImagedName" th:value="*{profileImageName}" />
 
 
 
@@ -297,25 +354,25 @@
 						<!-- 画像プレビュー用のJavaScript -->
 						<script>
 							function previewImage(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
+								const file = event.target.files[0];
+								const reader = new FileReader();
 
-        // プレビュー画像の表示
-        reader.onload = function (e) {
-            const img = document.getElementById('profile-image-preview');
-            img.src = e.target.result; // プレビュー画像のURLを設定
-        }
+								// プレビュー画像の表示
+								reader.onload = function (e) {
+									const img = document.getElementById('profile-image-preview');
+									img.src = e.target.result; // プレビュー画像のURLを設定
+								}
 
-        if (file) {
-            // プレビュー表示
-            reader.readAsDataURL(file);
+								if (file) {
+									// プレビュー表示
+									reader.readAsDataURL(file);
 
-            // 隠しフィールドにファイル名を設定
-            const fileName = file.name; // ファイル名を取得
-            const changedImageNameField = document.getElementById('changedImageName');
-            changedImageNameField.value = fileName;  // 隠しフィールドにファイル名をセット
-        }
-    }
+									// 隠しフィールドにファイル名を設定
+									const fileName = file.name; // ファイル名を取得
+									const changedImageNameField = document.getElementById('changedImageName');
+									changedImageNameField.value = fileName;  // 隠しフィールドにファイル名をセット
+								}
+							}
 						</script>
 					</div>
 				</div>

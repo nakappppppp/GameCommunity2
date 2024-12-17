@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.app.domain.Users;
 import com.example.app.service.FollowService;
+import com.example.app.service.NotificationService;
 import com.example.app.service.UsersService;
 import com.example.app.validation.ProfileGroup;
 
@@ -33,6 +34,9 @@ public class ProfileController {
 	
 	@Autowired
 	private FollowService followService;  // FollowServiceをインジェクト
+	
+	@Autowired
+	private NotificationService notificationService;
 
 	// プロフィールページ表示
 	@GetMapping("/Profile/{userId}")
@@ -59,12 +63,16 @@ public class ProfileController {
 		 // フォロワー数とフォロー数を取得
     int followerCount = followService.getFollowerCount(userId.longValue());
     int followingCount = followService.getFollowingCount(userId.longValue());
+    
+    // 未読通知数を取得
+    int unreadNotificationsCount = notificationService.getUnreadNotifications(loggedInUserId.longValue()).size();
 
 		// モデルにログイン中のユーザー情報と、表示するプロフィール情報を追加
 		model.addAttribute("loggedInUser", loggedInUser); // ログインユーザー情報を追加
 		model.addAttribute("user", user); // 検索したユーザー情報を追加
 		model.addAttribute("followerCount", followerCount); // フォロワー数を追加
     model.addAttribute("followingCount", followingCount); // フォロー数を追加
+    model.addAttribute("unreadNotificationsCount", unreadNotificationsCount);
 
 		// フォロー状態の確認（ログインユーザーがこのユーザーをフォローしているか）
 		boolean isFollowing = followService.isFollowing(loggedInUserId.longValue(), userId.longValue());
