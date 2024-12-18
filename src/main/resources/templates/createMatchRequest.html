@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>対戦相手募集</title>
+<link rel="stylesheet" href="/css/output.css" />
+</head>
+<body class="bg-gray-100">
+
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-semibold text-center mb-6">対戦相手募集</h1>
+
+    <form action="/createMatchRequest" method="POST">
+        <div class="mb-4">
+            <label for="gameGenre" class="block text-lg font-medium">ゲームジャンル</label>
+            <select id="gameGenre" name="gameGenreId" class="mt-1 p-2 w-full border rounded-lg">
+                <option value="">選択してください</option>
+                <!-- ゲームジャンルの選択肢 -->
+                <th:block th:each="genre : ${gameGenres}">
+                    <option th:value="${genre.id}" th:text="${genre.name}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">募集を開始</button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -202,19 +202,53 @@ public class ProfileController {
   
   // フォローしているユーザーの一覧
   @GetMapping("/following/{userId}")
-  public String following(@PathVariable Long userId, Model model) {
-      // フォローしているユーザーのリストを取得
-      List<Users> followingUsers = followService.getFollowingUsers(userId);
+  public String following(@PathVariable Long userId, HttpSession session,  Model model) {
+     
+  	Integer user = (Integer) session.getAttribute("userId");
 
+		if (user == null) {
+			// ユーザーがログインしていない場合の処理
+			return "redirect:/GameHive/login"; // ログインページにリダイレクト
+		}
+
+		// ログインユーザーの情報を取得
+		Users users = usersService.findById(user);
+		if (users == null) {
+			return "error/404"; // ユーザーが存在しない場合
+		}
+
+		model.addAttribute("user", users); // ユーザー情報をビューに渡す
+  	
+  	// フォローしているユーザーのリストを取得
+      List<Users> followingUsers = followService.getFollowingUsers(userId);
+      
       // モデルにユーザーリストを追加
       model.addAttribute("followingUsers", followingUsers);
+      
+    
 
       return "following"; // following.htmlに遷移
   }
 
   // フォロワーの一覧
   @GetMapping("/followers/{userId}")
-  public String followers(@PathVariable Long userId, Model model) {
+  public String followers(@PathVariable Long userId,HttpSession session, Model model) {
+  	
+  	Integer user = (Integer) session.getAttribute("userId");
+
+		if (user == null) {
+			// ユーザーがログインしていない場合の処理
+			return "redirect:/GameHive/login"; // ログインページにリダイレクト
+		}
+
+		// ログインユーザーの情報を取得
+		Users users = usersService.findById(user);
+		if (users == null) {
+			return "error/404"; // ユーザーが存在しない場合
+		}
+
+		model.addAttribute("user", users); // ユーザー情報をビューに渡す
+  	
       // フォロワーのリストを取得
       List<Users> followerUsers = followService.getFollowerUsers(userId);
 

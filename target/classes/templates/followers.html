@@ -4,19 +4,279 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>フォロワー</title>
+    <link rel="stylesheet" href="/css/output.css" />
 </head>
 <body>
+	<header
+		class='flex bg-yellow-300 border-b py-3 sm:px-6 px-4 font-[sans-serif] min-h-[75px] tracking-wide relative z-50'>
+		<div class='flex max-w-screen-xl mx-auto w-full'>
+			<div class='flex flex-wrap items-center lg:gap-y-2 gap-4 w-full'>
+				<a href="javascript:void(0)">
+					<!-- ロゴ部分 -->
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="_x32_"
+						viewBox="0 0 512 512" class="w-16 h-16 mb-2 mx-auto text-gray-600">
+						<g>
+							<path class="fill-current"
+								d="M344.397,295.123l-34.995,20.206c-2.585,1.493-4.186,4.252-4.186,7.245v40.404c0,3.786,2.548,7.106,6.203,8.082c3.663,0.983,7.522-0.612,9.422-3.896l34.98-60.61c1.901-3.284,1.354-7.42-1.325-10.106C351.824,293.776,347.673,293.23,344.397,295.123z" />
+							<path class="fill-current"
+								d="M228.957,95.175l-35.002,20.199c-2.585,1.493-4.172,4.26-4.172,7.245v40.412c0,3.786,2.542,7.106,6.197,8.082c3.655,0.976,7.522-0.619,9.415-3.902l34.994-60.604c1.886-3.284,1.34-7.427-1.332-10.099C236.377,93.821,232.233,93.274,228.957,95.175z" />
+							<path class="fill-current"
+								d="M113.509,295.123l-34.994,20.206c-2.585,1.493-4.18,4.252-4.18,7.245v40.404c0,3.786,2.542,7.106,6.197,8.082c3.662,0.983,7.522-0.612,9.422-3.896l34.987-60.61c1.894-3.284,1.347-7.42-1.332-10.106C120.937,293.776,116.787,293.23,113.509,295.123z" />
+							<path class="fill-current"
+								d="M391.121,211.314V78.013L256,0L120.878,78.013v11.359v121.942L5.439,277.961v11.358v144.668L140.561,512l115.447-66.646L371.439,512l135.122-78.012V277.961L391.121,211.314z M236.318,411.262l-95.757,55.287l-95.766-55.287V300.686l95.766-55.288l95.757,55.288V411.262z M256,266.602l-47.883-27.64l-47.875-27.648V100.738L256,45.451l95.758,55.287v110.576l-47.876,27.648L256,266.602z M467.198,411.262l-95.758,55.287l-95.758-55.287V300.686l95.758-55.288l95.758,55.288V411.262z" />
+						</g>
+					</svg>
+				</a>
 
-    <h1>フォロワー</h1>
+				<div id="collapseMenu"
+					class="lg:ml-6 max-lg:hidden lg:!block max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50">
 
-    <ul>
-        <li th:each="user : ${followerUsers}">
-            <a th:href="@{/GameHive/Profile/{userId}(userId=${user.id})}" th:text="${user.username}"></a>
-        </li>
+					<!-- メニューを閉じるボタン -->
+					<button id="toggleClose"
+						class="lg:hidden fixed top-2 right-4 z-[100] rounded-full bg-white w-9 h-9 flex items-center justify-center border">
+						<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 fill-black" viewBox="0 0 320.591 320.591">
+							<path
+								d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z">
+							</path>
+							<path
+								d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922">
+							</path>
+						</svg>
+					</button>
+
+					<!-- モバイルメニュー -->
+					<ul
+						class="lg:flex lg:gap-x-3 max-lg:space-y-3 max-lg:fixed max-lg:bg-yellow-300 max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
+						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
+							<a href='/GameHive/home' class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Home</a>
+						</li>
+						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
+							<a href='javascript:void(0)'
+								class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Chat</a>
+						</li>
+						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
+							<a href='javascript:void(0)'
+								class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Battle&amp;Cooperation</a>
+						</li>
+						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
+							<a th:href='@{/GameHive/Profile/{userId}(userId=${user.id})}'
+								class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Profile</a>
+						</li>
+
+						<!-- ログアウトボタン (モバイルのみ表示) -->
+						<li class="max-lg:py-3 px-3 lg:hidden">
+							<form action="/logout" method="get">
+								<button
+									class="px-4 py-2 text-sm rounded-full text-white border-2 border-slate-400 bg-slate-600 hover:bg-slate-800">
+									ログアウト
+								</button>
+							</form>
+						</li>
+
+						<!-- アバター (モバイルのみ表示) -->
+						<li class="max-lg:py-3 px-3 lg:hidden">
+							<img
+								th:src="@{${user.profileImageName != null ? user.profileImageName : '/images/pdefault.jpeg'}}"
+								alt="Bordered avatar"
+								class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
+						</li>
+
+						<!-- 検索機能 (モバイルのみ表示) -->
+						<li class="max-lg:py-3 px-3 lg:hidden">
+							<div class="flex items-center gap-x-6 gap-y-4 ml-auto">
+								<div
+									class='flex bg-gray-50 border focus-within:bg-transparent focus-within:border-gray-400 rounded-full px-4 py-2.5 overflow-hidden max-w-52'>
+									<input type='text' id="searchInputMobile" placeholder='検索'
+										class='w-full text-sm bg-transparent outline-none pr-2' onkeydown="handleKeydown(event)" />
+									<button onclick="redirectToSearchPage()"
+										class="cursor-pointer bg-transparent border-0 focus:outline-none transform transition-all duration-200">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px"
+											class="fill-gray-600 transform transition-all duration-200 hover:scale-110 active:scale-90">
+											<path
+												d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.007 18.752-50.786 0-44.15-35.898-80.047-80.047-80.047s-80.047 35.898-80.047 80.047 35.898 80.047 80.047 80.047c19.05 0 36.55-6.954 50.193-18.628l47.195 47.363c2.23 2.229 5.823 2.229 8.053 0 2.231-2.229 2.231-5.823 0-8.053zm-114.66-39.104c-34.122 0-61.7-27.578-61.7-61.7s27.578-61.7 61.7-61.7 61.7 27.578 61.7 61.7-27.578 61.7-61.7 61.7z" />
+										</svg>
+									</button>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+
+
+				<div class="flex items-center gap-x-6 gap-y-4 ml-auto">
+					<div
+						class='flex bg-gray-50 border focus-within:bg-transparent focus-within:border-gray-400 rounded-full px-4 py-2.5 overflow-hidden max-w-52 max-lg:hidden'>
+						<input type='text' id="searchInputDesktop" placeholder='検索'
+							class='w-full text-sm bg-transparent outline-none pr-2' onkeydown="handleKeydown(event)" />
+						<button onclick="redirectToSearchPage()"
+							class="cursor-pointer bg-transparent border-0 focus:outline-none transform transition-all duration-200">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px"
+								class="fill-gray-600 transform transition-all duration-200 hover:scale-110 active:scale-90">
+								<path
+									d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.007 18.752-50.786 0-44.15-35.898-80.047-80.047-80.047s-80.047 35.898-80.047 80.047 35.898 80.047 80.047 80.047c19.05 0 36.55-6.954 50.193-18.628l47.195 47.363c2.23 2.229 5.823 2.229 8.053 0 2.231-2.229 2.231-5.823 0-8.053zm-114.66-39.104c-34.122 0-61.7-27.578-61.7-61.7s27.578-61.7 61.7-61.7 61.7 27.578 61.7 61.7-27.578 61.7-61.7 61.7z" />
+							</svg>
+						</button>
+					</div>
+				</div>
+				<script>
+					// エンターキーを押した時に呼び出される処理
+					function handleKeydown(event) {
+						if (event.key === "Enter") {
+							redirectToSearchPage(); // エンターキーで検索
+						}
+					}
+
+					// リダイレクト処理（クリック時およびエンターキー時）
+					function redirectToSearchPage() {
+						const searchInputMobile = document.getElementById('searchInputMobile').value;
+						const searchInputDesktop = document.getElementById('searchInputDesktop').value;
+
+						const searchInput = searchInputMobile.trim() !== '' ? searchInputMobile : searchInputDesktop.trim();
+
+						if (searchInput === '') {
+							alert('検索するユーザー名を入力してください');
+							return;
+						}
+
+						// 検索結果ページに遷移
+						window.location.href = `/users/search-results?username=${encodeURIComponent(searchInput)}`;
+					}
+				</script>
+				<!-- いいねと通知アイコン -->
+				<div class="flex items-center gap-6">
+					<!-- いいねアイコン -->
+					<div class="flex flex-col items-center gap-0.5 cursor-pointer">
+						<div class="relative">
+							<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-[#333] icon" viewBox="0 0 64 64">
+								<path
+									d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z" />
+							</svg>
+							<span class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white"
+								id="like-count">0</span>
+						</div>
+						<span class="text-[13px] font-semibold text-[#333]">いいね</span>
+					</div>
+
+					<!-- 通知アイコン -->
+					<div class="flex flex-col items-center gap-0.5 cursor-pointer">
+						<a href="/GameHive/Notifications" class="relative">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+								stroke="currentColor" class="w-6 h-6 icon">
+								<path stroke-linecap="round" stroke-linejoin="round"
+									d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+							</svg>
+							<span class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white"
+								id="notification-count">0</span>
+						</a>
+						<span class="text-[13px] font-semibold text-[#333]">通知</span>
+					</div>
+
+					<script>
+						// ページロード時に通知数を取得して更新
+						window.onload = function () {
+							updateNotificationCount();  // 通知数を取得して更新
+						};
+
+						// 通知数を取得して表示する関数
+						function updateNotificationCount() {
+							fetch("/GameHive/Notifications/count")  // 通知数を取得するAPI
+								.then(response => response.json())
+								.then(data => {
+									const count = data.count;  // 取得した未読通知数
+									const notificationCountElement = document.getElementById('notification-count');
+
+									// 通知数が0なら非表示にし、それ以外なら表示
+									if (count === 0) {
+										notificationCountElement.style.display = 'none';
+									} else {
+										notificationCountElement.style.display = 'block';
+										notificationCountElement.innerText = count;
+									}
+								})
+								.catch(error => console.error('Error fetching notification count:', error));
+						}
+					</script>
+
+					<style>
+						/* 通知アイコンのエフェクト */
+						.icon {
+							transition: transform 0.3s ease;
+						}
+
+						.icon:hover {
+							transform: scale(1.2);
+							/* ホバー時に少し大きく */
+						}
+
+						.icon:active {
+							transform: scale(0.9);
+							/* クリック時に少し小さく */
+						}
+					</style>
+
+
+					<!-- ログアウトボタン -->
+					<form action="/logout" method="get">
+						<button type="submit"
+							class='max-lg:hidden px-4 py-2 text-sm rounded-full text-white border-2 border-slate-400 bg-slate-600 hover:bg-slate-800'>ログアウト</button>
+					</form>
+					<!-- アバター -->
+					<img
+						th:src="@{${user.profileImageName != null ? user.profileImageName : '/images/pdefault.jpeg'}}"
+						alt="Bordered avatar" class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
+
+					<button id="toggleOpen" class='lg:hidden'>
+						<svg class="w-7 h-7" fill="#333" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd"
+								d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+								clip-rule="evenodd"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</div>
+	</header>
+	
+	<main>
+		<div class="bg-white shadow-md rounded-md overflow-hidden max-w-lg mx-auto mt-16">
+    <div class="bg-gray-100 py-2 px-4">
+        <h2 class="text-xl font-semibold text-gray-800">フォロワー</h2>
+    </div>
+    <ul class="divide-y divide-gray-200">
+    <li th:each="follower  : ${followerUsers}" class="flex items-center py-4 px-6">
+       
         
-        <!-- フォロワーがいない場合 -->
-    <li th:if="${#lists.isEmpty(followerUsers)}">フォロワーはまだいません。</li>
-    </ul>
+        <!-- ユーザー画像 -->
+        <img class="w-12 h-12 rounded-full object-cover mr-4" th:src="@{${follower.profileImageName != null ? follower.profileImageName : '/images/pdefault.jpeg'}}" alt="User avatar">
+
+        <!-- ユーザー情報 -->
+        <div class="flex-1">
+            <h3 class="text-lg font-medium text-gray-800">
+							<a class="cursor-pointer hover:underline" th:href="@{/GameHive/Profile/{userId}(userId=${follower.id})}" th:text="${follower.username}"></a>
+						</h3>
+            <p class="text-gray-600 text-base" th:text="${follower.bio}"></p>
+        </div>
+    </li>
+
+    <!-- フォローしているユーザーがいない場合 -->
+    <li th:if="${#lists.isEmpty(followerUsers)}" class="py-4 px-6 text-gray-500">
+        フォローしているユーザーはまだいません。
+    </li>
+</ul>
+
+</div>
+	</main>
+
+<!--    <h1>フォロワー</h1>-->
+
+<!--    <ul>-->
+<!--        <li th:each="user : ${followerUsers}">-->
+<!--            <a th:href="@{/GameHive/Profile/{userId}(userId=${user.id})}" th:text="${user.username}"></a>-->
+<!--        </li>-->
+        
+<!--         フォロワーがいない場合 -->
+<!--    <li th:if="${#lists.isEmpty(followerUsers)}">フォロワーはまだいません。</li>-->
+<!--    </ul>-->
 
 </body>
 </html>
