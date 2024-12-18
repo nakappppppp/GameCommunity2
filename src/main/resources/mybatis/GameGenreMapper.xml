@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.app.mapper.GameGenreMapper">
+<!-- すべてのゲームジャンルを取得 -->
+    <select id="getAllGameGenres" resultType="com.example.app.domain.GameGenre">
+        SELECT id, name, description
+        FROM game_genres
+    </select>
+
+    <!-- ゲームジャンルIDでジャンル情報を取得 -->
+    <select id="findById" resultType="com.example.app.domain.GameGenre">
+        SELECT id, name, description
+        FROM game_genres
+        WHERE id = #{id}
+    </select>
+</mapper>
