@@ -75,7 +75,7 @@
 
 						<!-- アバター (モバイルのみ表示) -->
 						<li class="max-lg:py-3 px-3 lg:hidden">
-							<img th:src="@{${user.profileImage != null ? user.profileImage : '/images/pdefault.jpeg'}}"
+							<img th:src="@{${user.profileImageName != null ? user.profileImageName : '/images/pdefault.jpeg'}}"
 								alt="Bordered avatar"
 								class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
 						</li>

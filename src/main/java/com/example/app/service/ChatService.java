@@ -1,49 +1,59 @@
-//import java.time.LocalDateTime;
-//import java.util.List;
-//
-//import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import com.example.app.domain.Chats;
-//import com.example.app.mapper.ChatMapper;
-//
-//@Service
-//public class ChatService {
-//
-//    private final ChatMapper chatMapper;
-//    private final UsersService usersService;
-//
-//    public ChatService(ChatMapper chatMapper, UsersService usersService) {
-//        this.chatMapper = chatMapper;
-//        this.usersService = usersService;
-//    }
-//
-//    // すべてのチャットメッセージを取得
-//    public List<Chats> getAllChats() {
-//        return chatMapper.selectAllChats();
-//    }
-//
-//    // チャットメッセージを送信
-//    @Transactional
-//    public void sendChat(Chats chat) {
-//        // チャットメッセージの作成日時と更新日時を設定
-//        chat.setCreatedAt(LocalDateTime.now());
-//        chat.setUpdatedAt(LocalDateTime.now());
-//
-//        // メッセージの保存
-//        chatMapper.insertChat(chat);
-//    }
-//
-//    // チャットメッセージを更新
-//    @Transactional
-//    public void updateChat(Chats chat) {
-//        chat.setUpdatedAt(LocalDateTime.now());
-//        chatMapper.updateChat(chat);
-//    }
-//
-//    // チャットメッセージを削除
-//    @Transactional
-//    public void deleteChat(Integer id) {
-//        chatMapper.deleteChat(id);
-//    }
-//}
+package com.example.app.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.app.domain.Chat;
+import com.example.app.domain.Users;
+import com.example.app.mapper.ChatMapper;
+import com.example.app.mapper.UsersMapper;
+
+@Service
+public class ChatService {
+
+    @Autowired
+    private ChatMapper chatMapper;
+
+    @Autowired
+    private UsersMapper usersMapper; // UsersMapperを注入
+
+    // チャットメッセージの取得
+    public List<Chat> getAllChatMessages() {
+        List<Chat> chatMessages = chatMapper.getAllChatMessages();
+        for (Chat chat : chatMessages) {
+            // ユーザー情報を取得してチャットメッセージに追加
+            Users user = usersMapper.findById(chat.getUserId().intValue()); // userIdを元にユーザーを検索
+            chat.setUsername(user.getUsername()); // ユーザー名をセット
+            chat.setProfileImageUrl(user.getProfileImageName()); // アイコン画像をセット
+        }
+        return chatMessages;
+    }
+
+    // チャットメッセージの送信
+    public void sendChatMessage(Chat chat) {
+        // userIdがnullの場合は例外をスロー
+        if (chat.getUserId() == null) {
+            throw new IllegalArgumentException("UserId is required");
+        }
+
+        // ユーザー情報を取得
+        Users user = usersMapper.findById(chat.getUserId());
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        // ユーザー名とプロフィール画像を設定
+        chat.setUsername(user.getUsername());
+        chat.setProfileImageUrl(user.getProfileImageName());
+
+        // チャットメッセージをデータベースに挿入
+        chatMapper.insertChatMessage(chat);
+    }
+
+    // チャットメッセージの更新
+    public void updateChatMessage(Chat chat) {
+        chatMapper.updateChatMessage(chat);
+    }
+}

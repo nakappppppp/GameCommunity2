@@ -4,21 +4,17 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.app.domain.Chats;
+import com.example.app.domain.Chat;
 
 @Mapper
 public interface ChatMapper {
 
-	 // チャットメッセージを全て取得
-  List<Chats> selectAllChats();
+    // チャットメッセージを挿入
+    void insertChatMessage(Chat chat);
 
-  // 新しいチャットメッセージを挿入
-  void insertChat(Chats chat);
+    // チャットメッセージを全て取得
+    List<Chat> getAllChatMessages();
 
-  // チャットメッセージを更新
-  void updateChat(Chats chat);
-
-  // チャットメッセージを削除
-  void deleteChat(Integer id); 
-  
+    // チャットメッセージを更新
+    void updateChatMessage(Chat chat);
 }
