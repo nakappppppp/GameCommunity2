@@ -12,12 +12,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");  // クライアントが購読するトピック
-        config.setApplicationDestinationPrefixes("/app");  // クライアントから送信されるメッセージの前置詞
+        // /topic プレフィックスで始まるメッセージを全クライアントに配信
+        config.enableSimpleBroker("/topic");
+
+        // /app プレフィックスで始まるメッセージはコントローラーで処理
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chat").withSockJS();  // WebSocketの接続エンドポイント
+        // WebSocket エンドポイントを "/GameHive/Chat" に設定
+        registry.addEndpoint("/GameHive/Chat").withSockJS();
     }
 }

@@ -1,83 +1,138 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>リアルタイムチャット</title>
-    <link rel="stylesheet" href="/css/output.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <title>チャット</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        #chat {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+        #messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .message-content {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        #input-message {
+            width: 80%;
+            padding: 5px;
+        }
+        #send-button {
+            padding: 5px 10px;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
+<body>
 
-    <div class="max-w-3xl mx-auto mt-10 p-5 bg-white shadow-lg rounded-lg">
-        <h1 class="text-2xl font-semibold text-center text-indigo-600 mb-6">リアルタイムチャット</h1>
+<!-- Chat のリンク -->
+<a href="/GameHive/Chat" class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Chat</a>
 
-        <!-- チャットメッセージ表示領域 -->
-        <div id="messagesContainer" class="h-80 overflow-y-scroll bg-gray-50 p-4 rounded-lg border border-gray-300 mb-4">
-            <!-- メッセージがここに表示される -->
+<div id="chat">
+    <h3>Chat</h3>
+    <div id="messages" th:each="message : ${chatHistory}">
+        <div class="message">
+            <img th:src="@{${message.profileImageUrl}}" class="profile-image" alt="User Image" />
+            <div>
+                <strong th:text="${message.username}"></strong>
+                <div class="message-content" th:text="${message.content}"></div>
+            </div>
         </div>
-
-        <!-- メッセージ送信用フォーム -->
-        <form id="chatForm" class="flex flex-col">
-            <textarea id="messageContent" rows="3" class="p-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="メッセージを入力..."></textarea>
-            <button type="submit" class="self-end bg-indigo-600 text-white p-3 rounded-lg hover:bg-indigo-700 transition-colors">送信</button>
-        </form>
     </div>
 
-    <script>
-        var stompClient = null;
+    <!-- メッセージ送信フォーム -->
+    <input type="text" id="input-message" placeholder="メッセージを入力">
+    <button id="send-button">送信</button>
+</div>
 
-        // WebSocket接続を確立
-        function connect() {
-            var socket = new SockJS('/chat');  // WebSocketエンドポイントに接続
-            stompClient = Stomp.over(socket);
+<script>
+    var stompClient = null;
+    var userId = /*[[${userId}]]*/ 1; // Thymeleafで動的に埋め込まれたuserIdを取得
 
-            stompClient.connect({}, function(frame) {
-                console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/messages', function(response) {
-                    var chatMessage = JSON.parse(response.body);
-                    displayMessage(chatMessage);
-                });
-            }, function(error) {
-                console.error('WebSocket Error: ' + error);
+    // WebSocket接続を確立する関数
+    function connect() {
+        var socket = new SockJS('/GameHive/Chat'); // 接続先を /GameHive/Chat に変更
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+
+            // メッセージ受信時の処理
+            stompClient.subscribe('/topic/messages', function (messageOutput) {
+                showMessage(JSON.parse(messageOutput.body));
             });
-        }
+        });
+    }
 
-        // メッセージを送信
-        document.getElementById('chatForm').onsubmit = function(event) {
-            event.preventDefault();  // ページ遷移を防止
-
-            var messageContent = document.getElementById('messageContent').value;
-            if (messageContent && stompClient) {
-                var chatMessage = {
-                    user: { id: 1 },  // ユーザーID（適宜変更）
-                    content: messageContent,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                };
-
-                console.log('Sending message: ', chatMessage);  // デバッグ用
-                stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-                document.getElementById('messageContent').value = '';  // 入力欄をクリア
-            } else {
-                console.log('メッセージが空です');  // メッセージが空の場合のデバッグ用
-            }
+    // メッセージを送信する関数
+    function sendMessage() {
+        var messageContent = document.getElementById('input-message').value;
+        var chatMessage = {
+            userId: userId, // 動的に設定されたuserIdを使用
+            content: messageContent
         };
+        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        document.getElementById('input-message').value = ''; // 入力フィールドをクリア
+    }
 
-        // メッセージを画面に表示
-        function displayMessage(chatMessage) {
-            var messageContainer = document.getElementById('messagesContainer');
-            var messageElement = document.createElement('div');
-            messageElement.classList.add('mb-4', 'p-3', 'bg-indigo-100', 'rounded-lg', 'text-gray-800', 'shadow-sm', 'max-w-xl', 'w-full');
-            messageElement.textContent = chatMessage.content;
-            messageContainer.appendChild(messageElement);
-            messageContainer.scrollTop = messageContainer.scrollHeight;  // 最後のメッセージが表示されるようにスクロール
-        }
+    // メッセージを画面に表示する関数
+    function showMessage(chatMessage) {
+        var messagesDiv = document.getElementById('messages');
+        var messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
 
-        // 初期化
+        // ユーザーアイコンとメッセージ内容を追加
+        var profileImg = document.createElement('img');
+        profileImg.src = chatMessage.profileImageUrl;
+        profileImg.classList.add('profile-image');
+
+        var messageContentDiv = document.createElement('div');
+        var userNameDiv = document.createElement('strong');
+        userNameDiv.textContent = chatMessage.username;
+
+        var contentDiv = document.createElement('div');
+        contentDiv.classList.add('message-content');
+        contentDiv.textContent = chatMessage.content;
+
+        messageContentDiv.appendChild(userNameDiv);
+        messageContentDiv.appendChild(contentDiv);
+
+        messageDiv.appendChild(profileImg);
+        messageDiv.appendChild(messageContentDiv);
+
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight; // 新しいメッセージを表示するためにスクロール
+    }
+
+    // 送信ボタンをクリックした時の処理
+    document.getElementById('send-button').addEventListener('click', sendMessage);
+
+    // ページが読み込まれたときにWebSocket接続を開始
+    window.onload = function() {
         connect();
-    </script>
-
+    };
+</script>
 </body>
 </html>
