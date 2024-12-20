@@ -39,7 +39,7 @@ public class FollowService {
                // フォロー通知を作成
                Users followerUser = usersService.findById(followerId.intValue());
                if (followerUser != null) {
-                   String notificationContent = followerUser.getUsername() + "にフォローされました。";
+                   String notificationContent = followerUser.getUsername();
 
                    Notification notification = new Notification(followedId, notificationContent);
                    notificationService.createNotification(notification);

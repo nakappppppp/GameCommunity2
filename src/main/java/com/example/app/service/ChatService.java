@@ -48,12 +48,18 @@ public class ChatService {
         chat.setUsername(user.getUsername());
         chat.setProfileImageUrl(user.getProfileImageName());
 
+        // 現在の時間を設定 (createdAt と updatedAt)
+        chat.setCreatedAt(java.time.LocalDateTime.now());
+        chat.setUpdatedAt(java.time.LocalDateTime.now());
+
         // チャットメッセージをデータベースに挿入
         chatMapper.insertChatMessage(chat);
     }
 
     // チャットメッセージの更新
     public void updateChatMessage(Chat chat) {
+        // updatedAtを設定（更新時）
+        chat.setUpdatedAt(java.time.LocalDateTime.now());
         chatMapper.updateChatMessage(chat);
     }
 }

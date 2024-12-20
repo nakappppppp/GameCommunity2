@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -12,16 +13,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        // /topic プレフィックスで始まるメッセージを全クライアントに配信
+        // メッセージブローカーの設定
         config.enableSimpleBroker("/topic");
-
-        // /app プレフィックスで始まるメッセージはコントローラーで処理
         config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // WebSocket エンドポイントを "/GameHive/Chat" に設定
-        registry.addEndpoint("/GameHive/Chat").withSockJS();
+        // WebSocketの接続エンドポイントを設定し、HttpSessionHandshakeInterceptorをインターセプターとして追加
+        registry.addEndpoint("/GameHive/Chat")  // パスをクライアントのコードに合わru
+                .withSockJS()
+                .setInterceptors(new HttpSessionHandshakeInterceptor()); // ここでインターセプターを追加
     }
 }
