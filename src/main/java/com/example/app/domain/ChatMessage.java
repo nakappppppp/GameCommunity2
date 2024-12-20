@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class ChatMessage {
 
-    private Long userId;         // ユーザーID
+    private Integer userId;         // ユーザーID
     private String userName;     // ユーザー名
     private String iconUrl;      // ユーザーアイコンURL
     private String content;      // メッセージ内容
@@ -16,7 +16,7 @@ public class ChatMessage {
     private LocalDateTime updatedAt;  // 更新日時
 
     // コンストラクタ
-    public ChatMessage(Long userId, String userName, String iconUrl, String content, String imageUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ChatMessage(Integer userId, String userName, String iconUrl, String content, String imageUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userId = userId;
         this.userName = userName;
         this.iconUrl = iconUrl;
