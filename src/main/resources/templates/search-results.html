@@ -66,10 +66,12 @@
 
 						<!-- ログアウトボタン (モバイルのみ表示) -->
 						<li class="max-lg:py-3 px-3 lg:hidden">
-							<button
-								class="px-4 py-2 text-sm rounded-full text-white border-2 border-slate-400 bg-slate-600 hover:bg-slate-800">
-								ログアウト
-							</button>
+							<form action="/logout" method="get">
+								<button
+									class="px-4 py-2 text-sm rounded-full text-white border-2 border-slate-400 bg-slate-600 hover:bg-slate-800">
+									ログアウト
+								</button>
+							</form>
 						</li>
 
 						<!-- アバター (モバイルのみ表示) -->
@@ -212,10 +214,12 @@
 							}
 						</style>
 
-						<!-- ログアウトボタン -->
-						<button
+							<!-- ログアウトボタン -->
+					<form action="/logout" method="get">
+						<button type="submit"
 							class='max-lg:hidden px-4 py-2 text-sm rounded-full text-white border-2 border-slate-400 bg-slate-600 hover:bg-slate-800'>ログアウト</button>
-
+					</form>
+					
 						<!-- アバター -->
 						<img th:src="@{${user2.profileImageName != null ? user2.profileImageName : '/images/pdefault.jpeg'}}"
 							alt="Bordered avatar" class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
