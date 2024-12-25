@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>チャット</title>
-    <link rel="stylesheet" href="/css/output.css" />
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+	<meta charset="UTF-8">
+	<title>チャット</title>
+	<link rel="stylesheet" href="/css/output.css" />
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 </head>
-<body class="bg-gray-100">
+
+<body class="bg-yellow-50">
 	<header
 		class='flex bg-yellow-300 border-b py-3 sm:px-6 px-4 font-[sans-serif] min-h-[75px] tracking-wide relative z-50'>
 		<div class='flex max-w-screen-xl mx-auto w-full'>
@@ -49,11 +51,11 @@
 					<ul
 						class="lg:flex lg:gap-x-3 max-lg:space-y-3 max-lg:fixed max-lg:bg-yellow-300 max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
 						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
-							<a href='/GameHive/home'
-								class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Home</a>
+							<a href='/GameHive/home' class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Home</a>
 						</li>
 						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
-							<a href='/GameHive/Chat' class="text-[#007bff] hover:text-[#007bff] text-[15px] block font-semibold">Chat</a>
+							<a href='/GameHive/Chat'
+								class="text-[#007bff] hover:text-[#007bff] text-[15px] block font-semibold">Chat</a>
 						</li>
 						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
 							<a href='/GameHive/CreateMatchRequest'
@@ -64,7 +66,7 @@
 								class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Profile</a>
 						</li>
 
-					<!-- ログアウトボタン (モバイルのみ表示) -->
+						<!-- ログアウトボタン (モバイルのみ表示) -->
 						<li class="max-lg:py-3 px-3 lg:hidden">
 							<form action="/logout" method="get">
 								<button
@@ -215,7 +217,7 @@
 						}
 					</style>
 
-						<!-- ログアウトボタン -->
+					<!-- ログアウトボタン -->
 					<form action="/logout" method="get">
 						<button type="submit"
 							class='max-lg:hidden px-4 py-2 text-sm rounded-full text-white border-2 border-slate-400 bg-slate-600 hover:bg-slate-800'>ログアウト</button>
@@ -236,38 +238,82 @@
 		</div>
 	</header>
 
-<main>
-<!-- Chat のリンク -->
-<a href="/GameHive/Chat" class="text-gray-800 hover:text-blue-600 text-sm font-semibold block p-4 text-center">Chat</a>
 
-<div id="chat" class="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-8">
-    <h3 class="text-2xl font-semibold text-gray-900 text-center mb-4">チャット</h3>
 
-    <!-- メッセージ一覧 -->
-<div id="messages" class="overflow-y-auto max-h-[400px] mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200 space-y-4">
-    <div class="message flex items-start space-x-4" th:each="message : ${chatHistory}">
-        <img th:src="@{${message.profileImageUrl}}" class="w-12 h-12 rounded-full" alt="User Image">
-        <div class="flex flex-col space-y-1">
-            <div class="flex items-center space-x-2">
-                <!-- ユーザー名をリンクに変更 -->
-                <a th:href="@{/GameHive/Profile/{userId}(userId=${message.userId})}" class="text-lg font-semibold text-gray-800 hover:text-blue-500" th:text="${message.username}"></a>
-                <span class="text-sm text-gray-500" th:text="${#temporals.format(message.createdAt, 'MM/dd HH:mm')}"></span>
-            </div>
-            <div class="bg-gray-200 text-gray-800 p-3 rounded-lg max-w-[80%]" th:text="${message.content}"></div>
-        </div>
-    </div>
-</div>
+	<main>
+		<!-- Chat link -->
 
-    <!-- メッセージ送信フォーム -->
-    <div class="flex items-center space-x-4">
-        <input type="text" id="input-message" placeholder="メッセージを入力" class="w-full p-3 bg-gray-100 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
-        <button id="send-button" class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">送信</button>
-    </div>
-</div>
+		<div class="flex flex-col lg:flex-row">
+			<!-- Chat Section (Left side) -->
+			<div id="chat" class="lg:w-3/4 lg:h-full p-6 bg-white shadow-lg rounded-lg">
+				<h3 class="text-2xl font-semibold text-gray-900 text-center mb-4">ホームチャット</h3>
 
-<script>
+				<!-- New message notification -->
+				<div id="new-messages-notification"
+					class="hidden fixed bottom-5 left-1/2 transform -translate-x-1/2 p-4 bg-blue-600 text-white rounded-lg cursor-pointer">
+					<span id="new-messages-count">新着チャット0件</span>
+				</div>
+
+				<!-- Message list -->
+				<div id="messages"
+					class="overflow-y-auto max-h-[800px] mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200 space-y-4 flex flex-col-reverse">
+					<!-- Thymeleaf integration -->
+					<div th:each="message : ${chatHistory}">
+						<div class="message flex items-start space-x-4" th:id="'message-' + ${message.id}">
+							<img th:src="@{${message.profileImageUrl}}" class="w-10 h-11 rounded-full" alt="User Image">
+							<div class="grid">
+								<h5 class="text-gray-900 text-sm font-semibold pb-1" th:text="${message.username}"></h5>
+								<div class="w-max grid">
+									<!-- Message bubble -->
+									<div class="px-3.5 py-2 bg-gray-100 rounded justify-start items-center gap-3 inline-flex">
+										<h5 class="text-gray-900 text-sm font-normal leading-snug" th:text="${message.content}"></h5>
+									</div>
+									<div class="justify-end items-center inline-flex mb-2.5">
+										<h6 class="text-gray-500 text-xs font-normal py-1"
+											th:text="${#temporals.format(message.createdAt, 'MM/dd HH:mm')}"></h6>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Message input form -->
+				<div
+					class="w-full pl-3 pr-1 py-1 rounded-3xl border border-gray-200 items-center gap-2 inline-flex justify-between">
+					<div class="flex items-center gap-2">
+						<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+							<path
+								d="M6.05 17.6C6.05 15.3218 8.26619 13.475 11 13.475C13.7338 13.475 15.95 15.3218 15.95 17.6M13.475 8.525C13.475 9.89191 12.3669 11 11 11C9.6331 11 8.525 9.89191 8.525 8.525C8.525 7.1581 9.6331 6.05 11 6.05C12.3669 6.05 13.475 7.1581 13.475 8.525ZM19.25 11C19.25 15.5563 15.5563 19.25 11 19.25C6.44365 19.25 2.75 15.5563 2.75 11C2.75 6.44365 6.44365 2.75 11 2.75C15.5563 2.75 19.25 6.44365 19.25 11Z"
+								stroke="#4F46E5" stroke-width="1.6" />
+						</svg>
+						<input id="input-message" class="grow shrink basis-0 text-black text-xs font-medium focus:outline-none"
+							placeholder="Type here...">
+					</div>
+					<div class="flex items-center gap-2">
+						<svg class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"
+							fill="none">
+							<path
+								d="M14.9332 7.79175L8.77551 14.323C8.23854 14.8925 7.36794 14.8926 6.83097 14.323C6.294 13.7535 6.294 12.83 6.83097 12.2605L12.9887 5.72925M12.3423 6.41676L13.6387 5.04176C14.7126 3.90267 16.4538 3.90267 17.5277 5.04176C18.6017 6.18085 18.6017 8.02767 17.5277 9.16676L16.2314 10.5418M16.8778 9.85425L10.72 16.3855C9.10912 18.0941 6.49732 18.0941 4.88641 16.3855C3.27549 14.6769 3.27549 11.9066 4.88641 10.198L11.0441 3.66675"
+								stroke="black" stroke-opacity="0.2" stroke-width="1.6" />
+						</svg>
+						<button id="send-button" class="items-center flex px-3 py-2 bg-yellow-500 rounded-full shadow">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+								<path
+									d="M9.04071 6.959L6.54227 9.45744M6.89902 10.0724L7.03391 10.3054C8.31034 12.5102 8.94855 13.6125 9.80584 13.5252C10.6631 13.4379 11.0659 12.2295 11.8715 9.81261L13.0272 6.34566C13.7631 4.13794 14.1311 3.03408 13.5484 2.45139C12.9657 1.8687 11.8618 2.23666 9.65409 2.97257L6.18714 4.12822C3.77029 4.93383 2.56187 5.33664 2.47454 6.19392C2.38721 7.0512 3.48957 7.68941 5.69431 8.96584L5.92731 9.10074C6.23326 9.27786 6.38623 9.36643 6.50978 9.48998C6.63333 9.61352 6.72189 9.7665 6.89902 10.0724Z"
+									stroke="black" stroke-width="1.6" stroke-linecap="round" />
+							</svg>
+							<h3 class="text-black text-xs font-semibold leading-4 px-2">chat</h3>
+						</button>
+					</div>
+				</div>
+			</div>
+
+		<script>
     var stompClient = null;
-    var userId = /*[[${userId}]]*/ 1; // Thymeleafで動的に埋め込まれたuserIdを取得
+    var userId = null; // ユーザーIDをここで初期化
+    var newMessagesCount = 0; // 新着メッセージのカウント
+    var isScrolledToBottom = true; // メッセージリストが最下部までスクロールされているかどうかを判定
 
     // WebSocket接続を確立する関数
     function connect() {
@@ -284,74 +330,243 @@
         });
     }
 
+    // サーバーサイドからユーザーIDを取得してsessionStorageに保存
+    function getUserIdFromServer() {
+        fetch('/api/getUserId') // ユーザーIDを取得するAPIエンドポイント
+            .then(response => response.json())
+            .then(data => {
+                if (data.userId) {
+                    sessionStorage.setItem('userId', data.userId); // 取得したユーザーIDを保存
+                    userId = data.userId; // userId変数にも保存
+                    console.log("ユーザーID取得成功:", userId);
+                    connect(); // ユーザーIDが取得できたらWebSocket接続を開始
+                } else {
+                    console.error("ユーザーIDが取得できません");
+                }
+            })
+            .catch(error => {
+                console.error("サーバーエラー:", error);
+            });
+    }
+
     // メッセージを送信する関数
     function sendMessage() {
+        if (!userId) {
+            console.error("ユーザーIDが設定されていません。ログインしているか確認してください。");
+            return;
+        }
+
         var messageContent = document.getElementById('input-message').value;
         var chatMessage = {
             userId: userId, // 動的に設定されたuserIdを使用
             content: messageContent
         };
+
+        console.log("送信するメッセージのuserId:", chatMessage.userId); // デバッグ用
+
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         document.getElementById('input-message').value = ''; // 入力フィールドをクリア
+        isScrolledToBottom = true; // 自分がメッセージを送信したときにはスクロールを最下部に戻す
     }
 
     // メッセージを画面に表示する関数
     function showMessage(chatMessage) {
+        console.log("受信したメッセージのuserId:", chatMessage.userId);  // デバッグ用
+
         var messagesDiv = document.getElementById('messages');
         var messageDiv = document.createElement('div');
         messageDiv.classList.add('message', 'flex', 'items-start', 'space-x-4');
 
+        // 自分のメッセージかどうかを判定して配置を変更
+        if (chatMessage.userId === userId) {
+            messageDiv.classList.add('flex-row-reverse'); // 自分のメッセージは右側に配置
+            console.log("背景色を設定するクラス:", 'bg-blue-100'); // デバッグ用
+            messageDiv.classList.add('bg-blue-100'); // 背景色を変更（自分のメッセージ用）
+        }
+
         // ユーザーアイコンとメッセージ内容を追加
         var profileImg = document.createElement('img');
         profileImg.src = chatMessage.profileImageUrl ? chatMessage.profileImageUrl : '/path/to/default_image.png'; // プロフィール画像URL
-        profileImg.classList.add('w-12', 'h-12', 'rounded-full');
+        profileImg.classList.add('w-10', 'h-11', 'rounded-full');
 
         var messageContentDiv = document.createElement('div');
-        messageContentDiv.classList.add('flex', 'flex-col', 'space-y-1');
+        messageContentDiv.classList.add('grid');
 
         // ユーザー名とメッセージ送信時間
-        var userAndTimeDiv = document.createElement('div');
-        userAndTimeDiv.classList.add('flex', 'items-center', 'space-x-2');
-
-        var userNameDiv = document.createElement('strong');
-        userNameDiv.classList.add('text-lg', 'font-semibold', 'text-gray-800');
+        var userNameDiv = document.createElement('h5');
+        userNameDiv.classList.add('text-sm', 'font-semibold', 'text-gray-900', 'pb-1');
         userNameDiv.textContent = chatMessage.username; // 送信者のユーザー名
-
-        // 送信日時をフォーマット
-        var timeDiv = document.createElement('span');
-        timeDiv.classList.add('text-sm', 'text-gray-500');
-
-        // createdAt が Unix タイムスタンプか ISO 8601 形式の文字列で渡されていると仮定
-        var messageTime = new Date(chatMessage.createdAt); // 日時を Date オブジェクトに変換
-        timeDiv.textContent = messageTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // HH:mm形式で表示
-
-        userAndTimeDiv.appendChild(userNameDiv);
-        userAndTimeDiv.appendChild(timeDiv);
 
         // メッセージ内容
         var contentDiv = document.createElement('div');
-        contentDiv.classList.add('bg-gray-200', 'text-gray-800', 'p-3', 'rounded-lg', 'max-w-[80%]');
-        contentDiv.textContent = chatMessage.content; // メッセージ内容
+        contentDiv.classList.add('px-3.5', 'py-2', 'bg-gray-100', 'rounded', 'justify-start', 'items-center', 'gap-3', 'inline-flex');
+        var messageText = document.createElement('h5');
+        messageText.classList.add('text-sm', 'font-normal', 'text-gray-900', 'leading-snug');
+        messageText.textContent = chatMessage.content;
 
-        messageContentDiv.appendChild(userAndTimeDiv);
+        contentDiv.appendChild(messageText);
+
+        // 送信日時を MM/dd HH:mm 形式に変換
+        var messageTime = new Date(chatMessage.createdAt); // 日時を Date オブジェクトに変換
+        var formattedDate = (messageTime.getMonth() + 1) + '/' + messageTime.getDate() + ' ' +
+            messageTime.getHours().toString().padStart(2, '0') + ':' +
+            messageTime.getMinutes().toString().padStart(2, '0'); // MM/dd HH:mm形式で整形
+
+        // 時間を表示する div を作成
+        var timeDiv = document.createElement('h6');
+        timeDiv.classList.add('text-gray-500', 'text-xs', 'font-normal', 'py-1');
+        timeDiv.textContent = formattedDate; // フォーマットされた日時を表示
+
+        messageContentDiv.appendChild(userNameDiv);
         messageContentDiv.appendChild(contentDiv);
+        messageContentDiv.appendChild(timeDiv); // 日時をメッセージの下に追加
 
         messageDiv.appendChild(profileImg);
         messageDiv.appendChild(messageContentDiv);
 
-        messagesDiv.appendChild(messageDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight; // 新しいメッセージを表示するためにスクロール
+        // メッセージをメッセージリストの最上部に追加
+        messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
+
+        // 通知を表示（新着メッセージがある場合）
+        if (!isScrolledToBottom) {
+            newMessagesCount++;
+            document.getElementById('new-messages-count').textContent = '新着チャット' + newMessagesCount + '件';
+            document.getElementById('new-messages-notification').classList.remove('hidden');
+        } else {
+            // スクロールが最下部に達していれば、自動でスクロール
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
     }
 
-    // 送信ボタンをクリックした時の処理
-    document.getElementById('send-button').addEventListener('click', sendMessage);
+    // スクロール時の動作を制御
+    document.getElementById('messages').addEventListener('scroll', function () {
+        var messagesDiv = document.getElementById('messages');
+        isScrolledToBottom = messagesDiv.scrollHeight - messagesDiv.scrollTop === messagesDiv.clientHeight;
+    });
 
-    // ページが読み込まれたときにWebSocket接続を開始
-    window.onload = function() {
-        connect();
-    };
+    // 新着メッセージ通知をクリックした場合
+    document.getElementById('new-messages-notification').addEventListener('click', function () {
+        document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+        document.getElementById('new-messages-notification').classList.add('hidden');
+        newMessagesCount = 0; // 通知カウントをリセット
+    });
+
+    // メッセージ送信ボタンをクリックした時の処理
+    document.getElementById('send-button').addEventListener('click', function () {
+        sendMessage();
+    });
+
+    // エンターキーでメッセージを送信
+    document.getElementById('input-message').addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Enterキーのデフォルト動作を防ぐ
+            sendMessage(); // 送信処理を呼び出す
+        }
+    });
+
+    // ユーザーIDをサーバーから取得してWebSocket接続を開始
+    getUserIdFromServer();
 </script>
-</main>
+
+
+
+			<!-- Right side content (for example, a sidebar) -->
+			<!-- 右側のコンテンツ (追加されたセクション) -->
+			<section class="text-gray-600 body-font lg:w-1/4 mx-auto">
+				<div class="container px-5 py-24 mx-auto flex flex-wrap">
+					<div class="flex flex-col flex-wrap lg:py-6 -mb-10 lg:pl-12 lg:text-left text-center">
+						<!-- block Icon Section -->
+						<div class="flex flex-col mb-10 lg:items-start items-center">
+							<div
+								class="w-12 h-12 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-5">
+								<!-- block Icon -->
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" class="size-6 w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round"
+										d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
+								</svg>
+
+
+							</div>
+							<div class="flex-grow">
+								<h2 class="text-gray-900 text-lg title-font font-medium mb-3">違反行為の報告・ユーザーのブロック</h2>
+								<p class="leading-relaxed text-base">違反行為の報告とユーザーのブロックができます。</p>
+								<a class="mt-3 text-indigo-500 inline-flex items-center">こちら
+									<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										class="w-4 h-4 ml-2" viewBox="0 0 24 24">
+										<path d="M5 12h14M12 5l7 7-7 7"></path>
+									</svg>
+								</a>
+							</div>
+						</div>
+
+						<!-- voice Icon Section -->
+						<div class="flex flex-col mb-10 lg:items-start items-center">
+							<div
+								class="w-12 h-12 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-5">
+								<!-- voice Icon -->
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" class="size-6 w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round"
+										d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+								</svg>
+
+
+							</div>
+							<div class="flex-grow">
+								<h2 class="text-gray-900 text-lg title-font font-medium mb-3">ボイスチャット</h2>
+								<p class="leading-relaxed text-base">音声を通じたコミュニケーションができます。</p>
+								<a class="mt-3 text-indigo-500 inline-flex items-center">こちら
+									<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										class="w-4 h-4 ml-2" viewBox="0 0 24 24">
+										<path d="M5 12h14M12 5l7 7-7 7"></path>
+									</svg>
+								</a>
+							</div>
+						</div>
+
+						<!-- calendar Icon Section -->
+						<div class="flex flex-col mb-10 lg:items-start items-center">
+							<div
+								class="w-12 h-12 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 mb-5">
+								<!-- calendar Icon -->
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+									stroke="currentColor" class="size-6 w-6 h-6">
+									<path stroke-linecap="round" stroke-linejoin="round"
+										d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+								</svg>
+
+							</div>
+							<div class="flex-grow">
+								<h2 class="text-gray-900 text-lg title-font font-medium mb-3">日程の調整・確認</h2>
+								<p class="leading-relaxed text-base">対戦、協力プレイの日程調整や日程の確認ができます。</p>
+								<a class="mt-3 text-indigo-500 inline-flex items-center">こちら
+									<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+										class="w-4 h-4 ml-2" viewBox="0 0 24 24">
+										<path d="M5 12h14M12 5l7 7-7 7"></path>
+									</svg>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+
+
+
+	</main>
+
+	<aside>
+
+	</aside>
+
+
+
+
+
 
 </body>
+
 </html>
