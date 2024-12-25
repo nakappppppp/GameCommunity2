@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.app.mapper.MatchRequestMapper">
-<!-- 特定のユーザーの対戦募集リストを取得 -->
+ <!-- 新しい対戦募集をデータベースに追加 -->
+    <insert id="createMatchRequest" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO match_requests (user_id, game_genre_id, status, requested_at)
+        VALUES (#{userId}, #{gameGenreId}, #{status}, #{requestedAt})
+    </insert>
+
+    <!-- 募集中の対戦相手情報を取得 -->
+    <select id="getAvailableMatchRequests" resultType="com.example.app.domain.MatchRequest">
+        SELECT id, user_id, game_genre_id, requested_at, status
+        FROM match_requests
+        WHERE status = '募集中'
+    </select>
+
+    <!-- 他のSQL文 -->
     <select id="findByUserId" resultType="com.example.app.domain.MatchRequest">
         SELECT id, user_id, game_genre_id, requested_at, status
         FROM match_requests
         WHERE user_id = #{userId}
     </select>
 
-    <!-- 特定のゲームジャンルの対戦募集リストを取得 -->
     <select id="findByGameGenreId" resultType="com.example.app.domain.MatchRequest">
         SELECT id, user_id, game_genre_id, requested_at, status
         FROM match_requests
         WHERE game_genre_id = #{gameGenreId}
     </select>
 
-    <!-- 新しい対戦募集をデータベースに追加 -->
-    <insert id="insertMatchRequest" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO match_requests (user_id, game_genre_id, status)
-        VALUES (#{userId}, #{gameGenreId}, #{status})
-    </insert>
-
-    <!-- 対戦募集のステータスを更新 -->
     <update id="updateMatchRequestStatus">
         UPDATE match_requests
         SET status = #{status}

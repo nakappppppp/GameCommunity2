@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>募集中の対戦リクエスト</title>
+    <link rel="stylesheet" href="/css/output.css" />
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold text-center text-blue-600 mb-8">募集中の対戦リクエスト</h1>
+
+    <!-- 募集中の対戦リクエストがない場合 -->
+    <div th:if="${matchRequests.isEmpty()}" class="text-center">
+        <p class="text-xl text-gray-600">現在、募集中の対戦リクエストはありません。</p>
+    </div>
+
+    <!-- 募集中の対戦リクエストがある場合 -->
+    <div th:if="${not matchRequests.isEmpty()}">
+        <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+            <table class="min-w-full table-auto">
+                <thead class="bg-blue-500 text-white">
+                    <tr>
+                        <th class="px-4 py-2 text-left">#</th>
+                        <th class="px-4 py-2 text-left">ユーザー名</th>
+                        <th class="px-4 py-2 text-left">ゲームジャンル</th>
+                        <th class="px-4 py-2 text-left">募集開始日時</th>
+                        <th class="px-4 py-2 text-left">ステータス</th>
+                        <th class="px-4 py-2 text-left">アクション</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <!-- 各リクエストをループで表示 -->
+                    <tr th:each="matchRequest : ${matchRequests}">
+                        <td class="px-4 py-2 text-gray-800" th:text="${matchRequest.id}"></td>
+                        <td class="px-4 py-2 text-gray-800" th:text="${matchRequest.userName}"></td>
+                        <td class="px-4 py-2 text-gray-800" th:text="${matchRequest.gameGenreName}"></td>
+                        <td class="px-4 py-2 text-gray-800" th:text="${#temporals.format(matchRequest.requestedAt, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td class="px-4 py-2 text-gray-800" th:text="${matchRequest.status}"></td>
+                        <td class="px-4 py-2 text-center">
+                            <!-- 詳細ボタンを表示 -->
+                            <a th:href="@{/matchRequest/{id}(id=${matchRequest.id})}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out">詳細</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

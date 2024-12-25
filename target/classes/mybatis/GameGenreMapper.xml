@@ -13,4 +13,5 @@
         FROM game_genres
         WHERE id = #{id}
     </select>
+    
 </mapper>

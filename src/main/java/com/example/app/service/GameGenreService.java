@@ -18,4 +18,8 @@ public class GameGenreService {
     public List<GameGenre> getAllGameGenres() {
         return gameGenreMapper.getAllGameGenres();
     }
+ // ユーザーIDでユーザーを検索
+    public GameGenre findById(Integer id) {
+        return gameGenreMapper.findById(id);
+    }
 }
