@@ -138,8 +138,8 @@ public class ProfileController {
 			// 画像のアップロードがあった場合の処理
 			if (file != null && !file.isEmpty()) {
 				// 保存先のディレクトリを指定
-				//String uploadDir = "C:/Users/zd2Q15/pleiades/workspace/GameCommunity/src/main/resources/static/images/";
-				String uploadDir = "/Applications/Eclipse_2023-12.app/Contents/workspace/GameCommunity2/src/main/resources/static/images/";
+				String uploadDir = "C:/Users/zd2Q15/pleiades/workspace/GameCommunity/src/main/resources/static/images/";
+				//String uploadDir = "/Applications/Eclipse_2023-12.app/Contents/workspace/GameCommunity2/src/main/resources/static/images/";
 				File dir = new File(uploadDir);
 				if (!dir.exists()) {
 					dir.mkdirs(); // ディレクトリがない場合は作成

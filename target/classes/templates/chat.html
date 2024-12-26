@@ -262,7 +262,10 @@
 						<div class="message flex items-start space-x-4" th:id="'message-' + ${message.id}">
 							<img th:src="@{${message.profileImageUrl}}" class="w-10 h-11 rounded-full" alt="User Image">
 							<div class="grid">
-								<h5 class="text-gray-900 text-sm font-semibold pb-1" th:text="${message.username}"></h5>
+								<a th:href="@{/GameHive/Profile/{userId}(userId=${message.userId})}">
+									<h5 class="text-gray-900 text-sm font-semibold pb-1 hover:text-yellow-400"
+										th:text="${message.username}"></h5>
+								</a>
 								<div class="w-max grid">
 									<!-- Message bubble -->
 									<div class="px-3.5 py-2 bg-gray-100 rounded justify-start items-center gap-3 inline-flex">
@@ -288,7 +291,7 @@
 								stroke="#4F46E5" stroke-width="1.6" />
 						</svg>
 						<input id="input-message" class="grow shrink basis-0 text-black text-xs font-medium focus:outline-none"
-							placeholder="Type here...">
+							placeholder="チャット内容を入力してください">
 					</div>
 					<div class="flex items-center gap-2">
 						<svg class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"
@@ -309,164 +312,176 @@
 				</div>
 			</div>
 
-		<script>
-    var stompClient = null;
-    var userId = null; // ユーザーIDをここで初期化
-    var newMessagesCount = 0; // 新着メッセージのカウント
-    var isScrolledToBottom = true; // メッセージリストが最下部までスクロールされているかどうかを判定
+			<script>
+				var stompClient = null;
+				var userId = null; // ユーザーIDをここで初期化
+				var newMessagesCount = 0; // 新着メッセージのカウント
+				var isScrolledToBottom = true; // メッセージリストが最下部までスクロールされているかどうかを判定
 
-    // WebSocket接続を確立する関数
-    function connect() {
-        var socket = new SockJS('/GameHive/Chat'); // 接続先を /GameHive/Chat に変更
-        stompClient = Stomp.over(socket);
+				// WebSocket接続を確立する関数
+				function connect() {
+					var socket = new SockJS('/GameHive/Chat'); // 接続先を /GameHive/Chat に変更
+					stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
+					stompClient.connect({}, function (frame) {
+						console.log('Connected: ' + frame);
 
-            // メッセージ受信時の処理
-            stompClient.subscribe('/topic/messages', function (messageOutput) {
-                showMessage(JSON.parse(messageOutput.body));
-            });
-        });
-    }
+						// メッセージ受信時の処理
+						stompClient.subscribe('/topic/messages', function (messageOutput) {
+							showMessage(JSON.parse(messageOutput.body));
+						});
+					});
+				}
 
-    // サーバーサイドからユーザーIDを取得してsessionStorageに保存
-    function getUserIdFromServer() {
-        fetch('/api/getUserId') // ユーザーIDを取得するAPIエンドポイント
-            .then(response => response.json())
-            .then(data => {
-                if (data.userId) {
-                    sessionStorage.setItem('userId', data.userId); // 取得したユーザーIDを保存
-                    userId = data.userId; // userId変数にも保存
-                    console.log("ユーザーID取得成功:", userId);
-                    connect(); // ユーザーIDが取得できたらWebSocket接続を開始
-                } else {
-                    console.error("ユーザーIDが取得できません");
-                }
-            })
-            .catch(error => {
-                console.error("サーバーエラー:", error);
-            });
-    }
+				// サーバーサイドからユーザーIDを取得してsessionStorageに保存
+				function getUserIdFromServer() {
+					fetch('/api/getUserId') // ユーザーIDを取得するAPIエンドポイント
+						.then(response => response.json())
+						.then(data => {
+							if (data.userId) {
+								sessionStorage.setItem('userId', data.userId); // 取得したユーザーIDを保存
+								userId = data.userId; // userId変数にも保存
+								console.log("ユーザーID取得成功:", userId);
+								connect(); // ユーザーIDが取得できたらWebSocket接続を開始
+							} else {
+								console.error("ユーザーIDが取得できません");
+							}
+						})
+						.catch(error => {
+							console.error("サーバーエラー:", error);
+						});
+				}
 
-    // メッセージを送信する関数
-    function sendMessage() {
-        if (!userId) {
-            console.error("ユーザーIDが設定されていません。ログインしているか確認してください。");
-            return;
-        }
+				// メッセージを送信する関数
+				function sendMessage() {
+					if (!userId) {
+						console.error("ユーザーIDが設定されていません。ログインしているか確認してください。");
+						return;
+					}
 
-        var messageContent = document.getElementById('input-message').value;
-        var chatMessage = {
-            userId: userId, // 動的に設定されたuserIdを使用
-            content: messageContent
-        };
+					var messageContent = document.getElementById('input-message').value;
+					var chatMessage = {
+						userId: userId, // 動的に設定されたuserIdを使用
+						content: messageContent
+					};
 
-        console.log("送信するメッセージのuserId:", chatMessage.userId); // デバッグ用
+					console.log("送信するメッセージのuserId:", chatMessage.userId); // デバッグ用
 
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
-        document.getElementById('input-message').value = ''; // 入力フィールドをクリア
-        isScrolledToBottom = true; // 自分がメッセージを送信したときにはスクロールを最下部に戻す
-    }
+					stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+					document.getElementById('input-message').value = ''; // 入力フィールドをクリア
+					isScrolledToBottom = true; // 自分がメッセージを送信したときにはスクロールを最下部に戻す
+				}
 
-    // メッセージを画面に表示する関数
-    function showMessage(chatMessage) {
-        console.log("受信したメッセージのuserId:", chatMessage.userId);  // デバッグ用
+				// メッセージを画面に表示する関数
+				function showMessage(chatMessage) {
+					console.log("受信したメッセージのuserId:", chatMessage.userId);  // デバッグ用
 
-        var messagesDiv = document.getElementById('messages');
-        var messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', 'flex', 'items-start', 'space-x-4');
+					var messagesDiv = document.getElementById('messages');
+					var messageDiv = document.createElement('div');
+					messageDiv.classList.add('message', 'flex', 'items-start', 'space-x-4');
 
-        // 自分のメッセージかどうかを判定して配置を変更
-        if (chatMessage.userId === userId) {
-            messageDiv.classList.add('flex-row-reverse'); // 自分のメッセージは右側に配置
-            console.log("背景色を設定するクラス:", 'bg-blue-100'); // デバッグ用
-            messageDiv.classList.add('bg-blue-100'); // 背景色を変更（自分のメッセージ用）
-        }
+					// 自分のメッセージかどうかを判定して配置を変更
+					if (chatMessage.userId === userId) {
+						messageDiv.classList.add('flex-row-reverse'); // 自分のメッセージは右側に配置
+						console.log("背景色を設定するクラス:", 'bg-blue-100'); // デバッグ用
+						messageDiv.classList.add('bg-blue-100'); // 背景色を変更（自分のメッセージ用）
+					}
 
-        // ユーザーアイコンとメッセージ内容を追加
-        var profileImg = document.createElement('img');
-        profileImg.src = chatMessage.profileImageUrl ? chatMessage.profileImageUrl : '/path/to/default_image.png'; // プロフィール画像URL
-        profileImg.classList.add('w-10', 'h-11', 'rounded-full');
+					// ユーザーアイコンとメッセージ内容を追加
+					var profileImg = document.createElement('img');
+					profileImg.src = chatMessage.profileImageUrl ? chatMessage.profileImageUrl : '/path/to/default_image.png'; // プロフィール画像URL
+					profileImg.classList.add('w-10', 'h-11', 'rounded-full');
 
-        var messageContentDiv = document.createElement('div');
-        messageContentDiv.classList.add('grid');
+					var messageContentDiv = document.createElement('div');
+					messageContentDiv.classList.add('grid');
 
-        // ユーザー名とメッセージ送信時間
-        var userNameDiv = document.createElement('h5');
-        userNameDiv.classList.add('text-sm', 'font-semibold', 'text-gray-900', 'pb-1');
-        userNameDiv.textContent = chatMessage.username; // 送信者のユーザー名
+					// ユーザー名とメッセージ送信時間
+					var userNameDiv = document.createElement('h5');
+					userNameDiv.classList.add('text-sm', 'font-semibold', 'text-gray-900', 'pb-1');
 
-        // メッセージ内容
-        var contentDiv = document.createElement('div');
-        contentDiv.classList.add('px-3.5', 'py-2', 'bg-gray-100', 'rounded', 'justify-start', 'items-center', 'gap-3', 'inline-flex');
-        var messageText = document.createElement('h5');
-        messageText.classList.add('text-sm', 'font-normal', 'text-gray-900', 'leading-snug');
-        messageText.textContent = chatMessage.content;
+					// aタグを作成
+					var profileLink = document.createElement('a');
+					profileLink.classList.add('text-gray-900', 'text-sm', 'font-semibold', 'pb-1', 'hover:text-yellow-400');
 
-        contentDiv.appendChild(messageText);
+					// ユーザーIDを使ってリンクを作成
+					profileLink.setAttribute('href', '/GameHive/Profile/' + chatMessage.userId);
 
-        // 送信日時を MM/dd HH:mm 形式に変換
-        var messageTime = new Date(chatMessage.createdAt); // 日時を Date オブジェクトに変換
-        var formattedDate = (messageTime.getMonth() + 1) + '/' + messageTime.getDate() + ' ' +
-            messageTime.getHours().toString().padStart(2, '0') + ':' +
-            messageTime.getMinutes().toString().padStart(2, '0'); // MM/dd HH:mm形式で整形
+					// ユーザー名をリンクのテキストに設定
+					profileLink.textContent = chatMessage.username;
 
-        // 時間を表示する div を作成
-        var timeDiv = document.createElement('h6');
-        timeDiv.classList.add('text-gray-500', 'text-xs', 'font-normal', 'py-1');
-        timeDiv.textContent = formattedDate; // フォーマットされた日時を表示
+					// ユーザー名を表示するdivにリンクを追加
+					userNameDiv.appendChild(profileLink);
 
-        messageContentDiv.appendChild(userNameDiv);
-        messageContentDiv.appendChild(contentDiv);
-        messageContentDiv.appendChild(timeDiv); // 日時をメッセージの下に追加
+					// メッセージ内容
+					var contentDiv = document.createElement('div');
+					contentDiv.classList.add('px-3.5', 'py-2', 'bg-gray-100', 'rounded', 'justify-start', 'items-center', 'gap-3', 'inline-flex');
+					var messageText = document.createElement('h5');
+					messageText.classList.add('text-sm', 'font-normal', 'text-gray-900', 'leading-snug');
+					messageText.textContent = chatMessage.content;
 
-        messageDiv.appendChild(profileImg);
-        messageDiv.appendChild(messageContentDiv);
+					contentDiv.appendChild(messageText);
 
-        // メッセージをメッセージリストの最上部に追加
-        messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
+					// 送信日時を MM/dd HH:mm 形式に変換
+					var messageTime = new Date(chatMessage.createdAt); // 日時を Date オブジェクトに変換
+					var formattedDate = (messageTime.getMonth() + 1) + '/' + messageTime.getDate() + ' ' +
+						messageTime.getHours().toString().padStart(2, '0') + ':' +
+						messageTime.getMinutes().toString().padStart(2, '0'); // MM/dd HH:mm形式で整形
 
-        // 通知を表示（新着メッセージがある場合）
-        if (!isScrolledToBottom) {
-            newMessagesCount++;
-            document.getElementById('new-messages-count').textContent = '新着チャット' + newMessagesCount + '件';
-            document.getElementById('new-messages-notification').classList.remove('hidden');
-        } else {
-            // スクロールが最下部に達していれば、自動でスクロール
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-    }
+					// 時間を表示する div を作成
+					var timeDiv = document.createElement('h6');
+					timeDiv.classList.add('text-gray-500', 'text-xs', 'font-normal', 'py-1');
+					timeDiv.textContent = formattedDate; // フォーマットされた日時を表示
 
-    // スクロール時の動作を制御
-    document.getElementById('messages').addEventListener('scroll', function () {
-        var messagesDiv = document.getElementById('messages');
-        isScrolledToBottom = messagesDiv.scrollHeight - messagesDiv.scrollTop === messagesDiv.clientHeight;
-    });
+					messageContentDiv.appendChild(userNameDiv);
+					messageContentDiv.appendChild(contentDiv);
+					messageContentDiv.appendChild(timeDiv); // 日時をメッセージの下に追加
 
-    // 新着メッセージ通知をクリックした場合
-    document.getElementById('new-messages-notification').addEventListener('click', function () {
-        document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-        document.getElementById('new-messages-notification').classList.add('hidden');
-        newMessagesCount = 0; // 通知カウントをリセット
-    });
+					messageDiv.appendChild(profileImg);
+					messageDiv.appendChild(messageContentDiv);
 
-    // メッセージ送信ボタンをクリックした時の処理
-    document.getElementById('send-button').addEventListener('click', function () {
-        sendMessage();
-    });
+					// メッセージをメッセージリストの最上部に追加
+					messagesDiv.insertBefore(messageDiv, messagesDiv.firstChild);
 
-    // エンターキーでメッセージを送信
-    document.getElementById('input-message').addEventListener('keypress', function (event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // Enterキーのデフォルト動作を防ぐ
-            sendMessage(); // 送信処理を呼び出す
-        }
-    });
+					// 通知を表示（新着メッセージがある場合）
+					if (!isScrolledToBottom) {
+						newMessagesCount++;
+						document.getElementById('new-messages-count').textContent = '新着チャット' + newMessagesCount + '件';
+						document.getElementById('new-messages-notification').classList.remove('hidden');
+					} else {
+						// スクロールが最下部に達していれば、自動でスクロール
+						messagesDiv.scrollTop = messagesDiv.scrollHeight;
+					}
+				}
 
-    // ユーザーIDをサーバーから取得してWebSocket接続を開始
-    getUserIdFromServer();
-</script>
+				// スクロール時の動作を制御
+				document.getElementById('messages').addEventListener('scroll', function () {
+					var messagesDiv = document.getElementById('messages');
+					isScrolledToBottom = messagesDiv.scrollHeight - messagesDiv.scrollTop === messagesDiv.clientHeight;
+				});
+
+				// 新着メッセージ通知をクリックした場合
+				document.getElementById('new-messages-notification').addEventListener('click', function () {
+					document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+					document.getElementById('new-messages-notification').classList.add('hidden');
+					newMessagesCount = 0; // 通知カウントをリセット
+				});
+
+				// メッセージ送信ボタンをクリックした時の処理
+				document.getElementById('send-button').addEventListener('click', function () {
+					sendMessage();
+				});
+
+				// エンターキーでメッセージを送信
+				document.getElementById('input-message').addEventListener('keypress', function (event) {
+					if (event.key === 'Enter') {
+						event.preventDefault(); // Enterキーのデフォルト動作を防ぐ
+						sendMessage(); // 送信処理を呼び出す
+					}
+				});
+
+				// ユーザーIDをサーバーから取得してWebSocket接続を開始
+				getUserIdFromServer();
+			</script>
 
 
 
