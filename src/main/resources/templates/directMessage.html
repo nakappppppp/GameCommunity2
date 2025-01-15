@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Message</title>
+    <link rel="stylesheet" href="/css/output.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.2/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        const senderId = /*[[${session.userId}]]*/ '';  // session.userIdが存在しない場合は空文字に
+        const recipientId = document.getElementById("recipient-id").value.trim();
+        const messageInput = document.getElementById("message-body");
+        const sendMessageForm = document.getElementById("send-message-form");
+        const messagesContainer = document.getElementById("messages-container");
+
+        const socket = new SockJS('/GameHive/DM');
+        const stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/user/queue/messages', function (message) {
+                const messageData = JSON.parse(message.body);
+                const messageElement = document.createElement("div");
+                messageElement.className = "p-3 bg-gray-100 rounded-lg my-2";
+                messageElement.textContent = `From ${messageData.senderId}: ${messageData.messageBody}`;
+                messagesContainer.appendChild(messageElement);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            });
+        });
+
+        sendMessageForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const messageBody = messageInput.value;
+
+            stompClient.send("/app/dm", {}, JSON.stringify({
+                senderId: senderId,
+                recipientId: recipientId,
+                messageBody: messageBody
+            }));
+
+            const messageElement = document.createElement("div");
+            messageElement.className = "p-3 bg-blue-500 text-white rounded-lg self-end my-2";
+            messageElement.textContent = `You: ${messageBody}`;
+            messagesContainer.appendChild(messageElement);
+
+            messageInput.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+    });
+</script>
+
+</head>
+<body class="bg-gray-50 h-screen flex flex-col">
+    <div class="max-w-2xl mx-auto w-full flex flex-col h-full border bg-white shadow-md">
+        <!-- Header -->
+        <div class="flex items-center justify-between bg-gray-800 text-white p-4">
+            <h1 class="text-lg font-semibold">Direct Message</h1>
+            <a href="/some-return-url" class="text-gray-300 hover:text-white">Back</a>
+        </div>
+
+        <!-- Messages Container -->
+        <div id="messages-container" class="flex-1 p-4 overflow-y-auto space-y-2 bg-gray-50">
+            <!-- Messages will be dynamically added here -->
+        </div>
+
+        <!-- Message Input Form -->
+        <div class="p-4 border-t bg-gray-100">
+            <form id="send-message-form" class="flex items-center space-x-2">
+                <input type="hidden" id="recipient-id" th:value="${recipientId}" />
+                <input
+                    type="text"
+                    id="message-body"
+                    placeholder="Type a message..."
+                    class="flex-1 p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300"
+                />
+                <button
+                    type="submit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                >
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

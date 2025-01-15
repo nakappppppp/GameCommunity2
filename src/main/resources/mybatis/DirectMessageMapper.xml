@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.app.mapper.DirectMessageMapper">
+
+ <!-- DMメッセージを保存 -->
+    <insert id="insertDirectMessage" parameterType="com.example.app.domain.DirectMessage">
+        INSERT INTO direct_messages (sender_id, recipient_id, message_body)
+        VALUES (#{senderId}, #{recipientId}, #{messageBody});
+    </insert>
+
+    <!-- 受信したメッセージを取得 (オプション) -->
+    <select id="getMessagesByUser" resultType="com.example.app.domain.DirectMessage">
+        SELECT * FROM direct_messages
+        WHERE recipient_id = #{recipientId}
+        ORDER BY sent_at DESC;
+    </select>
+
+    <!-- メッセージを取得 (送信者と受信者のIDを指定) -->
+    <select id="getMessagesBetweenUsers" resultType="com.example.app.domain.DirectMessage">
+        SELECT * FROM direct_messages
+        WHERE (sender_id = #{senderId} AND recipient_id = #{recipientId}) 
+           OR (sender_id = #{recipientId} AND recipient_id = #{senderId})
+        ORDER BY sent_at DESC;
+    </select>
+    
+    </mapper>

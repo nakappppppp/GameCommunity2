@@ -14,8 +14,8 @@
 			<div class='flex flex-wrap items-center lg:gap-y-2 gap-4 w-full'>
 				<a href="javascript:void(0)">
 					<!-- ロゴ部分 -->
-					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="_x32_"
-						viewBox="0 0 512 512" class="w-16 h-16 mb-2 mx-auto text-gray-600">
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+						id="_x32_" viewBox="0 0 512 512" class="w-16 h-16 mb-2 mx-auto text-gray-600">
 						<g>
 							<path class="fill-current"
 								d="M344.397,295.123l-34.995,20.206c-2.585,1.493-4.186,4.252-4.186,7.245v40.404c0,3.786,2.548,7.106,6.203,8.082c3.663,0.983,7.522-0.612,9.422-3.896l34.98-60.61c1.901-3.284,1.354-7.42-1.325-10.106C351.824,293.776,347.673,293.23,344.397,295.123z" />
@@ -35,7 +35,8 @@
 					<!-- メニューを閉じるボタン -->
 					<button id="toggleClose"
 						class="lg:hidden fixed top-2 right-4 z-[100] rounded-full bg-white w-9 h-9 flex items-center justify-center border">
-						<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 fill-black" viewBox="0 0 320.591 320.591">
+						<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 fill-black"
+							viewBox="0 0 320.591 320.591">
 							<path
 								d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z">
 							</path>
@@ -49,7 +50,8 @@
 					<ul
 						class="lg:flex lg:gap-x-3 max-lg:space-y-3 max-lg:fixed max-lg:bg-yellow-300 max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
 						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
-							<a href='/GameHive/home' class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Home</a>
+							<a href='/GameHive/home'
+								class="text-[#333] hover:text-[#007bff] text-[15px] block font-semibold">Home</a>
 						</li>
 						<li class="max-lg:border-b border-black max-lg:py-3 px-3">
 							<a href='/GameHive/Chat'
@@ -76,8 +78,7 @@
 
 						<!-- アバター (モバイルのみ表示) -->
 						<li class="max-lg:py-3 px-3 lg:hidden">
-							<img
-								th:src="@{${loggedInUser.profileImageName != null ? loggedInUser.profileImageName : '/images/pdefault.jpeg'}}"
+							<img th:src="@{${loggedInUser.profileImageName != null ? loggedInUser.profileImageName : '/images/pdefault.jpeg'}}"
 								alt="Bordered avatar"
 								class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
 						</li>
@@ -88,10 +89,12 @@
 								<div
 									class='flex bg-gray-50 border focus-within:bg-transparent focus-within:border-gray-400 rounded-full px-4 py-2.5 overflow-hidden max-w-52'>
 									<input type='text' id="searchInputMobile" placeholder='検索'
-										class='w-full text-sm bg-transparent outline-none pr-2' onkeydown="handleKeydown(event)" />
+										class='w-full text-sm bg-transparent outline-none pr-2'
+										onkeydown="handleKeydown(event)" />
 									<button onclick="redirectToSearchPage()"
 										class="cursor-pointer bg-transparent border-0 focus:outline-none transform transition-all duration-200">
-										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px"
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904"
+											width="16px"
 											class="fill-gray-600 transform transition-all duration-200 hover:scale-110 active:scale-90">
 											<path
 												d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.007 18.752-50.786 0-44.15-35.898-80.047-80.047-80.047s-80.047 35.898-80.047 80.047 35.898 80.047 80.047 80.047c19.05 0 36.55-6.954 50.193-18.628l47.195 47.363c2.23 2.229 5.823 2.229 8.053 0 2.231-2.229 2.231-5.823 0-8.053zm-114.66-39.104c-34.122 0-61.7-27.578-61.7-61.7s27.578-61.7 61.7-61.7 61.7 27.578 61.7 61.7-27.578 61.7-61.7 61.7z" />
@@ -148,11 +151,13 @@
 					<!-- いいねアイコン -->
 					<div class="flex flex-col items-center gap-0.5 cursor-pointer">
 						<div class="relative">
-							<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-[#333] icon" viewBox="0 0 64 64">
+							<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-[#333] icon"
+								viewBox="0 0 64 64">
 								<path
 									d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z" />
 							</svg>
-							<span class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white"
+							<span
+								class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white"
 								id="like-count">0</span>
 						</div>
 						<span class="text-[13px] font-semibold text-[#333]">いいね</span>
@@ -166,7 +171,8 @@
 								<path stroke-linecap="round" stroke-linejoin="round"
 									d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
 							</svg>
-							<span class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white"
+							<span
+								class="absolute left-auto -ml-1 top-0 rounded-full bg-red-500 px-1 py-0 text-xs text-white"
 								id="notification-count">0</span>
 						</a>
 						<span class="text-[13px] font-semibold text-[#333]">通知</span>
@@ -222,9 +228,9 @@
 							class='max-lg:hidden px-4 py-2 text-sm rounded-full text-white border-2 border-slate-400 bg-slate-600 hover:bg-slate-800'>ログアウト</button>
 					</form>
 					<!-- アバター -->
-					<img
-						th:src="@{${loggedInUser.profileImageName != null ? loggedInUser.profileImageName : '/images/pdefault.jpeg'}}"
-						alt="Bordered avatar" class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
+					<img th:src="@{${loggedInUser.profileImageName != null ? loggedInUser.profileImageName : '/images/pdefault.jpeg'}}"
+						alt="Bordered avatar"
+						class="relative inline-block h-12 w-12 !rounded-full object-cover object-center" />
 
 					<button id="toggleOpen" class='lg:hidden'>
 						<svg class="w-7 h-7" fill="#333" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -268,9 +274,9 @@
 						class="flex items-center px-3 py-2.5 font-semibold hover:text-indigo-900 hover:border hover:rounded-full">
 						遊んでいるゲーム
 					</a>
-					<a href="#"
+					<a href="/GameHive/Messsage"
 						class="flex items-center px-3 py-2.5 font-semibold hover:text-indigo-900 hover:border hover:rounded-full">
-						外部アプリケーション
+						メッセージ
 					</a>
 				</div>
 			</aside>
@@ -299,6 +305,20 @@
 
 
 					</div>
+
+					<div>
+						<a th:href="@{/GameHive/DM/{recipientId}(recipientId=${user.id})}"
+							class="flex items-center justify-center w-10 h-10 bg-white text-black hover:bg-yellow-50 transition">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+								stroke="currentColor" class="w-6 h-6">
+								<path stroke-linecap="round" stroke-linejoin="round"
+									d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+							</svg>
+						</a>
+
+					</div>
+
+
 
 					<div class="ml-3">
 						<p class="font-bold text-lg" th:text="${user.username}"></p>
@@ -330,9 +350,11 @@
 					</div>
 
 					<div class="px-3 mt-3 flex">
-						<p class="cursor-pointer hover:underline"><span class="font-bold" th:text="${followingCount}"></span><a
+						<p class="cursor-pointer hover:underline"><span class="font-bold"
+								th:text="${followingCount}"></span><a
 								th:href="@{/GameHive/following/{userId}(userId=${user.id})}">フォロー</a></p>
-						<p class="ml-5 cursor-pointer hover:underline"><span class="font-bold" th:text="${followerCount}"></span><a
+						<p class="ml-5 cursor-pointer hover:underline"><span class="font-bold"
+								th:text="${followerCount}"></span><a
 								th:href="@{/GameHive/followers/{userId}(userId=${user.id})}">フォロワー</a></p>
 					</div>
 
@@ -369,18 +391,19 @@
 							<div class="mt-2">
 								<div class="flex">
 									<div>
-										<img class="w-16 h-12 rounded-full"
-											th:src="@{${user.profileImageName}}" />
+										<img class="w-16 h-12 rounded-full" th:src="@{${user.profileImageName}}" />
 									</div>
 
 									<div class="ml-4">
 										<p>
-											<span class="font-bold" th:text="${user.username}"></span> <span class="text-gray-500">
+											<span class="font-bold" th:text="${user.username}"></span> <span
+												class="text-gray-500">
 											</span>
 										</p>
 
 										<p>
-											Launched my new website a few weeks ago Rocket. Any feedback? Too boring? Too basic? Not sure what
+											Launched my new website a few weeks ago Rocket. Any feedback? Too boring?
+											Too basic? Not sure what
 											else to add to it! dfdasfdsfadffasfasdfasfasdfdasfdasfdasfdasfdasfds
 										</p>
 									</div>

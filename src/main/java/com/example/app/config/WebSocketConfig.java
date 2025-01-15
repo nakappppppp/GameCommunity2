@@ -24,5 +24,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/GameHive/Chat")  // パスをクライアントのコードに合わru
                 .withSockJS()
                 .setInterceptors(new HttpSessionHandshakeInterceptor()); // ここでインターセプターを追加
+        
+        registry.addEndpoint("/GameHive/DM")  // DM機能のエンドポイント
+        .withSockJS()  // SockJSを使ったフォールバック
+        .setInterceptors(new HttpSessionHandshakeInterceptor());  // セッションインターセプターの追加
     }
 }
