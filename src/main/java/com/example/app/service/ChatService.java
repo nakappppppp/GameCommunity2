@@ -30,6 +30,17 @@ public class ChatService {
         }
         return chatMessages;
     }
+    
+    // 自分のチャットメッセージの取得
+    public List<Chat> getMyChatMessages(){
+    	List<Chat> myChatMessages = chatMapper.getMyChatMessages();
+       for (Chat myChat : myChatMessages) {
+    	   Users user = usersMapper.findById(myChat.getUserId().intValue());
+    		   myChat.setUsername(user.getUsername());
+    		   myChat.setProfileImageUrl(user.getProfileImageName());
+    	 }
+       return myChatMessages;
+    }
 
     // チャットメッセージの送信
     public void sendChatMessage(Chat chat) {

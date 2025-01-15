@@ -2,6 +2,7 @@ package com.example.app.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.app.domain.Chat;
 import com.example.app.domain.Users;
+import com.example.app.service.ChatService;
 import com.example.app.service.FollowService;
 import com.example.app.service.NotificationService;
 import com.example.app.service.UsersService;
@@ -37,6 +40,9 @@ public class ProfileController {
 	
 	@Autowired
 	private NotificationService notificationService;
+	
+	@Autowired
+	private ChatService chatService;
 
 	// プロフィールページ表示
 	@GetMapping("/Profile/{userId}")
@@ -59,6 +65,24 @@ public class ProfileController {
 		if (user == null) {
 			return "error/404"; // 指定されたユーザーが存在しない場合
 		}
+		
+		List<Chat> myChatMessages = chatService.getMyChatMessages();
+		Integer sessionUserId = (Integer) session.getAttribute("userId");
+
+		List<String> myChatContents = new ArrayList<>(); // 自分のチャット内容を保存するリスト
+
+		for (Chat myChat : myChatMessages) {
+		    if (sessionUserId != null && sessionUserId.equals(myChat.getUserId())) {
+		        System.out.println(myChat.getContent());
+		        myChatContents.add(myChat.getContent()); // リストに追加
+		    }
+		}
+
+		// リスト全体をモデルに追加
+		model.addAttribute("myChats", myChatContents);
+
+
+		
 		
 		 // フォロワー数とフォロー数を取得
     int followerCount = followService.getFollowerCount(userId.longValue());

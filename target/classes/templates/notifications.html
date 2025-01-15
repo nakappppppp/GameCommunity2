@@ -10,7 +10,7 @@
     <ul>
         <th:block th:each="notification : ${unreadNotifications}">
             <li>
-              <a th:href="@{/GameHive/Profile/{userId}(userId=${notification.userId})}"><p th:text="${notification.content}"></a>にフォローされました</p>
+              <a th:href="@{/GameHive/Profile/{userId}(userId=${notification.followerId})}"><p th:text="${notification.content}"></a>にフォローされました</p>
                 <span th:text="${#temporals.format(notification.createdAt, 'yyyy/MM/dd HH:mm')}"></span>
 
             </li>

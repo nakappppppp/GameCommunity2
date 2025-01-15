@@ -36,6 +36,12 @@ public class NotificationController {
 
 		// モデルに未読通知を追加
 		model.addAttribute("unreadNotifications", unreadNotifications);
+		
+		 // ここで followerId をモデルに追加
+        for (Notification notification : unreadNotifications) {
+            Long followerId = notification.getFollowerId();  // followerIdを取得
+            model.addAttribute("followerId", followerId);  // Modelに追加
+        }
 
 		// 通知を既読にする処理
 		// 通知ページに遷移したときに未読通知を既読に更新

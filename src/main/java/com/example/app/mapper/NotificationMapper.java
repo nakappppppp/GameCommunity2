@@ -17,9 +17,10 @@ public interface NotificationMapper {
     List<Notification> getUnreadNotifications(Long userId);
 
     // 通知を既読に更新
-     void markAllNotificationsAsRead(Long userId);
-     
-     // フォロー通知を削除（アンフォロー時）
-     void deleteFollowNotification(@Param("followerUsername") String followerUsername, @Param("followedId") Long followedId);
-
+    void markAllNotificationsAsRead(Long userId);
+    
+    // フォロー通知を削除（アンフォロー時）
+    void deleteFollowNotification(@Param("followerId") Long followerId, 
+                                  @Param("followerUsername") String followerUsername, 
+                                  @Param("followedId") Long followedId);
 }

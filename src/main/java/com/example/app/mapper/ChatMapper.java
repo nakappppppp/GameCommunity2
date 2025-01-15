@@ -14,6 +14,9 @@ public interface ChatMapper {
 
     // チャットメッセージを全て取得
     List<Chat> getAllChatMessages();
+    
+    //自分のチャットメッセージを全て取得
+    List<Chat> getMyChatMessages();
 
     // チャットメッセージを更新
     void updateChatMessage(Chat chat);

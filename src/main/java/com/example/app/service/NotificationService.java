@@ -21,9 +21,11 @@ public class NotificationService {
    
 
     // 通知を挿入
-    public void createNotification(Notification notification) {
+    public void createNotification(Long userId, Long followerId, String content) {
+        Notification notification = new Notification(userId, followerId, content);
         notificationMapper.insertNotification(notification);
     }
+
     
     // フォロー通知を削除（アンフォロー時）
     public void deleteFollowNotification(Long followerId, Long followedId) {
@@ -35,7 +37,7 @@ public class NotificationService {
       System.out.println("Deleting notification for follower: " + followerUsername + " and followed: " + followedId);
 
       // 通知を削除
-      notificationMapper.deleteFollowNotification(followerUsername, followedId);  // Mapではなく個別に渡す
+      notificationMapper.deleteFollowNotification(followerId, followerUsername, followedId);  // Mapではなく個別に渡す
     }
 
 
@@ -66,6 +68,7 @@ public class NotificationService {
       }
       return false; // 通知が存在しない場合
   }
+
 
     
 }
