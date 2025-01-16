@@ -10,6 +10,7 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import jakarta.servlet.http.HttpSession;
 
+//WebSocket接続時に、HTTPセッションの情報を利用できるようにするクラス
 public class HttpSessionHandshakeInterceptor implements HandshakeInterceptor {
 
 	@Override
