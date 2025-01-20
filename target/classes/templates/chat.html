@@ -236,6 +236,30 @@
 				</div>
 			</div>
 		</div>
+		<script>
+		// メニュー開閉ボタンを取得
+		const toggleOpenButton = document.getElementById('toggleOpen');
+		const toggleCloseButton = document.getElementById('toggleClose');
+		const collapseMenu = document.getElementById('collapseMenu');
+
+		// メニューを開く関数
+		function openMenu() {
+			collapseMenu.classList.remove('max-lg:hidden'); // メニューを表示
+			collapseMenu.classList.add('max-lg:block');
+		}
+
+		// メニューを閉じる関数
+		function closeMenu() {
+			collapseMenu.classList.remove('max-lg:block');
+			collapseMenu.classList.add('max-lg:hidden'); // メニューを非表示
+		}
+
+		// 開くボタンのクリックイベント
+		toggleOpenButton.addEventListener('click', openMenu);
+
+		// 閉じるボタンのクリックイベント
+		toggleCloseButton.addEventListener('click', closeMenu);
+	</script>
 	</header>
 
 
