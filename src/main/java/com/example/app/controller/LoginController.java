@@ -1,5 +1,7 @@
 package com.example.app.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.app.domain.Users;
+import com.example.app.service.EmailService;
+import com.example.app.service.RebuildPassService;
 import com.example.app.service.UsersService;
 
 import jakarta.servlet.http.HttpSession;
@@ -21,6 +25,13 @@ public class LoginController {
     
     @Autowired
     private UsersService usersService;
+    
+    @Autowired
+    private RebuildPassService rebuildPassService;
+    
+    @Autowired
+    private EmailService emailService;
+    
 
     @GetMapping("/login")
     public String loginForm(Model model) {
@@ -60,6 +71,42 @@ public class LoginController {
         model.addAttribute("error", "ユーザーが見つかりませんでした");
         return "FailedLogin";  // ログイン失敗ページに遷移
     }
+    
+    @GetMapping("/RebuildPass")
+	public String rebuildPass() {
+	    return "rebuildPass";
+	}
+    
+    @PostMapping("/RebuildPass")
+    public String rebuildPass(String username, String email) {
+        Users user = usersService.findUserByUsername(username);
+
+        if (user != null && user.getEmail().equals(email)) {
+            String token = UUID.randomUUID().toString();
+
+            // トークンを保存
+            rebuildPassService.saveRebuildPassToken(user.getId(), token);
+
+            // パスワードリセットURL生成
+            String resetUrl = "localhost:8080/GameHive/InputRebuildPass?token=" + token;
+
+            // メール送信
+            emailService.sendPasswordResetEmail(user.getEmail(), resetUrl);
+
+            return "redirect:/GameHive/SendMail";
+        }
+
+        return "redirect:/GameHive/SendMailFailed";
+    }
+    
+    @GetMapping("/InputRebuildPass")
+	public String inputRebuildPass() {
+		return "inputRebuildPass";
+	}
+
+
+
+
 
     @GetMapping("/home")
     public String home(HttpSession session,Model model) {

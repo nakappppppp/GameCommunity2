@@ -8,13 +8,13 @@
 </head>
 
 <body>
-	
+
 	<div class="bg-yellow-300 font-[sans-serif] animate-fade-background">
 		<div class="min-h-screen flex flex-col items-center justify-center py-6 px-4">
 			<div class="max-w-md w-full">
 				<a href="javascript:void(0)">
-					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="_x32_"
-						viewBox="0 0 512 512" class="w-40 mb-8 mx-auto text-gray-600">
+					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+						id="_x32_" viewBox="0 0 512 512" class="w-40 mb-8 mx-auto text-gray-600">
 						<g>
 							<path class="fill-current"
 								d="M344.397,295.123l-34.995,20.206c-2.585,1.493-4.186,4.252-4.186,7.245v40.404c0,3.786,2.548,7.106,6.203,8.082c3.663,0.983,7.522-0.612,9.422-3.896l34.98-60.61c1.901-3.284,1.354-7.42-1.325-10.106C351.824,293.776,347.673,293.23,344.397,295.123z" />
@@ -31,39 +31,39 @@
 
 				<div class="p-8 rounded-2xl bg-white shadow">
 					<h2 class="text-gray-800 text-center text-2xl font-bold">GameHiveにログイン</h2>
-					<form class="mt-8 space-y-4" action="/GameHive/login" method="post" th:object="${users}">
+					<form class="mt-8 space-y-4" action="/GameHive/login" method="post" th:object="${users}"
+						id="login-form">
 						<div>
 							<label class="text-gray-800 text-sm mb-2 block">ユーザー名</label>
 							<div class="relative flex items-center">
-								<input th:field="*{username}" type="text" required
+								<input th:field="*{username}" id="username" type="text" required
 									class="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
 									placeholder="ユーザー名を入力してください" />
-									<div th:if="${#fields.hasErrors('username')}" class="text-red-500 text-xs mt-2">
-                    <span th:errors="*{username}"></span>
-                  </div>
-
+								<div th:if="${#fields.hasErrors('username')}" class="text-red-500 text-xs mt-2">
+									<span th:errors="*{username}"></span>
+								</div>
 							</div>
 						</div>
 
 						<div>
 							<label class="text-gray-800 text-sm mb-2 block">パスワード</label>
 							<div class="relative flex items-center">
-								<div class="mt-4" th:if="${#fields.hasErrors('password')}"></div>
 								<input th:field="*{password}" id="password" type="password" required
 									class="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
 									placeholder="パスワードを入力してください" />
-									<div th:if="${#fields.hasErrors('password')}" class="text-red-500 text-xs mt-2">
-                    <span th:errors="*{username}"></span>
-                  </div>
-
-									 <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600" onclick="togglePassword()">
-								<svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
-									class="w-4 h-4 cursor-pointer" viewBox="0 0 128 128">
-									<path
-										d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z"
-										data-original="#000000"></path>
-								</svg>
-									 </button>
+								<div th:if="${#fields.hasErrors('password')}" class="text-red-500 text-xs mt-2">
+									<span th:errors="*{password}"></span>
+								</div>
+								<button type="button"
+									class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600"
+									onclick="togglePassword()">
+									<svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
+										class="w-4 h-4 cursor-pointer" viewBox="0 0 128 128">
+										<path
+											d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z"
+											data-original="#000000"></path>
+									</svg>
+								</button>
 							</div>
 						</div>
 
@@ -72,11 +72,11 @@
 								<input id="remember-me" name="remember-me" type="checkbox"
 									class="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
 								<label for="remember-me" class="ml-3 block text-sm text-gray-800">
-								 　入力内容を記録
+									入力内容を記録
 								</label>
 							</div>
 							<div class="text-sm">
-								<a href="javascript:void(0);" class="text-yellow-300 hover:underline font-semibold">
+								<a href="/GameHive/RebuildPass" class="text-yellow-300 hover:underline font-semibold">
 									パスワードをお忘れですか？
 								</a>
 							</div>
@@ -89,61 +89,111 @@
 							</button>
 						</div>
 						<p class="text-gray-800 text-sm !mt-8 text-center">アカウントを作成していない方は<a href="/GameHive/register"
-								class="text-yellow-300 hover:underline ml-1 whitespace-nowrap font-semibold">新規登録</a></p>
+								class="text-yellow-300 hover:underline ml-1 whitespace-nowrap font-semibold">新規登録</a>
+						</p>
 					</form>
+
+					<script>
+						document.addEventListener("DOMContentLoaded", function () {
+							const form = document.getElementById("login-form");
+							const username = document.getElementById("username");
+							const password = document.getElementById("password");
+							const rememberMe = document.getElementById("remember-me");
+
+							// 入力内容を復元
+							const savedData = JSON.parse(localStorage.getItem("formData"));
+							if (savedData) {
+								username.value = savedData.username || "";
+								password.value = savedData.password || ""; // パスワード保存には注意！
+								rememberMe.checked = savedData.rememberMe || false;
+							}
+
+							// 入力内容を保存
+							form.addEventListener("input", function () {
+								const formData = {
+									username: username.value,
+									password: rememberMe.checked ? password.value : "",
+									rememberMe: rememberMe.checked
+								};
+								localStorage.setItem("formData", JSON.stringify(formData));
+							});
+						});
+
+						// パスワード表示/非表示切り替え
+						function togglePassword() {
+							const passwordField = document.getElementById("password");
+							const eyeIcon = document.getElementById("eye-icon");
+							if (passwordField.type === "password") {
+								passwordField.type = "text";
+								eyeIcon.setAttribute("fill", "#000");
+								eyeIcon.setAttribute("stroke", "#000");
+							} else {
+								passwordField.type = "password";
+								eyeIcon.setAttribute("fill", "#bbb");
+								eyeIcon.setAttribute("stroke", "#bbb");
+							}
+						}
+					</script>
+
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	<style>
-  @keyframes fade-background {
-    0% {
-      background-color: #fde047;
-    }
-    20% {
-      background-color: #fef08a; 
-    }
-    40% {
-			background-color: #fef9c3;
-		}
-		60%{
-			background-color: #fefce8;
-		}
-		75%{
-      background-color: #fef9c3;
-		}
-		90%{
-			background-color: #fef08a;
-		}
-		100%{
-			background-color: #fde047;
-		}
-	
-		
-		
-		
-  }
 
-  .animate-fade-background {
-    animation: fade-background 5s ease-in-out infinite;
-  }
-</style>
-	
+	<style>
+		@keyframes fade-background {
+			0% {
+				background-color: #fde047;
+			}
+
+			20% {
+				background-color: #fef08a;
+			}
+
+			40% {
+				background-color: #fef9c3;
+			}
+
+			60% {
+				background-color: #fefce8;
+			}
+
+			75% {
+				background-color: #fef9c3;
+			}
+
+			90% {
+				background-color: #fef08a;
+			}
+
+			100% {
+				background-color: #fde047;
+			}
+
+
+
+
+		}
+
+		.animate-fade-background {
+			animation: fade-background 5s ease-in-out infinite;
+		}
+	</style>
+
 	<script>
-		 function togglePassword() {
-    const passwordInput = document.getElementById('password');
-    const eyeIcon = document.getElementById('eye-icon');
-    
-    // パスワードの表示/非表示を切り替え
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12c0-4.41-3.59-8-8-8s-8 3.59-8 8 3.59 8 8 8 8-3.59 8-8zm-8-2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2  .9-2 2-2z" />`;  // 目のアイコンを変える
-    } else {
-      passwordInput.type = 'password';
-      eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12c0-1.1-.9-2-2-2s-2 .9-2 2  .9 2 2 2 2-.9 2-2zm-4-1c0-1.1-.9-2-2-2s-2 .9-2 2  .9 2 2 2 2-.9 2-2z" />`;  // 元のアイコンに戻す
-    }
-  }
+		function togglePassword() {
+			const passwordInput = document.getElementById('password');
+			const eyeIcon = document.getElementById('eye-icon');
+
+			// パスワードの表示/非表示を切り替え
+			if (passwordInput.type === 'password') {
+				passwordInput.type = 'text';
+				eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12c0-4.41-3.59-8-8-8s-8 3.59-8 8 3.59 8 8 8 8-3.59 8-8zm-8-2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2  .9-2 2-2z" />`;  // 目のアイコンを変える
+			} else {
+				passwordInput.type = 'password';
+				eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12c0-1.1-.9-2-2-2s-2 .9-2 2  .9 2 2 2 2-.9 2-2zm-4-1c0-1.1-.9-2-2-2s-2 .9-2 2  .9 2 2 2 2-.9 2-2z" />`;  // 元のアイコンに戻す
+			}
+		}
 	</script>
 </body>
 
